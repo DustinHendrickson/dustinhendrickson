@@ -4,10 +4,10 @@ class Connection
 {
 public $Connection;
 public $db;
-const HOST = "localhost";
-const USER = "root";
-const PASSWORD = "cool";
-const DATABASE = "DustinDB";
+const HOST = "";
+const USER = "";
+const PASSWORD = "";
+const DATABASE = "";
 
 function __construct(){
  
