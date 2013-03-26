@@ -2,47 +2,55 @@
 
 class Connection
 {
-public $Connection;
-public $db;
-const HOST = "";
-const USER = "";
-const PASSWORD = "";
-const DATABASE = "";
+	public $PDO_Connection;
+	public $Config;
 
-function __construct(){
- 
-$this->Connection = mysql_connect(self::HOST,self::USER,self::PASSWORD);
-
-if(!$this->Connection)
+	function __construct()
 	{
-		Write_Log("sql",'ERROR: Could not connect to the server. < ' . mysql_error());	
-		die('ERROR: Could not connect to server. < ' . mysql_error());
+		//Read in Config file for use in the connection.
+	 	$this->Config = parse_ini_file("DBConfig.ini");
+
+		try {
+		//Define the DATABASE CONNECTION using PDO, also set attributes needed.
+			$this->PDO_Connection = new PDO('mysql:host='.$this->Config[HOST].';dbname='.$this->Config[DATABASE].';charset=utf8', $this->Config[USER], $this->Config[PASSWORD]);
+			$this->PDO_Connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$this->PDO_Connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+		//PDO Error Catching
+		} catch(PDOException $exception) {
+			//echo "<div class='Error'>An Error occured connecting to the server.</div><br>";
+			Write_Log("sql", "Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
+		}
+
 	}
-	else
+
+	function Custom_Query($query_string,$query_array)
 	{
-		Write_Log("sql",'SUCCESS: A successfull connection was made to the server.');
+		try {
+			$PDO_Prepped = $this->PDO_Connection->prepare($query_string);
+			$PDO_Prepped->execute($query_array);
+			$PDO_Results = $PDO_Prepped->fetch(PDO::FETCH_ASSOC);
+
+		} catch(PDOException $exception) {
+			//echo "An Error has occured.";
+			Write_Log("sql", "Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
+		}
+
+		return $PDO_Results;
+
 	}
 
-	//Connect to Database.
-	$this->db = mysql_select_db(self::DATABASE,$this->Connection);
-
-	if(!$this->db)
-		{	Write_Log("sql", "ERROR: Could not connect to database. < ". mysql_error());	}
-	else
-		{	Write_Log("sql", "SUCCESS: Connected to database.");	}
-}
-
-function Custom_Query($query_string)
+	function Custom_Execute($query_string,$query_array)
 	{
-		$query_results = mysql_query($query_string, $this->Connection);
+		try {
+			$PDO_Prepped = $this->PDO_Connection->prepare($query_string);
+			$PDO_Prepped->execute($query_array);
 
-	if (!$query_results) 
-	{	
-		Write_Log("sql","ERROR: Could not perform selected query. < Query-> '" . $query_string . "' > " . mysql_error());
-		die("ERROR: Could not perform selected query: " . mysql_error());
-	}
-		return $query_results;
+		} catch(PDOException $exception) {
+			//echo "An Error has occured.";
+			Write_Log("sql", "Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
+		}
+
 	}
 
 }//END OF CLASS
-?>
