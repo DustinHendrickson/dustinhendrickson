@@ -27,18 +27,17 @@ class User {
     //Initial function to search the database for the desired user and populate this class object. 
     private function Set_User_Info() {
         
-        $User_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE ID = ".$this->ID." LIMIT 1");
-        
-        while ($User_Row = mysql_fetch_assoc($User_Result)) {
-            $this->Username = $User_Row["Username"];
-            $this->First_Name = $User_Row["First_Name"];
-            $this->Last_Name = $User_Row["Last_Name"];
-            $this->Password = $User_Row["Password"];
-            $this->Permissions = $User_Row["Permissions"];
-            $this->Account_Last_Login = strtotime($User_Row["Account_Last_Login"]);
-            $this->Account_Created = strtotime($User_Row["Account_Created"]);
-            $this->Account_Locked = $User_Row["Account_Locked"];
-        }
+        $User_Array = array (':ID'=>$this->ID);
+        $User_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE ID = :ID LIMIT 1", $User_Array);
+
+            $this->Username = $User_Result["Username"];
+            $this->First_Name = $User_Result["First_Name"];
+            $this->Last_Name = $User_Result["Last_Name"];
+            $this->Password = $User_Result["Password"];
+            $this->Permissions = $User_Result["Permissions"];
+            $this->Account_Last_Login = strtotime($User_Result["Account_Last_Login"]);
+            $this->Account_Created = strtotime($User_Result["Account_Created"]);
+            $this->Account_Locked = $User_Result["Account_Locked"];
     }
     
     function __construct($ID) {

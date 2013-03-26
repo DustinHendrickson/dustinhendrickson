@@ -1,0 +1,5 @@
+[connection]
+HOST = localhost
+USER = root
+PASSWORD = myPassword
+DATABASE = myDatabase
