@@ -16,7 +16,7 @@ class Functions {
     public static function Get_View() {
         
         if(isset($_GET['view'])){
-            $view = $_GET['view'];
+            $view = self::Make_Safe($_GET['view']);
         } else {
             $view = "blog";
         }
