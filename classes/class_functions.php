@@ -9,7 +9,7 @@ class Functions {
     //Strips strings. !!DEV
     public static function Make_Safe(&$string) {
 
-        return preg_replace("/@([^A-Za-z0-9\+_\-,]+)/", "", $string);
+        return mysql_escape_string($string);
 
     }
     
