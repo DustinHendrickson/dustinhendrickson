@@ -9,7 +9,7 @@
 class Navigation {
 
     public static function Login_Write() {
-        
+
         if(Functions::Verify_Session()){
             $Nav_Items = array();
 
@@ -17,9 +17,9 @@ class Navigation {
             array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_settings'>My Settings<a/></div>\n");
             array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_points'>My Points</a></div>\n");
             array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=blogadmin'>Blog Admin</a></div>\n");
-            
+
             foreach ($Nav_Items as $Nav_Item){
-            	echo $Nav_Item;
+                echo $Nav_Item;
             }
         }
     }
@@ -36,22 +36,19 @@ class Navigation {
 
     public static function Public_Write() {
 
-	    $Nav_Items = array();
+        $Nav_Items = array();
 
-	    array_push($Nav_Items, "<div class='NavItem'><a href='?view=blog'><img width='75' height='75' src='img/News.png'></img> Blog<a/></div>\n");
-	    array_push($Nav_Items, "<div class='NavItem'><a href='?view=aboutme'><img width='75' height='75' src='img/Staff.png'></img> About Me<a/></div>\n");
-	    array_push($Nav_Items, "<div class='NavItem'><a href='?view=projects'><img width='75' height='75' src='img/Products.png'></img> Projects<a/></div>\n");
-	    array_push($Nav_Items, "<div class='NavItem'><a href='?view=resume'><img width='75' height='75' src='img/Services.png'></img> Resume<a/></div>\n");
-	    array_push($Nav_Items, "<div class='NavItem'><a href='?view=contact'><img width='75' height='75' src='img/Contact.png'></img> Contact<a/></div>\n");
-	    array_push($Nav_Items, "<div class='NavItem'><a href='?view=media'><img width='75' height='75' src='img/Gallery.png'></img> Media<a/></div>\n");
+        array_push($Nav_Items, "<div class='NavItem'><a href='?view=blog'><img width='75' height='75' src='img/News.png'></img> Blog<a/></div>\n");
+        array_push($Nav_Items, "<div class='NavItem'><a href='?view=aboutme'><img width='75' height='75' src='img/Staff.png'></img> About Me<a/></div>\n");
+        array_push($Nav_Items, "<div class='NavItem'><a href='?view=projects'><img width='75' height='75' src='img/Products.png'></img> Projects<a/></div>\n");
+        array_push($Nav_Items, "<div class='NavItem'><a href='?view=resume'><img width='75' height='75' src='img/Services.png'></img> Resume<a/></div>\n");
+        array_push($Nav_Items, "<div class='NavItem'><a href='?view=contact'><img width='75' height='75' src='img/Contact.png'></img> Contact<a/></div>\n");
+        array_push($Nav_Items, "<div class='NavItem'><a href='?view=media'><img width='75' height='75' src='img/Gallery.png'></img> Media<a/></div>\n");
 
-	    foreach($Nav_Items as $Nav_Item){
-	    	echo $Nav_Item;
-	    }
+        foreach($Nav_Items as $Nav_Item){
+            echo $Nav_Item;
+        }
     }
 
 
-
 }//END OF CLASS
-
-?>

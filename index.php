@@ -22,45 +22,44 @@ require_once("classes/class_authentication.php");   //Authentication.
         Dustin Hendrickson.com - Official Site
         </TITLE>
     </HEAD>
-    
+
     <BODY>
-	
+
         <div id="Login-Navigation">
             <div class="WelcomeText">
                 <?php Navigation::Login_Write_Welcome_Message(); ?>
             </div>
                 <?php Navigation::Login_Write(); ?>
         </div>
-		
-		<div id="BodyWrapper">
-		
+
+        <div id="BodyWrapper">
+
         <div id="Header">
             <div class="Logo"></div>
-            
         </div>
-        
-        
-		<div id="Public-Navigation">
-			<?php Navigation::Public_Write(); ?>
-		</div>
-		
+
+
+        <div id="Public-Navigation">
+            <?php Navigation::Public_Write(); ?>
+        </div>
+
         <div id="Content">
             <?php Functions::Display_View(Functions::Get_View()); ?>
         </div>
-        
+
         <div id="BottomContentWrapper">
             <div class="BottomLeftContent">
-			Left Box
+            Left Box
             </div>
 
             <div class="BottomRightContent">
-			Right Box
+            Right Box
             </div>
         </div>
-		
-		<div class="Push"></div>
+
+        <div class="Push"></div>
         </div>
-		
+        
         <div id="Footer">
 
         <table width=100% padding=10px>
@@ -97,6 +96,6 @@ require_once("classes/class_authentication.php");   //Authentication.
         </table>
 
         </div>
-        
+
     </BODY>
 </HTML>

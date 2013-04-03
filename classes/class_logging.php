@@ -2,19 +2,17 @@
 //Writes to a specified LOG file.
 function Write_Log($log,$logentry,$logpath="/var/www/dustin/logs/",$showIP='True')
 {
-	$NOW = date("h:ia m-d-Y");
+    $NOW = date("h:ia m-d-Y");
 
-	if($showIP='True') { $ip = $_SERVER['REMOTE_ADDR']; } else { $ip = "System Process"; }
+    if($showIP='True') { $ip = $_SERVER['REMOTE_ADDR']; } else { $ip = "System Process"; }
 
-	if (file_exists($logpath.$log.'.log')){
+    if (file_exists($logpath.$log.'.log')){
 
-		$logfile = fopen($logpath . $log . '.log', 'a');
+        $logfile = fopen($logpath . $log . '.log', 'a');
 
-		fwrite($logfile,"[".$NOW."] | " . $ip . " | " . $logentry . " >> " . $_SERVER['REQUEST_URI'] ."\n");
+        fwrite($logfile,"[".$NOW."] | " . $ip . " | " . $logentry . " >> " . $_SERVER['REQUEST_URI'] ."\n");
 
-		fclose($logfile);
-	}
+        fclose($logfile);
+    }
 
 }
-
-?>
