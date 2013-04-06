@@ -2,9 +2,10 @@
 
 class Blog
 {
-    //Blog Variables
+    //Internal Variables
     private $Connection;
     public $ErrorMessage;
+
 
     //Construction Method
     function __construct()
@@ -29,20 +30,14 @@ class Blog
     }
 
     //Data Views
-    function Display_Post($PostID)
+    function Get_Posts($Limit = 0) //Returns Array of Posts.
     {
+        $Post_Array = array (':Limit'=>$this->Limit);
+        $Post_Result = $this->Connection->Custom_Query("SELECT * FROM blog LIMIT :Limit", $User_Array);
 
-    }
-
-    function Display_All_Posts($Limit = 0)
-    {
-
+        return $Post_Result;
     }
 
     //Internal Functions
-    function Get_Post_User()
-    {
-
-    }
 
 }
