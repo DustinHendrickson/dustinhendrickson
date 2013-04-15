@@ -13,6 +13,7 @@ require_once("classes/class_functions.php");        //Functions.
 require_once("classes/class_navigation.php");       //Navigation.
 require_once("classes/class_user.php");             //User.
 require_once("classes/class_authentication.php");   //Authentication.
+require_once("classes/class_blog.php");             //Blog.
 
 ?>
 <HTML>

@@ -24,12 +24,16 @@ class Connection
 
     }
 
-    function Custom_Query($query_string,$query_array)
+    function Custom_Query($query_string,$query_array,$ALL=false)
     {
         try {
             $PDO_Prepped = $this->PDO_Connection->prepare($query_string);
             $PDO_Prepped->execute($query_array);
-            $PDO_Results = $PDO_Prepped->fetch(PDO::FETCH_ASSOC);
+            if ($ALL == true){
+                $PDO_Results = $PDO_Prepped->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $PDO_Results = $PDO_Prepped->fetch(PDO::FETCH_ASSOC);
+            }
 
         } catch(PDOException $exception) {
             echo "A Query Error has occured.";

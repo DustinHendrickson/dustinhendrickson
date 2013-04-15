@@ -44,4 +44,3 @@
                         </table>
                     </form>
 <?php if (isset($Auth->Error_Message)) { echo "<div class='Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); } ?>
-
