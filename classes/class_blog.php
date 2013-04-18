@@ -52,6 +52,27 @@ class Blog
         }
     }
 
+    function Get_Page() {
+        if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
+
+        return $Page;
+    }
+
+    function Display_Page($Page,$Template) {
+        if(isset($this->Pages[$Page]))
+        {
+            foreach ($this->Pages[$Page] as $Blog_Page)
+            {
+                $User = new User($Blog_Page['UserID']);
+
+                echo $Template;
+            }
+        } else {
+            Write_Log('php',"Trying to access a blog page that doesn't exist.");
+            echo "<div class='Error'>You are trying to access a blog page that doesn't exist.</div>";
+        }
+    }
+
     //Data Views
     function Get_Posts($Paginate=false,$PerPage=5,$Limit = 0,$OrderBy="DESC") //Returns Array of Posts.
     {   

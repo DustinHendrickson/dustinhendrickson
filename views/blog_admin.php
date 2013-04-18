@@ -62,53 +62,42 @@
     $Blog = new Blog();
     $Blog_Pages = $Blog->Get_Posts(true,5);
 
-    if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
+    //Front end to Edit or Delete a blog entry.
+    $Template = "
+    <div class='BlogWrapper'>
+    <form action='?view=blog_admin&page={$Page}' method='post'>
+        <table>
+            <tr>
+                <td>
+                    Title: 
+                </td>
+                <td>
+                    <input name='Title' type='text' value='{$Blog_Page['Title']}'>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Body: 
+                </td>
+                <td>
+                    <textarea name='Body' type='text'>{$Blog_Page['Body']}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input name='postID' type='hidden' value='{$Blog_Page['ID']}'>
+                    <input name='userID' type='hidden' value='{$User->ID}'>
+                </td>
+            </tr>
+        </table>
+        <div class='BlogCreation'>Post ID[{$Blog_Page['ID']}] by {$User->Username} - {$Blog_Page['Creation_Date']}</div>
+        <input type='submit' value='Edit' name='Mode'>
+        <input type='submit' value='Delete' name='Mode'>
+    </form>
+    </div>
+    <br>
+    ";
 
-    if(isset($Blog->Pages[$Page]))
-    {
-        foreach ($Blog->Pages[$Page] as $Blog_Page)
-        {
-            $User = new User($Blog_Page['UserID']);
-
-            //Front end to Edit or Delete a blog entry.
-            echo "
-            <div class='BlogWrapper'>
-            <form action='?view=blog_admin&page={$Page}' method='post'>
-                <table>
-                    <tr>
-                        <td>
-                            Title: 
-                        </td>
-                        <td>
-                            <input name='Title' type='text' value='{$Blog_Page['Title']}'>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Body: 
-                        </td>
-                        <td>
-                            <textarea name='Body' type='text'>{$Blog_Page['Body']}</textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input name='postID' type='hidden' value='{$Blog_Page['ID']}'>
-                            <input name='userID' type='hidden' value='{$User->ID}'>
-                        </td>
-                    </tr>
-                </table>
-                <div class='BlogCreation'>Post ID[{$Blog_Page['ID']}] by {$User->Username} - {$Blog_Page['Creation_Date']}</div>
-                <input type='submit' value='Edit' name='Mode'>
-                <input type='submit' value='Delete' name='Mode'>
-            </form>
-            </div>
-            <br>
-            ";
-        }
-    } else {
-        Write_Log('php',"Trying to access a blog page that doesn't exist.");
-        echo "<div class='Error'>You are trying to access a blog page that doesn't exist.</div>";
-    }
+    $Blog->Display_Page($Blog->Get_Page(),$Template);
 
     $Blog->Write_Pagination_Nav();
