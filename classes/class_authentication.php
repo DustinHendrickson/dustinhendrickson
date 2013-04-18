@@ -14,7 +14,7 @@ function Login($User,$Pass) {
     $Username = Functions::Make_Safe($User);
     $Password = Functions::Make_Safe($Pass);
     $Password = md5($Password);
-    
+
     //Check if parameters are blank
     if($Username!='' && $Password!='') {
 

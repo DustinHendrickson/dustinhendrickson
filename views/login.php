@@ -3,6 +3,7 @@
                 if(isset($_POST['Login'])) {
                         $Auth = new Authentication;
                         $Auth->Login($_POST['Username'],$_POST['Password']);
+                        if (isset($Auth->Error_Message)) { echo "<div class='Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); }
                 }
 ?>                
                     <b>Login</b>
@@ -32,4 +33,3 @@
                             </tr>
                         </table>
                     </form>
-<?php if (isset($Auth->Error_Message)) { echo "<div class='Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); } ?>

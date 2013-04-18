@@ -179,7 +179,42 @@ body{
 
 /* END OF Navigation Items */
 
+.BlogWrapper {
+    width: 95%;
+    background-color: rgba(255, 255, 255, 0.9); /* WHITE */
+    padding: 10px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    margin-bottom: 10px;
+    margin-left: 1%;
+}
 
+.BlogTitle {
+    color: darkgrey;
+    font-size: large;
+}
+
+.BlogBody {
+    font-style: italic;
+    font-size: medium;
+}
+
+.BlogCreation {
+    color: grey;
+    font-size: small;
+}
+
+
+/* General System */
 .Error {
     color: red;
+    background-color: pink;
+    padding: 2px;
+}
+.Success {
+    color: green;
+    background-color: lightgreen;
+    padding: 2px;
+
 }

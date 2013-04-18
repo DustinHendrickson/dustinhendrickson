@@ -14,7 +14,7 @@ class User {
     //Non User Variables
     private $Connection;
     //User Variables
-    private $ID;
+    public $ID;
     public $Username;
     public $First_Name;
     public $Last_Name;
@@ -23,6 +23,7 @@ class User {
     public $Account_Last_Login;
     public $Account_Created;
     public $Account_Locked;
+    public $Config_Settings; //TO DO - Add configuration options to the system.
     
     //Initial function to search the database for the desired user and populate this class object. 
     private function Set_User_Info() {
@@ -54,7 +55,7 @@ class User {
 
     //This Function checks the Users permissions and returns them in a readable format.
     // @returns string
-    public function Get_Permissions() {
+    public function Get_Permissions($ReturnType='String') {
         $Permissions_Array = explode(",",$this->Permissions);
         $Return_Array = array();
 
@@ -64,7 +65,7 @@ class User {
                     array_push($Return_Array,"Admin");
                     break;
                 case 2:
-                    array_push($Return_Array,"Manager");
+                    array_push($Return_Array,"Staff");
                     break;
                 case 3:
                     array_push($Return_Array,"Employee");
@@ -77,7 +78,15 @@ class User {
 
         $Return_String = implode(", ",$Return_Array);
 
-        return $Return_String;
+        switch($ReturnType) {
+            case 'String':
+                return $Return_String;
+                break;
+            case 'Array':
+                return $Return_Array;
+                break;
+        }
+
     }
 
     //Converts the Datbases 0,1 into Locked,Active.

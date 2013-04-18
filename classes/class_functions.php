@@ -50,4 +50,32 @@ class Functions {
         }
     }
 
+    public static function Check_User_Permissions($PermissionLevelRequired=""){
+        if(isset($_SESSION["ID"])) {
+            $User = new User($_SESSION["ID"]);
+
+            $User_Permissions = $User->Get_Permissions('Array');
+
+            if (in_array($PermissionLevelRequired,$User_Permissions)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+    }
+
+    public static function Check_User_Permissions_Redirect($PermissionLevelRequired=""){
+        if(isset($_SESSION["ID"])) {
+            $User = new User($_SESSION["ID"]);
+
+            $User_Permissions = $User->Get_Permissions('Array');
+
+            if (!in_array($PermissionLevelRequired,$User_Permissions)) {
+                header( 'Location: ?' );
+            }
+
+        }
+    }
+
 }//END CLASS

@@ -1,43 +1,114 @@
 <?php
-Functions::Verify_Session_Redirect();
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+    Functions::Verify_Session_Redirect();
+    Functions::Check_User_Permissions_Redirect("Admin");
 
-$Blog = new Blog();
+    //Logic to perform based on post data.
+    $String_Protector_Array = array("<script","</script>","('","')");
+    switch ($_POST['Mode']){
 
-$Blog_Posts = $Blog->Get_Posts();
+        case 'Edit':
+            $Blog = new Blog();
+            $Blog->Edit_Post($_POST['postID'],$_POST['userID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
+            break;
 
-foreach ($Blog_Posts as $Blog_Post)
-{
-    $User = new User($Blog_Post['UserID']);
+        case 'Add':
+            $Blog = new Blog();
+            $Blog->Add_Post($_POST['userID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
+            break;
 
-    echo "<b>ID:</b> " . $Blog_Post['ID'] . "<br />";
-    echo "<b>Username:</b> " . $User->Username . "<br />";
-    echo "<b>Title:</b> " . $Blog_Post['Title']. "<br />";
-    echo "<b>Body</b> " . $Blog_Post['Body'] . "<br />";
-    echo "<b>Creation Date</b> " .  $Blog_Post['Creation_Date'] . "<br />";
-    echo "-------------<br>";
-}
+        case 'Delete':
+            $Blog = new Blog();
+            $Blog->Delete_Post($_POST['postID']);
+            break;
 
-if (isset($_GET['id'])){$ID=$_GET['id'];}{$ID=1;};
-
-switch ($_GET['mode']){
-
-    case 'edit':
-        $Blog->Edit_Post($ID,1,'New Blog Entry Edit','BODY!');
-        break;
-
-    case 'add':
-        $Blog->Add_Post(1,'New Post Default','This is some body');
-        break;
-
-    case 'delete':
-        $Blog->Delete_Post($ID);
-        break;
-
-}
+    }
+    //Display any messages from the logic.
+    if (isset($Blog->Message)) { echo "<div class='{$Blog->Message_Type}'>".$Blog->Message."</div>"; unset($Blog->Message); }
 
 
-?>
+    //New Blog Entry
+    echo "
+    <form action='?view=blog_admin&page={$_GET['page']}' method='post'>
+        <table>
+            <tr>
+                <td>
+                    Title: 
+                </td>
+                <td>
+                    <input name='Title' type='text'>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Body: 
+                </td>
+                <td>
+                    <textarea name='Body' type='text'></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input name='userID' type='hidden' value='{$_SESSION['ID']}'>
+                </td>
+            </tr>
+        </table>
+        <input type='submit' value='Add' name='Mode'>
+    </form>
+    <hr>
+    ";
+
+
+    //Build Blog data and display posts for editing.
+    $Blog = new Blog();
+    $Blog_Pages = $Blog->Get_Posts(true,5);
+
+    if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
+
+    if(isset($Blog->Pages[$Page]))
+    {
+        foreach ($Blog->Pages[$Page] as $Blog_Page)
+        {
+            $User = new User($Blog_Page['UserID']);
+
+            //Front end to Edit or Delete a blog entry.
+            echo "
+            <div class='BlogWrapper'>
+            <form action='?view=blog_admin&page={$Page}' method='post'>
+                <table>
+                    <tr>
+                        <td>
+                            Title: 
+                        </td>
+                        <td>
+                            <input name='Title' type='text' value='{$Blog_Page['Title']}'>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Body: 
+                        </td>
+                        <td>
+                            <textarea name='Body' type='text'>{$Blog_Page['Body']}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name='postID' type='hidden' value='{$Blog_Page['ID']}'>
+                            <input name='userID' type='hidden' value='{$User->ID}'>
+                        </td>
+                    </tr>
+                </table>
+                <div class='BlogCreation'>Post ID[{$Blog_Page['ID']}] by {$User->Username} - {$Blog_Page['Creation_Date']}</div>
+                <input type='submit' value='Edit' name='Mode'>
+                <input type='submit' value='Delete' name='Mode'>
+            </form>
+            </div>
+            <br>
+            ";
+        }
+    } else {
+        Write_Log('php',"Trying to access a blog page that doesn't exist.");
+        echo "<div class='Error'>You are trying to access a blog page that doesn't exist.</div>";
+    }
+
+    $Blog->Write_Pagination_Nav();
