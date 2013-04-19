@@ -29,7 +29,7 @@ class Navigation {
     public static function Login_Write_Welcome_Message() {
 
             if(Functions::Verify_Session()) {
-                echo "Welcome, " . $_SESSION["Name"] . " | <a href='?view=logout'>Logout</a>";
+                echo $_SESSION["Name"] . " | <a href='?view=logout'>Logout</a>";
             } else {
                 echo "<a href='?view=login'>Login</a> | <a href='?view=register'>Register</a>";
             }

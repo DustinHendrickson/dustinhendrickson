@@ -2,6 +2,7 @@
 
     Functions::Verify_Session_Redirect();
     Functions::Check_User_Permissions_Redirect("Admin");
+    Functions::Prepare_TinyMCE();
 
     //Logic to perform based on post data.
     $String_Protector_Array = array("<script","</script>","<source","<audio","('","')");
@@ -26,7 +27,7 @@
     //Display any messages from the logic.
     if (isset($Blog->Message)) { echo "<div class='{$Blog->Message_Type}'>".$Blog->Message."</div>"; unset($Blog->Message); }
 
-    //Build Blog data and pagefor editing.
+    //Build Blog data and page for editing.
     $Blog = new Blog();
     $Blog_Pages = $Blog->Get_Posts(true,5);
     $Page=$Blog->Get_Page();
@@ -67,36 +68,38 @@
     <br>
     ";
 
-    //New Blog Entry
-    echo "
-    <form action='?view=blog_admin&page={$Page}' method='post'>
-        <table>
-            <tr>
-                <td>
-                    Title: 
-                </td>
-                <td>
-                    <input name='Title' type='text'>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Body: 
-                </td>
-                <td>
-                    <textarea name='Body' type='text'></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input name='userID' type='hidden' value='{$_SESSION['ID']}'>
-                </td>
-            </tr>
-        </table>
-        <input type='submit' value='Add' name='Mode'>
-    </form>
-    <hr>
-    ";
+    //New Blog Entry, we only show this on page 1.
+    if($Page==1){
+        echo "
+        <form action='?view=blog_admin&page={$Page}' method='post'>
+            <table>
+                <tr>
+                    <td>
+                        Title: 
+                    </td>
+                    <td>
+                        <input name='Title' type='text'>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Body: 
+                    </td>
+                    <td>
+                        <textarea name='Body' type='text'></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name='userID' type='hidden' value='{$_SESSION['ID']}'>
+                    </td>
+                </tr>
+            </table>
+            <input type='submit' value='Add' name='Mode'>
+        </form>
+        <hr>
+        ";
+    }
 
     $Blog->Write_Pagination_Nav();
 

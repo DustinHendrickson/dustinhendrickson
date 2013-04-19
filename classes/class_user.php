@@ -13,6 +13,8 @@
 class User {
     //Non User Variables
     private $Connection;
+    public $Message;
+    public $Message_Type;
     //User Variables
     public $ID;
     public $Username;
@@ -23,30 +25,50 @@ class User {
     public $Account_Last_Login;
     public $Account_Created;
     public $Account_Locked;
-    public $Config_Settings; //TO DO - Add configuration options to the system.
+    public $Config_Settings = array();
     
     //Initial function to search the database for the desired user and populate this class object. 
     private function Set_User_Info() {
-        
         $User_Array = array (':ID'=>$this->ID);
         $User_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE ID = :ID LIMIT 1", $User_Array);
 
-            $this->Username = $User_Result["Username"];
-            $this->First_Name = $User_Result["First_Name"];
-            $this->Last_Name = $User_Result["Last_Name"];
-            $this->Password = $User_Result["Password"];
-            $this->Permissions = $User_Result["Permissions"];
-            $this->Account_Last_Login = strtotime($User_Result["Account_Last_Login"]);
-            $this->Account_Created = strtotime($User_Result["Account_Created"]);
-            $this->Account_Locked = $User_Result["Account_Locked"];
+        $this->Username = $User_Result["Username"];
+        $this->First_Name = $User_Result["First_Name"];
+        $this->Last_Name = $User_Result["Last_Name"];
+        $this->Password = $User_Result["Password"];
+        $this->Permissions = $User_Result["Permissions"];
+        $this->Account_Last_Login = strtotime($User_Result["Account_Last_Login"]);
+        $this->Account_Created = strtotime($User_Result["Account_Created"]);
+        $this->Account_Locked = $User_Result["Account_Locked"];
     }
-    
+
+    private function Set_Config_Info() {
+        //Populate User Config Settings Into Object
+        $User_Config_Array = array (':ID'=>$this->ID);
+        $User_Config_Result = $this->Connection->Custom_Query("SELECT * FROM users_settings WHERE userID = :ID LIMIT 1", $User_Config_Array);
+
+        $this->Config_Settings['Items_Per_Page'] = $User_Config_Result['Items_Per_Page'];
+        $this->Config_Settings['Theme'] = $User_Config_Result['Theme'];
+        $this->Config_Settings['Show_Help'] = $User_Config_Result['Show_Help'];
+    }
+
     function __construct($ID) {
         $this->Connection = new Connection();
         $this->ID = $ID;
         $this->Set_User_Info();
+        $this->Set_Config_Info();
     }
-    
+
+    //This function saves the input settings to the DB and then updates the current object with the new values.
+    public function Save_Configuration($UserID,$Items,$Theme,$Show_Help) {
+        $Config_Array = array (':Items'=>$Items,':Theme'=>$Theme,':Show_Help'=>$Show_Help,':UserID'=>$UserID);
+        $this->Connection->Custom_Execute("UPDATE users_settings SET Items_Per_Page=:Items, Theme=:Theme, Show_Help=:Show_Help WHERE UserID=:UserID", $Config_Array);
+        $this->Set_Config_Info();
+
+        $this->Message='Settings successfully edited.';
+        $this->Message_Type='Success';
+    }
+
     //Returns the Full Name of the user.
     // @returns string
     public function Get_Full_Name() {

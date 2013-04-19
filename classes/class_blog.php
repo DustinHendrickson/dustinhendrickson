@@ -48,16 +48,18 @@ class Blog
 
     function Write_Pagination_Nav(){
         echo "<div class='Pagination'>";
+        //echo "<a href='?view={$View}&page=1'><< </a>";
         for ($i=1; $i<=$this->PagesMax; $i++)
         {
             $View = Functions::Get_View();
             echo "<a href='?view={$View}&page={$i}'>{$i}</a>";
             if ($i != $this->PagesMax) {echo " | ";}
         }
+        //echo "<a href='?view={$View}&page={$this->PagesMax}'> >></a>";
         echo "</div>";
     }
 
-    static function Get_Page() {
+    function Get_Page() {
         if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
 
         return $Page;
@@ -92,8 +94,7 @@ class Blog
     }
 
     //Data Views
-    function Get_Posts($Paginate=false,$PerPage=5,$Limit = 0,$OrderBy="DESC") //Returns Array of Posts.
-    {   
+    function Get_Posts($Paginate=false,$PerPage=5,$Limit = 0,$OrderBy="DESC") {//Returns Array of Posts.
         //We can't prepare ORDER BY in PDO, so we have to verify ourselves.
         if ($OrderBy != "ASC" && $OrderBy != "DESC") {$OrderBy='';}
 
@@ -110,6 +111,9 @@ class Blog
             $this->Paginated=true;
             $CurrentPage=1;
             $RowsLoaded=1;
+            //Here we get the user config for items per page to display, if not logged in, set 5
+            $User = new User($_SESSION['ID']);
+            if(isset($User->Config_Settings['Items_Per_Page'])) {$PerPage=$User->Config_Settings['Items_Per_Page'];}
 
                 //Loop through each row
                 foreach($Post_Result as $Post_Row){
