@@ -30,7 +30,7 @@ class Blog
 
     function Delete_Post($PostID)
     {
-        $Post_Array = array ('PostID'=>$PostID);
+        $Post_Array = array (':PostID'=>$PostID);
         $this->Connection->Custom_Execute("DELETE FROM blog WHERE ID=:PostID", $Post_Array);
 
         $this->Message="Blog post [{$PostID}] successfully deleted.";
@@ -68,7 +68,6 @@ class Blog
     function Display_Page($Page,$Template) {
         if(isset($this->Pages[$Page]))
         {
-
             foreach ($this->Pages[$Page] as $Blog_Page)
             {
                 $User = new User($Blog_Page['UserID']);
