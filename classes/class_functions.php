@@ -8,12 +8,10 @@ class Functions {
 
     //Strips strings. !!DEV
     public static function Make_Safe(&$string){
-
         return mysql_escape_string($string);
     }
 
     public static function Get_View() {
-
         if(isset($_GET['view'])){
             $view = self::Make_Safe($_GET['view']);
         } else {
@@ -24,7 +22,6 @@ class Functions {
     }
 
     public static function Display_View($view) {
-
         if(file_exists("views/".$view.".php")) {
             include("views/".$view.".php");
         } else {
@@ -34,7 +31,6 @@ class Functions {
     }
 
     public static function Verify_Session() {
-
         if(isset($_SESSION["ID"])) {
             return true;
         } else {
@@ -44,7 +40,6 @@ class Functions {
     }
 
     public static function Verify_Session_Redirect() {
-
         if(!isset($_SESSION["ID"])) {
             header( 'Location: ?' );
         }

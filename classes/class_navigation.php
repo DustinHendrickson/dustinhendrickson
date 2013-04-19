@@ -17,7 +17,7 @@ class Navigation {
             array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_settings'>My Settings<a/></div>\n");
             array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_points'>My Points</a></div>\n");
             if (Functions::Check_User_Permissions("Admin")){
-                array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=blog_admin&page=1'>Blog Admin</a></div>\n");
+                array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=blog_admin'>Blog Admin</a></div>\n");
             }
 
             foreach ($Nav_Items as $Nav_Item){
@@ -40,7 +40,7 @@ class Navigation {
 
         $Nav_Items = array();
 
-        array_push($Nav_Items, "<div class='NavItem'><a href='?view=blog&page=1'><img width='75' height='75' src='img/News.png'></img> Blog<a/></div>\n");
+        array_push($Nav_Items, "<div class='NavItem'><a href='?view=blog'><img width='75' height='75' src='img/News.png'></img> Blog<a/></div>\n");
         array_push($Nav_Items, "<div class='NavItem'><a href='?view=aboutme'><img width='75' height='75' src='img/Staff.png'></img> About Me<a/></div>\n");
         array_push($Nav_Items, "<div class='NavItem'><a href='?view=projects'><img width='75' height='75' src='img/Products.png'></img> Projects<a/></div>\n");
         array_push($Nav_Items, "<div class='NavItem'><a href='?view=resume'><img width='75' height='75' src='img/Services.png'></img> Resume<a/></div>\n");

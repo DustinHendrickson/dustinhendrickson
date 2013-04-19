@@ -1,20 +1,21 @@
 <?php
-	$Blog = new Blog();
-	$Blog->Get_Posts(true,5);
 
-	echo "Latest Blog Posts...<hr>";
+    $Blog = new Blog();
+    $Blog->Get_Posts(true,3);
 
-	$Template="
-	<br>
+    echo "Latest Blog Posts... ";
+    echo "<hr>";
+    $Blog->Write_Pagination_Nav();
+
+    $Template="
     <div class='BlogWrapper'>
-    <div class='BlogTitle'>{$Blog_Page['Title']}</div>
-    <div class='BlogBody'>{$Blog_Page['Body']}</div>
+    <div class='BlogTitle'>:Title</div>
+    <div class='BlogBody'>:Body</div>
     <br>
-    <div class='BlogCreation'>by {$User->Username} - {$Blog_Page['Creation_Date']}</div>
+    <div class='BlogCreation'>by :Username - :CreationDate</div>
     </div>
-	";
+    ";
 
-	$Blog->Display_Page($Blog->Get_Page(),$Template);
+    $Blog->Display_Page($Blog->Get_Page(),$Template);
 
-	echo "<br>";
-	$Blog->Write_Pagination_Nav();
+    $Blog->Write_Pagination_Nav();

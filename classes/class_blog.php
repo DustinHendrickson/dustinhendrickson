@@ -47,12 +47,17 @@ class Blog
     }
 
     function Write_Pagination_Nav(){
-        for ($i=1; $i<=$this->PagesMax; $i++){
-            echo "<a href='?view={$_GET['view']}&page={$i}'>{$i}</a> | ";
+        echo "<div class='Pagination'>";
+        for ($i=1; $i<=$this->PagesMax; $i++)
+        {
+            $View = Functions::Get_View();
+            echo "<a href='?view={$View}&page={$i}'>{$i}</a>";
+            if ($i != $this->PagesMax) {echo " | ";}
         }
+        echo "</div>";
     }
 
-    function Get_Page() {
+    static function Get_Page() {
         if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
 
         return $Page;
@@ -61,11 +66,24 @@ class Blog
     function Display_Page($Page,$Template) {
         if(isset($this->Pages[$Page]))
         {
+
             foreach ($this->Pages[$Page] as $Blog_Page)
             {
                 $User = new User($Blog_Page['UserID']);
 
-                echo $Template;
+                //Templating Engine
+                $Template_Replacement = array(
+                    ':ID' => $Blog_Page['ID'],
+                    ':Title' => $Blog_Page['Title'],
+                    ':Body' => $Blog_Page['Body'],
+                    ':CreationDate' => $Blog_Page['Creation_Date'],
+                    ':Username' => $User->Username,
+                    ':UserID' => $User->ID
+                );
+
+                $Template_Return = str_replace(array_keys($Template_Replacement),array_values($Template_Replacement),$Template);
+
+                echo $Template_Return;
             }
         } else {
             Write_Log('php',"Trying to access a blog page that doesn't exist.");

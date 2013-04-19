@@ -6,7 +6,7 @@
  */
 
 /**
- * Description of class_user
+ * 
  *
  * @author Dustin
  */

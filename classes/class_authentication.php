@@ -31,6 +31,7 @@ function Login($User,$Pass) {
                     //Login is successfully, now we set up our session variables.
                     $_SESSION["Name"] = $Login_Result["Username"];
                     $_SESSION["ID"] = $Login_Result["ID"];
+
                     //Update the DB for the date of the login.
                     $Last_Login_Array = array(':Account_Last_Login'=>date(self::DATE_FORMAT),':ID'=>$_SESSION['ID']);
                     $this->Connection->Custom_Execute("UPDATE users SET Account_Last_Login=:Account_Last_Login WHERE ID=:ID",$Last_Login_Array);
@@ -77,7 +78,7 @@ function Register($User,$Pass,$Mail,$Permissions='4') {
                 //Write query to insert registration data into db.
                 $Registration_Insert_Array = array(':Username'=>$Username,':Password'=>$MD5Password, ':EMail'=>$EMail,':Permissions'=>$Permissions,':Account_Created'=>$Now,':Account_Locked'=>0);
                 $this->Connection->Custom_Execute("INSERT INTO users (Username,Password,EMail,Permissions,Account_Created,Account_Locked) VALUES (:Username, :Password, :EMail, :Permissions, :Account_Created, :Account_Locked)",$Registration_Insert_Array);
-                
+
                 //Check to see if insert worked.
                 if($this->Connection->PDO_Connection->lastInsertId()!='') {
 
@@ -105,12 +106,10 @@ function Register($User,$Pass,$Mail,$Permissions='4') {
     }
 }
 
-
 function Logout() {
     $_SESSION = array();
     session_destroy();
     header( 'Location: ?' );
 }
-
 
 } //END CLASS

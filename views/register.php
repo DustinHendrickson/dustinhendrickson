@@ -4,7 +4,10 @@
                         $Auth = new Authentication;
                         $Auth->Register($_POST['Username'],$_POST['Password'],$_POST['EMail']);
                 }
-?>                
+?>
+
+<?php if (isset($Auth->Error_Message)) { echo "<div class='Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); } ?>
+
                     <b>Register</b>
                     <form action='?view=register' method='post'>
                         <table>
@@ -43,4 +46,3 @@
                             </tr>
                         </table>
                     </form>
-<?php if (isset($Auth->Error_Message)) { echo "<div class='Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); } ?>
