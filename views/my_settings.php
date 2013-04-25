@@ -1,5 +1,5 @@
 <?php
-Functions::Verify_Session_Redirect();
+Functions::Check_User_Permissions_Redirect('User');
 
 $User = new User($_SESSION['ID']);
 $View = Functions::Get_View();

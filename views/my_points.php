@@ -1,3 +1,2 @@
 <?php
-Functions::Verify_Session_Redirect();
-?>
+Functions::Check_User_Permissions_Redirect('User');

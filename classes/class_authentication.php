@@ -79,6 +79,14 @@ function Register($User,$Pass,$Mail,$Permissions='4') {
                 $Registration_Insert_Array = array(':Username'=>$Username,':Password'=>$MD5Password, ':EMail'=>$EMail,':Permissions'=>$Permissions,':Account_Created'=>$Now,':Account_Locked'=>0);
                 $this->Connection->Custom_Execute("INSERT INTO users (Username,Password,EMail,Permissions,Account_Created,Account_Locked) VALUES (:Username, :Password, :EMail, :Permissions, :Account_Created, :Account_Locked)",$Registration_Insert_Array);
 
+                //Create a new user class and check the ID to make sure the user was added.
+                $User = new User($this->Connection->PDO_Connection->lastInsertId());
+                if (isset($User->ID)) {
+                    //Insert new default data into the users_settings table for the userid;
+                    $Registration_Insert_UserSettings_Array = array(':UserID'=>$User->ID);
+                    $this->Connection->Custom_Execute("INSERT INTO users_settings (UserID) VALUES (:UserID)",$Registration_Insert_UserSettings_Array);
+                }
+
                 //Check to see if insert worked.
                 if($this->Connection->PDO_Connection->lastInsertId()!='') {
 

@@ -30,21 +30,6 @@ class Functions {
         }
     }
 
-    public static function Verify_Session() {
-        if(isset($_SESSION['ID'])) {
-            return true;
-        } else {
-            //Write_Log('php', 'SECURITY: Failed session verification.');
-            return false;
-        }
-    }
-
-    public static function Verify_Session_Redirect() {
-        if(!isset($_SESSION['ID'])) {
-            header( 'Location: ?' );
-        }
-    }
-
     public static function Check_User_Permissions($PermissionLevelRequired='') {
         if(isset($_SESSION['ID'])) {
             $User = new User($_SESSION['ID']);
@@ -57,6 +42,8 @@ class Functions {
                 return false;
             }
 
+        } else {
+            return false;
         }
     }
 
@@ -67,8 +54,12 @@ class Functions {
             $User_Permissions = $User->Get_Permissions('Array');
 
             if (!in_array($PermissionLevelRequired,$User_Permissions)) {
+                Write_Log('php','NOTICE: Attempt to access a page without permissions.');
                 header( 'Location: ?' );
             }
+        } else {
+            Write_Log('php','NOTICE: Attempt to access a page without logging in.');
+            header( 'Location: ?' );
         }
 
     }

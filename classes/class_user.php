@@ -3,11 +3,13 @@
 /*
  * This class defines the objects and methods of the Users
  * in the system.
+ * TO DO: Add the handeling of User Creation / Editing / Deleting to this class
+ * and pull out the current code for this in class_authentication.
+ * TO DO: Rewrite permissions method to not suck.
+ *
  */
 
 /**
- * 
- *
  * @author Dustin
  */
 class User {
@@ -37,8 +39,8 @@ class User {
         $this->Last_Name = $User_Result["Last_Name"];
         $this->Password = $User_Result["Password"];
         $this->Permissions = $User_Result["Permissions"];
-        $this->Account_Last_Login = strtotime($User_Result["Account_Last_Login"]);
-        $this->Account_Created = strtotime($User_Result["Account_Created"]);
+        $this->Account_Last_Login = date('F dS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
+        $this->Account_Created = date('F dS Y h:ia', strtotime($User_Result["Account_Created"]));
         $this->Account_Locked = $User_Result["Account_Locked"];
     }
 
@@ -90,7 +92,7 @@ class User {
                     array_push($Return_Array,"Staff");
                     break;
                 case 3:
-                    array_push($Return_Array,"Employee");
+                    array_push($Return_Array,"Mod");
                     break;
                 case 4:
                     array_push($Return_Array,"User");
