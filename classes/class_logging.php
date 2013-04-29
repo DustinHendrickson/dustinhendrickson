@@ -6,13 +6,13 @@ function Write_Log($log,$logentry,$logpath="/var/www/dustin/logs/",$showIP='True
 
     if($showIP='True') { $ip = $_SERVER['REMOTE_ADDR']; } else { $ip = "System Process"; }
 
-    if (file_exists($logpath.$log.'.log')){
+    if (!file_exists($logpath.$log.'.log')){fopen($logpath . $log . '.log', 'w');}
 
-        $logfile = fopen($logpath . $log . '.log', 'a');
+    $logfile = fopen($logpath . $log . '.log', 'a');
 
-        fwrite($logfile,"[".$NOW."] | " . $ip . " | " . $logentry . " >> " . $_SERVER['REQUEST_URI'] ."\n");
+    fwrite($logfile,"[".$NOW."] | " . $ip . " | " . $logentry . " >> " . $_SERVER['REQUEST_URI'] ."\n");
 
-        fclose($logfile);
-    }
+    fclose($logfile);
+    
 
 }
