@@ -7,11 +7,13 @@
 class Functions {
 
     //Strips strings.
-    public static function Make_Safe(&$string) {
+    public static function Make_Safe(&$string)
+    {
         return mysql_escape_string($string);
     }
 
-    public static function Get_View() {
+    public static function Get_View()
+    {
         if(isset($_GET['view'])){
             $view = self::Make_Safe($_GET['view']);
         } else {
@@ -21,7 +23,8 @@ class Functions {
         return $view;
     }
 
-    public static function Display_View($view) {
+    public static function Display_View($view)
+    {
         if(file_exists('views/'.$view.'.php')) {
             include('views/'.$view.'.php');
         } else {
@@ -30,7 +33,8 @@ class Functions {
         }
     }
 
-    public static function Check_User_Permissions($PermissionLevelRequired='') {
+    public static function Check_User_Permissions($PermissionLevelRequired='')
+    {
         if(isset($_SESSION['ID'])) {
             $User = new User($_SESSION['ID']);
 
@@ -47,7 +51,8 @@ class Functions {
         }
     }
 
-    public static function Check_User_Permissions_Redirect($PermissionLevelRequired='') {
+    public static function Check_User_Permissions_Redirect($PermissionLevelRequired='')
+    {
         if(isset($_SESSION['ID'])) {
             $User = new User($_SESSION['ID']);
 
@@ -64,7 +69,8 @@ class Functions {
 
     }
 
-    public static function Prepare_TinyMCE() {
+    public static function Prepare_TinyMCE()
+    {
         echo"
         <script type='text/javascript' src='js/tinymce/jscripts/tiny_mce/tiny_mce.js'></script>
 

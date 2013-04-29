@@ -30,7 +30,8 @@ class User {
     public $Config_Settings = array();
     
     //Initial function to search the database for the desired user and populate this class object. 
-    private function Set_User_Info() {
+    private function Set_User_Info() 
+    {
         $User_Array = array (':ID'=>$this->ID);
         $User_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE ID = :ID LIMIT 1", $User_Array);
 
@@ -44,7 +45,8 @@ class User {
         $this->Account_Locked = $User_Result["Account_Locked"];
     }
 
-    private function Set_Config_Info() {
+    private function Set_Config_Info()
+    {
         //Populate User Config Settings Into Object
         $User_Config_Array = array (':ID'=>$this->ID);
         $User_Config_Result = $this->Connection->Custom_Query("SELECT * FROM users_settings WHERE userID = :ID LIMIT 1", $User_Config_Array);
@@ -54,7 +56,8 @@ class User {
         $this->Config_Settings['Show_Help'] = $User_Config_Result['Show_Help'];
     }
 
-    function __construct($ID) {
+    function __construct($ID)
+    {
         $this->Connection = new Connection();
         $this->ID = $ID;
         $this->Set_User_Info();
@@ -62,7 +65,8 @@ class User {
     }
 
     //This function saves the input settings to the DB and then updates the current object with the new values.
-    public function Save_Configuration($UserID,$Items,$Theme,$Show_Help) {
+    public function Save_Configuration($UserID,$Items,$Theme,$Show_Help)
+    {
         $Config_Array = array (':Items'=>$Items,':Theme'=>$Theme,':Show_Help'=>$Show_Help,':UserID'=>$UserID);
         $Results = $this->Connection->Custom_Execute("UPDATE users_settings SET Items_Per_Page=:Items, Theme=:Theme, Show_Help=:Show_Help WHERE UserID=:UserID", $Config_Array);
         $this->Set_Config_Info();
@@ -78,13 +82,15 @@ class User {
 
     //Returns the Full Name of the user.
     // @returns string
-    public function Get_Full_Name() {
+    public function Get_Full_Name()
+    {
         return $this->First_Name . " " . $this->Last_Name;
     }
 
     //This Function checks the Users permissions and returns them in a readable format.
     // @returns string
-    public function Get_Permissions($ReturnType='String') {
+    public function Get_Permissions($ReturnType='String')
+    {
         $Permissions_Array = explode(",",$this->Permissions);
         $Return_Array = array();
 
@@ -120,7 +126,8 @@ class User {
 
     //Converts the Datbases 0,1 into Locked,Active.
     // @returns string
-    public function Get_Account_Status() {
+    public function Get_Account_Status()
+    {
         if ($this->Account_Locked = 1) { return "Active"; } else { return "Locked"; }
     }
 }

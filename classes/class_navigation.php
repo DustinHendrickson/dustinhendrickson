@@ -8,8 +8,8 @@
 
 class Navigation {
 
-    public static function Login_Write() {
-        
+    public static function Login_Write()
+    {
         if(Functions::Check_User_Permissions('User')){
             $Nav_Items = array();
             
@@ -26,18 +26,17 @@ class Navigation {
         }
     }
 
-    public static function Login_Write_Welcome_Message() {
-
+    public static function Login_Write_Welcome_Message()
+    {
             if(Functions::Check_User_Permissions('User')) {
                 echo $_SESSION["Name"] . " | <a href='?view=logout'>Logout</a>";
             } else {
                 echo "<a href='?view=login'>Login</a> | <a href='?view=register'>Register</a>";
             }
-
     }
 
-    public static function Public_Write() {
-        
+    public static function Public_Write()
+    {
         $Nav_Items = array();
         
         array_push($Nav_Items, "<div class='NavItem'><a href='?view=blog'><img width='75' height='75' src='img/News.png'></img> Blog<a/></div>\n");

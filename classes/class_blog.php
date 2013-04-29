@@ -60,7 +60,8 @@ class Blog
         }
     }
 
-    function Write_Pagination_Nav(){
+    function Write_Pagination_Nav()
+    {
         echo "<div class='Pagination'>";
         //echo "<a href='?view={$View}&page=1'><< </a>";
         for ($i=1; $i<=$this->PagesMax; $i++)
@@ -73,13 +74,15 @@ class Blog
         echo "</div>";
     }
 
-    function Get_Page() {
+    function Get_Page()
+    {
         if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
 
         return $Page;
     }
 
-    function Display_Page($Page,$Template) {
+    function Display_Page($Page,$Template)
+    {
         if(isset($this->Pages[$Page]))
         {
             //Loop through each page of the blog object.
@@ -89,6 +92,8 @@ class Blog
                 $User = new User($Blog_Page['UserID']);
 
                 //Templating Engine
+                //This is where we setup the ID's
+                //and their values that will get replaced.
                 $Template_Replacement = array(
                     ':ID' => $Blog_Page['ID'],
                     ':Title' => $Blog_Page['Title'],
@@ -110,7 +115,8 @@ class Blog
     }
 
     //Data Views
-    function Get_Posts($PerPage=5,$Limit = 0,$OrderBy="DESC") {//Returns Array of Posts.
+    function Get_Posts($PerPage=5,$Limit = 0,$OrderBy="DESC") //Returns Array of Posts.
+    {
         //We can't prepare ORDER BY in PDO, so we have to verify ourselves.
         if ($OrderBy != "ASC" && $OrderBy != "DESC") {$OrderBy='';}
 

@@ -6,11 +6,13 @@ public $Connection;
 public $Error_Message;
 const DATE_FORMAT = 'Y-m-d H:i:s';
 
-function __construct(){
+function __construct()
+{
     $this->Connection = new Connection();
 }
 
-function Login($User,$Pass) {
+function Login($User,$Pass)
+{
     $Username = Functions::Make_Safe($User);
     $Password = Functions::Make_Safe($Pass);
     $Password = md5($Password);
@@ -51,7 +53,8 @@ function Login($User,$Pass) {
     }
 }
 
-function Register($User,$Pass,$Mail,$Permissions='4') {
+function Register($User,$Pass,$Mail,$Permissions='4')
+{
     $Username = Functions::Make_Safe($User);
     $Password = Functions::Make_Safe($Pass);
     $EMail = Functions::Make_Safe($Mail);
@@ -114,7 +117,8 @@ function Register($User,$Pass,$Mail,$Permissions='4') {
     }
 }
 
-function Logout() {
+function Logout()
+{
     $_SESSION = array();
     session_destroy();
     header( 'Location: ?' );
