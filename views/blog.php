@@ -1,7 +1,7 @@
 <?php
 
-    $Blog = new Blog(true);
-    $Blog->Get_Posts(true);
+    $Blog = new Blog();
+    $Blog->Get_Posts();
 
     echo "Latest Blog Posts... ";
     echo "<hr>";

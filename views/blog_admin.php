@@ -28,8 +28,8 @@
 
     //Build Blog data and page for editing.
     $Blog = new Blog();
-    $Blog_Pages = $Blog->Get_Posts(true,5);
-    $Page=$Blog->Get_Page();
+    $Blog_Pages = $Blog->Get_Posts();
+    $Page = $Blog->Get_Page();
 
     //Front end to Edit or Delete a blog entry.
     $Template = "

@@ -64,11 +64,16 @@ class User {
     //This function saves the input settings to the DB and then updates the current object with the new values.
     public function Save_Configuration($UserID,$Items,$Theme,$Show_Help) {
         $Config_Array = array (':Items'=>$Items,':Theme'=>$Theme,':Show_Help'=>$Show_Help,':UserID'=>$UserID);
-        $this->Connection->Custom_Execute("UPDATE users_settings SET Items_Per_Page=:Items, Theme=:Theme, Show_Help=:Show_Help WHERE UserID=:UserID", $Config_Array);
+        $Results = $this->Connection->Custom_Execute("UPDATE users_settings SET Items_Per_Page=:Items, Theme=:Theme, Show_Help=:Show_Help WHERE UserID=:UserID", $Config_Array);
         $this->Set_Config_Info();
 
-        $this->Message='Settings successfully edited.';
-        $this->Message_Type='Success';
+        if ($Results) {
+            $this->Message='Settings successfully edited.';
+            $this->Message_Type='Success';
+        } else {
+            $this->Message='There was an issue saving this configuration, please try again.';
+            $this->Message_Type='Error';
+        }
     }
 
     //Returns the Full Name of the user.

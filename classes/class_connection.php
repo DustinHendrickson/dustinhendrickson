@@ -48,12 +48,14 @@ class Connection
     {
         try {
             $PDO_Prepped = $this->PDO_Connection->prepare($query_string);
-            $PDO_Prepped->execute($query_array);
+            $Results = $PDO_Prepped->execute($query_array);
 
         } catch(PDOException $exception) {
             echo "An Execute Error has occured.";
             Write_Log("sql", "Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
         }
+
+        return $Results;
 
     }
 
