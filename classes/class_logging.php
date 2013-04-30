@@ -1,6 +1,6 @@
 <?php
 //Writes to a specified LOG file.
-function Write_Log($log,$logentry,$logpath="/var/www/dustin/logs/",$showIP='True')
+function Write_Log($log,$logentry,$logpath="logs/",$showIP='True')
 {
     $NOW = date("h:ia m-d-Y");
 
