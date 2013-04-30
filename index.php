@@ -60,7 +60,7 @@ require_once("classes/class_blog.php");             //Blog.
 
         <div class="Push"></div>
         </div>
-        
+
         <div id="Footer">
 
         <table width=100% padding=10px>

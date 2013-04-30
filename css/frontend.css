@@ -146,6 +146,10 @@ body{
     height: 150px;
 }
 
+.Clear {
+    clear: both;
+}
+
 /* Details CSS Styling */
 
 .WelcomeText {
@@ -189,6 +193,7 @@ body{
     margin-left: 1%;
 }
 
+/* Blog */
 .BlogTitle {
     color: darkgrey;
     font-size: large;
@@ -204,9 +209,54 @@ body{
     font-size: small;
 }
 
+/* Pagination */
 .Pagination {
     margin: 10px;
+    height:20px;
+    padding-bottom:5px;
+    width: 100%;
 }
+
+.Page {
+    float: left;
+    font-size: large;
+    width: 10px;
+    padding: 4px;
+}
+.Page a:hover { 
+    color: Black;
+    text-decoration: none;
+}
+.Page a:visited { 
+    color: Black;
+    text-decoration: none;
+}
+.Page a:link { 
+    color: Black;
+    text-decoration: none;
+} 
+
+.Current_Page {
+    background-color: Green;
+    font-color: White;
+    font-size: larger;
+    float: left;
+    width: 10px;
+    padding: 4px;
+}
+
+.Current_Page a:hover { 
+    color: White;
+    text-decoration: none;
+}
+.Current_Page a:visited { 
+    color: White;
+    text-decoration: none;
+}
+.Current_Page a:link { 
+    color: White;
+    text-decoration: none;
+} 
 
 /* General System */
 .Error {

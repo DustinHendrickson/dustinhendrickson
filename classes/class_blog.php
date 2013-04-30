@@ -60,20 +60,24 @@ class Blog
         }
     }
 
+    //Writes out the links for all blog pages after Get_Posts() has been run.
     function Write_Pagination_Nav()
     {
         echo "<div class='Pagination'>";
-        //echo "<a href='?view={$View}&page=1'><< </a>";
         for ($i=1; $i<=$this->PagesMax; $i++)
         {
             $View = Functions::Get_View();
+            if ($this->Get_Page() == $i) {echo "<div class='Current_Page'>";} else {echo "<div class='Page'>";}
             echo "<a href='?view={$View}&page={$i}'>{$i}</a>";
-            if ($i != $this->PagesMax) {echo " | ";}
+            if ($this->Get_Page = $i) {echo "</div>";}
+            //if ($i != $this->PagesMax) {echo " | ";}
         }
-        //echo "<a href='?view={$View}&page={$this->PagesMax}'> >></a>";
         echo "</div>";
+        echo "<div class='Clear'></div>";
     }
 
+
+    //Grabs the current page.
     function Get_Page()
     {
         if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
@@ -81,6 +85,9 @@ class Blog
         return $Page;
     }
 
+    //Displays the blog entries from the entered page, uses a templating
+    //system to replace values in a string with their blog values. Requires
+    //Get_Posts() to have been run previous to using this method.
     function Display_Page($Page,$Template)
     {
         if(isset($this->Pages[$Page]))
@@ -114,7 +121,8 @@ class Blog
         }
     }
 
-    //Data Views
+    //Returns an array of all blog posts, automatically paginates and can be used
+    //with Display_Page($PageNumber)
     function Get_Posts($PerPage=5,$Limit = 0,$OrderBy="DESC") //Returns Array of Posts.
     {
         //We can't prepare ORDER BY in PDO, so we have to verify ourselves.

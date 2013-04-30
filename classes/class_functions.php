@@ -12,6 +12,7 @@ class Functions {
         return mysql_escape_string($string);
     }
 
+    //Returns the current view.
     public static function Get_View()
     {
         if(isset($_GET['view'])){
@@ -23,6 +24,7 @@ class Functions {
         return $view;
     }
 
+    //Checks to make sure the content view exists and displays it.
     public static function Display_View($view)
     {
         if(file_exists('views/'.$view.'.php')) {
@@ -33,6 +35,7 @@ class Functions {
         }
     }
 
+    //Returns true if the user's permissions array contains the entered string.
     public static function Check_User_Permissions($PermissionLevelRequired='')
     {
         if(isset($_SESSION['ID'])) {
@@ -51,6 +54,7 @@ class Functions {
         }
     }
 
+    //Checks the users permissions against the entered string, if there's no match it redirects.
     public static function Check_User_Permissions_Redirect($PermissionLevelRequired='')
     {
         if(isset($_SESSION['ID'])) {
@@ -66,9 +70,10 @@ class Functions {
             Write_Log('php','NOTICE: Attempt to access a page without logging in.');
             header( 'Location: ?' );
         }
-
     }
 
+    //Anytime you need fancy text inputs, call this at the top of the page.
+    //This replaces any <textarea> with a fancy editor.
     public static function Prepare_TinyMCE()
     {
         echo"
