@@ -1,2 +1,3 @@
 DBConfig.ini
-terraria/
+logs/sql.log
+logs/php.log
