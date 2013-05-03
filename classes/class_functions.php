@@ -77,7 +77,7 @@ class Functions {
     public static function Prepare_TinyMCE()
     {
         echo"
-        <script type='text/javascript' src='js/tinymce/jscripts/tiny_mce/tiny_mce.js'></script>
+        <script type='text/javascript' src='js/tiny_mce/tiny_mce.js'></script>
 
         <script type='text/javascript'>
             tinyMCE.init({
