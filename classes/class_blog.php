@@ -17,12 +17,22 @@ class Blog
         $this->Connection = new Connection();
     }
 
+    //Displays the current message set for this object then unsets it.
+    function Display_Message()
+    {
+        if (isset($this->Message))
+            {
+                echo "<div class='{$this->Message_Type}'>" . $this->Message . "</div>";
+                unset($this->Message);
+            }
+    }
+
     //Data Manipulation
     function Add_Post($UserID,$Title,$Body)
     {
         $Post_Array = array (':UserID'=>$UserID,':Title'=>$Title,':Body'=>$Body);
         $Results = $this->Connection->Custom_Execute("INSERT INTO blog (UserID, Title, Body, Creation_Date) VALUES (:UserID, :Title, :Body, NOW()) ", $Post_Array, true);
-        
+
         if ($Results) {
             $this->Message='Blog post successfully added.';
             $this->Message_Type='Success';
@@ -50,7 +60,7 @@ class Blog
     {
         $Post_Array = array (':PostID'=>$PostID,':UserID'=>$UserID,':Title'=>$Title,':Body'=>$Body);
         $Results = $this->Connection->Custom_Execute("UPDATE blog SET UserID=:UserID, Title=:Title, Body=:Body WHERE ID=:PostID", $Post_Array);
-        
+
         if ($Results){
             $this->Message="Blog post [{$PostID}] successfully edited.";
             $this->Message_Type='Success';

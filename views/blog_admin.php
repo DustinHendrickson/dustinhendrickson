@@ -10,21 +10,23 @@
         case 'Edit':
             $Blog = new Blog();
             $Blog->Edit_Post($_POST['postID'],$_POST['userID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
+            $Blog->Display_Message();
             break;
 
         case 'Add':
             $Blog = new Blog();
             $Blog->Add_Post($_POST['userID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
+            $Blog->Display_Message();
             break;
 
         case 'Delete':
             $Blog = new Blog();
             $Blog->Delete_Post($_POST['postID']);
+            $Blog->Display_Message();
             break;
     }
 
     //Display any messages from the logic.
-    if (isset($Blog->Message)) { echo "<div class='{$Blog->Message_Type}'>".$Blog->Message."</div>"; unset($Blog->Message); }
 
     //Build Blog data and page for editing.
     $Blog = new Blog();
