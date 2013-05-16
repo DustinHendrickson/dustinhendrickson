@@ -11,9 +11,10 @@ foreach($logFiles as $file) {
     echo "</a> |";
 }
 
+echo '<br/><br/>';
 
 if (isset($log)) {
-    $logText = file_get_content($log);
+    $logText = file_get_contents($log);
 
     echo $logText;
 }
