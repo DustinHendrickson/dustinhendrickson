@@ -15,7 +15,11 @@ foreach($logFiles as $file) {
 echo '<br/><br/>';
 
 if (isset($log)) {
-    $logText = file_get_contents($GLOBALS['Path'] . '/logs/' . $log);
+    $logLines = file($GLOBALS['Path'] . '/logs/' . $log);
+    
+    foreach ($logLines as $Line) {
+        echo $Line . '<br/>';
+    }
 
-    echo $logText;
+    echo 'End Of Log';
 }
