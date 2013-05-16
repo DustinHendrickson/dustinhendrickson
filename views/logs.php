@@ -16,9 +16,9 @@ echo '<br/><br/>';
 
 if (isset($log)) {
 
-    echo '<div style="overflow:auto; height:300px; width:100%">';
+    echo '<div style="overflow:auto; height:400px; width:100%">';
 
-    $logLines = file($GLOBALS['Path'] . '/logs/' . $log);
+    $logLines = array_reverse(file($GLOBALS['Path'] . '/logs/' . $log));
 
     foreach ($logLines as $Line) {
         echo $Line . '<br/>';
