@@ -2,7 +2,7 @@
 
 $log = $_GET['log'];
 
-$logFiles = scandir('../logs/');
+$logFiles = scandir($GLOBALS['Path'] . '/logs/');
 
 foreach($logFiles as $file) {
     echo "<a href='?log={$file}'>";

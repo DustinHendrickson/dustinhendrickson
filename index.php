@@ -6,6 +6,9 @@ ini_set('display_errors', True);
 //Start Session
 session_start();
 
+//Setup Globals
+$GLOBALS['Path'] = '/var/www/dustin/';              //Site Path for anything that needs it.
+
 //Setup requirements
 require_once("classes/class_logging.php");          //Logging
 require_once("classes/class_connection.php");       //Connection.
