@@ -15,11 +15,14 @@ foreach($logFiles as $file) {
 echo '<br/><br/>';
 
 if (isset($log)) {
+
+    echo '<div style="overflow:auto; height:300px; width:100%">';
+
     $logLines = file($GLOBALS['Path'] . '/logs/' . $log);
-    
+
     foreach ($logLines as $Line) {
         echo $Line . '<br/>';
     }
 
-    echo 'End Of Log';
+    echo '</div>';
 }
