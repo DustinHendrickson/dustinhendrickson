@@ -21,6 +21,7 @@ class Navigation {
             array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_points'>My Points</a></div>\n");
             if (Functions::Check_User_Permissions('Staff')){
                 array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=blog_admin'>Blog Admin</a></div>\n");
+                array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=logs'>Logs</a></div>\n");
             }
             
             foreach ($Nav_Items as $Nav_Item){
