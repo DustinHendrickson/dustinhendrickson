@@ -72,6 +72,25 @@ class Functions {
         }
     }
 
+    //Rereshes page.
+    public static function Refresh_Page($Interval_Seconds)
+    {
+        $Refresh_Interval = $Interval_Seconds * 1000;
+
+        echo "
+        <head>
+        <script type='text/JavaScript'>
+        <!--
+        function timedRefresh(timeoutPeriod) {
+            setTimeout('location.reload(true);',timeoutPeriod);
+        }
+        //   -->
+        </script>
+        </head>
+        <body onload='JavaScript:timedRefresh({$Refresh_Interval});'>
+        ";
+    }
+
     //Anytime you need fancy text inputs, call this at the top of the page.
     //This replaces any <textarea> with a fancy editor.
     public static function Prepare_TinyMCE()

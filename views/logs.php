@@ -1,6 +1,7 @@
 <?php
 //Apply any page restrictions.
 Functions::Check_User_Permissions_Redirect('Admin');
+Functions::Refresh_Page(10);
 
 //Get which log is going to be displayed
 $log = $_GET['log'];
