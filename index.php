@@ -1,8 +1,4 @@
 <?php
-//DEBUG
-error_reporting(E_ALL ^ E_NOTICE);
-ini_set('display_errors', True);
-
 //Start Session
 session_start();
 
@@ -10,6 +6,7 @@ session_start();
 $GLOBALS['Path'] = '/var/www/dustin/';              //Site Path for anything that needs it.
 
 //Setup requirements
+require_once("config/PHPConfig.php");               //php.ini config
 require_once("classes/class_logging.php");          //Logging
 require_once("classes/class_connection.php");       //Connection.
 require_once("classes/class_functions.php");        //Functions.
