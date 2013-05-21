@@ -263,10 +263,62 @@ body{
     color: red;
     background-color: pink;
     padding: 2px;
+    margin: 2px;
+    border: 1px solid red;
 }
 
 .Success {
     color: green;
     background-color: lightgreen;
     padding: 2px;
+    margin: 2px;
+    border: 1px solid green;
+}
+
+.LogRed {
+    color: red;
+    background-color: pink;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid red;
+}
+
+.LogBlue {
+    color: blue;
+    background-color: lightblue;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid blue;
+}
+
+.LogGreen {
+    color: green;
+    background-color: lightgreen;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid green;
+}
+
+.LogYellow {
+    color: yellow;
+    background-color: lightyellow;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid yellow;
+}
+
+.LogOrange {
+    color: orange;
+    background-color: lightyellow;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid orange;
+}
+
+.LogGrey {
+    color: grey;
+    background-color: lightgrey;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid grey;
 }

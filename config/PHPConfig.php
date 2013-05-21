@@ -3,5 +3,5 @@
 error_reporting(E_ALL ^ E_NOTICE);
 
 ini_set("log_errors" , "1");
-ini_set("error_log" , $GLOBALS['Path'] . "php.log");
-ini_set("display_errors" , "0");
+ini_set("error_log" , $GLOBALS['Path'] ."logs/php.log");
+ini_set("display_errors" , "1");

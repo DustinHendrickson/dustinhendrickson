@@ -3,7 +3,7 @@
 session_start();
 
 //Setup Globals
-$GLOBALS['Path'] = '/var/www/dustin/';              //Site Path for anything that needs it.
+$GLOBALS['Path'] = $_SERVER["DOCUMENT_ROOT"] . '/';              //Site Path for anything that needs it.
 
 //Setup requirements
 require_once("config/PHPConfig.php");               //php.ini config
