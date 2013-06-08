@@ -26,11 +26,8 @@
             break;
     }
 
-    //Display any messages from the logic.
-
     //Build Blog data and page for editing.
     $Blog = new Blog();
-    $Blog_Pages = $Blog->Get_Posts();
     $Page = $Blog->Get_Page();
 
     //Front end to Edit or Delete a blog entry.
@@ -104,6 +101,6 @@
 
     $Blog->Write_Pagination_Nav();
 
-    $Blog->Display_Page($Blog->Get_Page(),$Template);
+    $Blog->Display_Blog_Page($Blog->Get_Page(),$Template);
 
     $Blog->Write_Pagination_Nav();

@@ -1,7 +1,6 @@
 <?php
 
     $Blog = new Blog();
-    $Blog->Get_Posts();
 
     echo "Latest Blog Posts... ";
     echo "<hr>";
@@ -9,13 +8,13 @@
 
     $Template="
     <div class='BlogWrapper'>
-    <div class='BlogTitle'>:Title</div>
+    <div class='BlogTitle'><a href='?view=blog_post&blog_id=:ID'>:Title</a></div>
     <div class='BlogBody'>:Body</div>
     <br>
     <div class='BlogCreation'>by :Username - :CreationDate</div>
     </div>
     ";
 
-    $Blog->Display_Page($Blog->Get_Page(),$Template);
+    $Blog->Display_Blog_Page($Blog->Get_Page(),$Template);
 
     $Blog->Write_Pagination_Nav();
