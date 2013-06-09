@@ -15,10 +15,12 @@ class Functions {
     //Returns the current view.
     public static function Get_View()
     {
+        $DEFAULT_VIEW = 'blog';
+
         if(isset($_GET['view'])){
             $view = self::Make_Safe($_GET['view']);
         } else {
-            $view = 'blog';
+            $view = $DEFAULT_VIEW;
         }
 
         return $view;

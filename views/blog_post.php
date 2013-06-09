@@ -16,3 +16,5 @@
     ";
 
     $Blog->Display_Blog_Page($Blog->Get_Page(),$Template);
+
+    if (isset($_GET['from_blog_page'])) { echo "<= Return to <a href='?view=blog&page={$_GET['from_blog_page']}'>Blog Page {$_GET['from_blog_page']}</a>"; }

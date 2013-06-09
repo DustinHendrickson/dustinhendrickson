@@ -15,8 +15,18 @@ class Blog
     function __construct()
     {
         $this->Connection = new Connection();
+        
         //We populate the pagination when the object is created.
-        $this->Get_Posts();
+        //Here we get the user config for items per page to display, if not logged in, set to default.
+        $User = new User($_SESSION['ID']);
+        if(isset($User->Config_Settings['Items_Per_Page'])) {$PerPage=$User->Config_Settings['Items_Per_Page'];}
+        
+        //If the user config exists we'll populate the posts with that, otherwise use the defaults.
+        if (isset($PerPage)) {
+            $this->Get_Posts($PerPage);
+        } else {
+            $this->Get_Posts();
+        }
     }
 
     //Displays the current message set for this object then unsets it.
@@ -75,17 +85,20 @@ class Blog
     //Writes out the links for all blog pages after Get_Posts() has been run.
     function Write_Pagination_Nav()
     {
-        echo "<div class='Pagination'>";
-        for ($i=1; $i<=$this->Total_Pages; $i++)
-        {
-            $View = Functions::Get_View();
-            if ($this->Get_Page() == $i) {echo "<div class='Current_Page'>";} else {echo "<div class='Page'>";}
-            echo "<a href='?view={$View}&page={$i}'>{$i}</a>";
-            if ($this->Get_Page = $i) {echo "</div>";}
-            //if ($i != $this->Total_Pages) {echo " | ";}
+        //Make sure we only write out if there's a page generated.
+        if ($this->Total_Pages > 0) {
+            echo "<div class='Pagination'>";
+            for ($i=1; $i<=$this->Total_Pages; $i++)
+            {
+                $View = Functions::Get_View();
+                if ($this->Get_Page() == $i) {echo "<div class='Current_Page'>";} else {echo "<div class='Page'>";}
+                echo "<a href='?view={$View}&page={$i}'>{$i}</a>";
+                if ($this->Get_Page = $i) {echo "</div>";}
+                //if ($i != $this->Total_Pages) {echo " | ";}
+            }
+            echo "</div>";
+            echo "<div class='Clear'></div>";
         }
-        echo "</div>";
-        echo "<div class='Clear'></div>";
     }
 
 
@@ -125,7 +138,7 @@ class Blog
     //Displays the blog entries from the entered page, uses a templating
     //system to replace values in a string with their blog values. Requires
     //Get_Posts() to have been run previous to using this method.
-    function Display_Blog_Page($Page,$Template)
+    public function Display_Blog_Page($Page,$Template)
     {
         if(isset($this->Blog_Page[$Page]))
         {
@@ -142,7 +155,7 @@ class Blog
 
     //Returns an array of all blog posts, automatically paginates and can be used
     //with Display_Page($PageNumber)
-    function Get_Posts($PerPage=5, $Limit=0, $OrderBy="DESC", $GetID=0, $Use_User_Settings=true) //Returns Array of Posts.
+    public function Get_Posts($PerPage=5, $Limit=0, $OrderBy="DESC", $GetID=0) //Returns Array of Posts.
     {
         //Clear the current page incase this is a forced post get.
         //Otherwise the array wouldnt get cleared and we'd have more
@@ -170,14 +183,11 @@ class Blog
         $Post_Array = array();
         $Post_Result = $this->Connection->Custom_Query($Post_SQL, $Post_Array, true);
 
-        //Populate This Blog's Pages.
+        //Populate This Blog's Starting Pages.
         $CurrentPage=1;
         $RowsLoaded=1;
-        //Here we get the user config for items per page to display, if not logged in, set to default.
-        $User = new User($_SESSION['ID']);
-        if(isset($User->Config_Settings['Items_Per_Page'])) {$PerPage=$User->Config_Settings['Items_Per_Page'];}
 
-            //Loop through each row
+        //Loop through each result row
         if(isset($Post_Result)) {
             foreach($Post_Result as $Post_Row){
                 //Adding this blog row to the current page.

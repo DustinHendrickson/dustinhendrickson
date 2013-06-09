@@ -18,11 +18,11 @@ foreach($logFiles as $file) {
 }
 echo '<br/><br/>';
 
-//Check if a log has been selected to view, if so start refreshing, else display php info.
-if ( isset($_GET['log']) ) { Functions::Refresh_Page(10); } else { }
+//Check if a log has been selected to view, if so start refreshing.
+if ( isset($log) ) { Functions::Refresh_Page(10); }
 
 //Make sure a log was clicked.
-if (isset($log)) {
+if ( isset($log) ) {
 
     //Here we setup our scrolling text box so the log doesn't take up to much space.
     echo '<div style="overflow:auto; height:400px; width:100%">';
