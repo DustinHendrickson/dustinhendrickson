@@ -1,1 +1,1 @@
-Resume
+<div class='ContentHeader'>Resume</div>

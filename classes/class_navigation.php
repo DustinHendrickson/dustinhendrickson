@@ -49,7 +49,6 @@ class Navigation {
         array_push($Nav_Items, "<div class='NavItem'><a href='?view=resume'><img width='75' height='75' src='img/Services.png'></img> Resume<a/></div>\n");
         array_push($Nav_Items, "<div class='NavItem'><a href='?view=contact'><img width='75' height='75' src='img/Contact.png'></img> Contact<a/></div>\n");
         array_push($Nav_Items, "<div class='NavItem'><a href='?view=media'><img width='75' height='75' src='img/Gallery.png'></img> Media<a/></div>\n");
-        array_push($Nav_Items, "<div class='NavItem'><a href='?view=socialmedia'><img width='75' height='75' src='img/Gallery.png'></img> Social Media<a/></div>\n");
 
         foreach($Nav_Items as $Nav_Item){
             echo $Nav_Item;

@@ -56,11 +56,13 @@
                     <input name='postID' type='hidden' value=':ID'>
                     <input name='userID' type='hidden' value=':UserID'>
                 </td>
+                <td>
+                    <div class='BlogCreation'>Post ID[:ID] by :Username - :CreationDate</div>
+                    <input type='submit' value='Edit' name='Mode'>
+                    <input type='submit' value='Delete' name='Mode'>
+                </td>
             </tr>
         </table>
-        <div class='BlogCreation'>Post ID[:ID] by :Username - :CreationDate</div>
-        <input type='submit' value='Edit' name='Mode'>
-        <input type='submit' value='Delete' name='Mode'>
     </form>
     </div>
     <br>

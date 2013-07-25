@@ -19,7 +19,7 @@ foreach($logFiles as $file) {
 echo '<br/><br/>';
 
 //Check if a log has been selected to view, if so start refreshing.
-if ( isset($log) ) { Functions::Refresh_Page(10); }
+//if ( isset($log) ) { Functions::Refresh_Page(10); }
 
 //Make sure a log was clicked.
 if ( isset($log) ) {

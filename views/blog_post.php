@@ -1,6 +1,6 @@
 <?php
 
-  	$Blog = new Blog();
+    $Blog = new Blog();
     $Blog->Get_Posts(1,1,'',$_GET['blog_id']);
 
     echo "Blog Post ID... [ {$_GET['blog_id']} ]";
@@ -17,4 +17,4 @@
 
     $Blog->Display_Blog_Page($Blog->Get_Page(),$Template);
 
-    if (isset($_GET['from_blog_page'])) { echo "<= Return to <a href='?view=blog&page={$_GET['from_blog_page']}'>Blog Page {$_GET['from_blog_page']}</a>"; }
+    if (isset($_GET['from_blog_page'])) { echo "Return to <a href='?view=blog&page={$_GET['from_blog_page']}'>Blog Page {$_GET['from_blog_page']}</a>"; }

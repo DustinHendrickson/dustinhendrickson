@@ -1,1 +1,1 @@
-Contact
+<div class='ContentHeader'>Contact</div>

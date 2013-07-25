@@ -12,11 +12,13 @@ body{
     padding: 0px;
     margin: 0px;
     height: 100%;
-    background-color: LightBlue;
+    background-image: url(../img/SmallSquares_Dark.png);
+    background-color: White;
     font-family: Century Gothic, sans-serif;
 }
 
 #BodyWrapper {
+    padding-top: 40px;
     min-height: 100%;
     height: auto !important;
     height: 100%;
@@ -28,40 +30,37 @@ body{
     height: 100px;
 /*  background-image: url(../img/HeaderBG.png);
     background-repeat: repeat-x; */
-    background-color: LightBlue;
+    background-color: rgba(255, 255, 255, 0.0); /* WHITE */
 }
 
 #Login-Navigation {
-    width: 99%;
+    width: 100%;
     height: 40px;
     margin-left: auto;
     margin-right: auto;
     background-color: Green;
     margin-bottom: 10px;
-    border-left: solid black;
-    border-right: solid black;
-    border-bottom: solid black;
+    border-left: solid Black;
+    border-right: solid Black;
+    border-bottom: solid Black;
     border-width: 1px;
-    -moz-border-radius-bottomright: 15px;
-    border-bottom-right-radius: 15px;
-    -moz-border-radius-bottomleft: 15px;
-    border-bottom-left-radius: 15px;
     overflow: hidden;
+    position:fixed;
 }
 
 #Public-Navigation {
     width: 92%;
-    height: 100px;
+    height: 95px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
     padding: 5px;
-    background-color: rgba(255, 255, 255, 0.3); /* WHITE */
+    background-color: rgba(255, 255, 255, 0.3);
     -moz-border-radius: 15px;
     border-radius: 15px;
-    border-top: solid black;
-    border-bottom: solid black;
-    border-width: 1px;
+    border-top: solid Black;
+    border-bottom: solid Black;
+    border-width: 2px;
     overflow: hidden;
 }
 
@@ -73,71 +72,29 @@ body{
     margin-left: auto;
     margin-right: auto;
     padding: 15px;
-    background-color: rgba(255, 255, 255, 0.9); /* WHITE */
+    background-color: rgba(255, 255, 255, 1.0); /* WHITE */
     -moz-border-radius: 15px;
     border-radius: 15px;
     border-style: solid;
-    border-color: black;
+    border-color: Black;
     border-width: 2px;
-    -moz-box-shadow: 5px 5px 6px #000;
-    -webkit-box-shadow: 5px 5px 6px #000;
-    box-shadow: 5px 5px 6px #000;
 }
 
-#BottomContentWrapper {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    height: 140px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    overflow: hidden;
+.ContentHeader {
+    font-style: bold;
+    font-size: 20px;
 }
 
-.BottomLeftContent {
-    width: 44%;
-    height: 100px;
-    background-color: rgba(255, 255, 255, 0.9); /* WHITE */
-    float: left;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-    padding: 15px;
-    border-style:solid;
-    border-color: black;
-    border-width: 2px;
-    margin-bottom: 10px;
-    margin-left: 1%;
-    -moz-box-shadow: 5px 5px 6px #000;
-    -webkit-box-shadow: 5px 5px 6px #000;
-    box-shadow: 5px 5px 6px #000;
-}
-
-.BottomRightContent {
-    width: 44%;
-    height: 100px;
-    background-color: rgba(255, 255, 255, 0.9); /* WHITE */
-    float: right;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-    padding: 15px;
-    border-style:solid;
-    border-color: black;
-    border-width: 2px;
-    margin-bottom: 10px;
-    margin-right: 1%;
-    -moz-box-shadow: 5px 5px 6px #000;
-    -webkit-box-shadow: 5px 5px 6px #000;
-    box-shadow: 5px 5px 6px #000;
-}
 
 #Footer {
     clear: both;
     width: 100%;
     height: 150px;
     position: relative;
-    border-top: solid green;
-    border-width: 10px;
-    background-color: saddlebrown;
+    border-top: solid Black;
+    border-width: 2px;
+    background-color: White;
+    background-image: url(../img/SubtleGrey_Light.png);
     margin-top: 20px;
     z-index: 10;
 }
@@ -166,6 +123,7 @@ body{
 .Logo {
     background-image: url(../img/smLogo.png);
     background-repeat: no-repeat;
+    display:block;
     height: 250px;
 }
 
@@ -173,9 +131,11 @@ body{
 
 .NavItem {
     height: 100px;
-    width: 75px;
-    padding-left: 2%;
-    padding-right: 2%;
+    width: 100px;
+    margin: 0 auto;
+    text-align: center;
+    padding-left: 1%;
+    padding-right: 1%;
     float: left;
 }
 
@@ -184,7 +144,7 @@ body{
 
 .BlogWrapper {
     width: 95%;
-    background-color: rgba(255, 255, 255, 0.9); /* WHITE */
+    background-color: White;
     padding: 10px;
     border-style: solid;
     border-color: black;

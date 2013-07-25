@@ -1,1 +1,1 @@
-Media
+<div class='ContentHeader'>Media</div>
