@@ -24,6 +24,7 @@ Write_Log('views',"Site has logged an index view.");
         <TITLE>
         DustinHendrickson.com - Official Site
         </TITLE>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     </HEAD>
 
     <BODY>

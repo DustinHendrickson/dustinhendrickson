@@ -68,7 +68,7 @@ body{
 #Content {
     width: 90%;
     height: auto;
-    min-height: 400px;
+    min-height: 60%;
     margin-left: auto;
     margin-right: auto;
     padding: 15px;
@@ -89,7 +89,7 @@ body{
 #Footer {
     clear: both;
     width: 100%;
-    height: 150px;
+    height: 20%;
     position: relative;
     border-top: solid Black;
     border-width: 2px;

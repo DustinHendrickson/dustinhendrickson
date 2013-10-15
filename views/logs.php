@@ -1,3 +1,24 @@
+<script>
+function reloadLogs(){
+    // Assuming we have #shoutbox
+    $.ajax({
+
+            type: "GET",
+            url: "views/callbacks/logs.php",  // your PHP generating ONLY the inner DIV code
+            data: "log=php.log",
+            success: function(html){
+                $("#log").html(html);
+            }
+
+    });
+
+}
+
+$(function() {
+setInterval( "reloadLogs()", 3000 );
+});
+</script>
+
 <?php
 //Apply any page restrictions.
 Functions::Check_User_Permissions_Redirect('Admin');
@@ -25,7 +46,7 @@ echo '<br/><br/>';
 if ( isset($log) ) {
 
     //Here we setup our scrolling text box so the log doesn't take up to much space.
-    echo '<div style="overflow:auto; height:400px; width:100%">';
+    echo '<div id="logs" name="logs" style="overflow:auto; height:60%; width:100%">';
 
     //Read in the Log file to an array and reverse the order for html display.
     $logLines = array_reverse(file($GLOBALS['Path'] . '/logs/' . $log));

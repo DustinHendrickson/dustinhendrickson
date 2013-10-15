@@ -16,7 +16,6 @@ class Navigation {
             //Build up the Login Navigation Array.
             //These will display for any user logged in unless
             //you do a permission check before adding the nav item.
-            array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_account'>My Account<a/></div>\n");
             array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_settings'>My Settings<a/></div>\n");
             array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_points'>My Points</a></div>\n");
             if (Functions::Check_User_Permissions('Staff')){
@@ -33,7 +32,7 @@ class Navigation {
     public static function Login_Write_Welcome_Message()
     {
             if(Functions::Check_User_Permissions('User')) {
-                echo $_SESSION["Name"] . " | <a href='?view=logout'>Logout</a>";
+                echo "<a href='?view=my_account'>" . $_SESSION['Name'] . "</a> | <a href='?view=logout'>Logout</a>";
             } else {
                 echo "<a href='?view=login'>Login</a> | <a href='?view=register'>Register</a>";
             }

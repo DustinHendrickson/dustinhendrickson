@@ -15,7 +15,7 @@ function Write_Log($log, $logEntry, $logPath='logs/')
 
     //Here is where we check if the log already exists, if not go ahead and create it with the w+ flag.
     //We then setup a new logfile object and open the file.
-    if (!file_exists($logPath.$log.'.log')) {
+    if (!file_exists($logPath . $log . '.log')) {
         fopen($logPath . $log . '.log', 'w+');
     }
     $logFile = fopen($logPath . $log . '.log', 'a');

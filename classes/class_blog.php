@@ -19,7 +19,7 @@ class Blog
         //We populate the pagination when the object is created.
         //Here we get the user config for items per page to display, if not logged in, set to default.
         $User = new User($_SESSION['ID']);
-        if(isset($User->Config_Settings['Items_Per_Page'])) {$PerPage=$User->Config_Settings['Items_Per_Page'];}
+        if(isset($User->Config_Settings['Items_Per_Page'])) { $PerPage=$User->Config_Settings['Items_Per_Page']; }
         
         //If the user config exists we'll populate the posts with that, otherwise use the defaults.
         if (isset($PerPage)) {
@@ -108,6 +108,14 @@ class Blog
         if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
 
         return $Page;
+    }
+
+    //Grabs the currently viewed Blog ID.
+    function Get_Single_View_Blog_ID()
+    {
+        if(isset($_GET['blog_id'])){$BlogID=$_GET['blog_id'];} else {$BlogID=0;}
+
+        return $BlogID;
     }
 
     //This functions takes an array of blog post data and formats it versus a template object.

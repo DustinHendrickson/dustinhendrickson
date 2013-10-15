@@ -1,9 +1,9 @@
 <?php
 
     $Blog = new Blog();
-    $Blog->Get_Posts(1,1,'',$_GET['blog_id']);
+    $Blog->Get_Posts(1,1,'',$Blog->Get_Single_View_Blog_ID());
 
-    echo "Blog Post ID... [ {$_GET['blog_id']} ]";
+    echo "Blog Post ID... [ {$Blog->Get_Single_View_Blog_ID()} ]";
     echo "<hr>";
 
     $Template="
