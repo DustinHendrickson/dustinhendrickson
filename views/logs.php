@@ -1,24 +1,3 @@
-<script>
-function reloadLogs(){
-    // Assuming we have #shoutbox
-    $.ajax({
-
-            type: "GET",
-            url: "views/callbacks/logs.php",  // your PHP generating ONLY the inner DIV code
-            data: "log=php.log",
-            success: function(html){
-                $("#log").html(html);
-            }
-
-    });
-
-}
-
-$(function() {
-setInterval( "reloadLogs()", 3000 );
-});
-</script>
-
 <?php
 //Apply any page restrictions.
 Functions::Check_User_Permissions_Redirect('Admin');
