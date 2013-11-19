@@ -9,7 +9,7 @@ class Functions {
     //Strips strings.
     public static function Make_Safe(&$string)
     {
-        return mysql_escape_string($string);
+        return $string;
     }
 
     //Returns the current view.
