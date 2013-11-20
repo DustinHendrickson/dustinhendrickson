@@ -32,7 +32,7 @@ class Functions {
         if(file_exists('views/'.$view.'.php')) {
             include('views/'.$view.'.php');
         } else {
-            Write_Log('php', "NOTICE: Could not find the file 'views/'.$view.'.php'");
+            Write_Log('php', "NOTICE: Could not find the file 'views/'. {$view} .'.php'");
             include('views/404.php');
         }
     }

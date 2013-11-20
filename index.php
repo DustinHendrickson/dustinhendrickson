@@ -24,16 +24,15 @@ Write_Log('views',"Site has logged an index view.");
         <TITLE>
         DustinHendrickson.com - Official Site
         </TITLE>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     </HEAD>
 
     <BODY>
 
-        <div id="Login-Navigation">
-            <div class="WelcomeText">
-                <?php Navigation::Login_Write_Welcome_Message(); ?>
+        <div id="Top-Bar">
+            <div class="Login_Area">
+                <?php Navigation::write_Login(); ?>
             </div>
-                <?php Navigation::Login_Write(); ?>
+                <?php Navigation::write_Private(); ?>
         </div>
 
         <div id="BodyWrapper">
@@ -45,7 +44,7 @@ Write_Log('views',"Site has logged an index view.");
         </div>
 
         <div id="Public-Navigation">
-            <?php Navigation::Public_Write(); ?>
+            <?php Navigation::write_Public(); ?>
         </div>
 
         <div id="Content">

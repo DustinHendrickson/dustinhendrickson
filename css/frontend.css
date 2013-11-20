@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : frontend
     Created on : Apr 4, 2011, 11:04:19 AM
     Author     : Dustin
@@ -7,6 +7,10 @@
 */
 
 /* Main Site Styling */
+a:link { color: black; text-decoration: none; }      /* unvisited link */
+a:visited { color: black; text-decoration: none;}  /* visited link */
+a:hover { color: black; font-weight: bold; text-decoration: none; }  /* mouse over link */
+a:active { color: red; text-decoration: none; }   /* selected link */
 
 body{
     padding: 0px;
@@ -14,7 +18,7 @@ body{
     height: 100%;
     background-image: url(../img/SmallSquares_Dark.png);
     background-color: White;
-    font-family: Century Gothic, sans-serif;
+    font-family: Lucida Grande, Helvetica, Arial, Verdana;
 }
 
 #BodyWrapper {
@@ -33,7 +37,7 @@ body{
     background-color: rgba(255, 255, 255, 0.0); /* WHITE */
 }
 
-#Login-Navigation {
+#Top-Bar {
     width: 100%;
     height: 40px;
     margin-left: auto;
@@ -109,15 +113,22 @@ body{
 
 /* Details CSS Styling */
 
-.WelcomeText {
+.Login_Area {
     float: left;
     padding: 10px;
 }
 
 .PrivateNavItem {
     float: right;
-    width: 100px;
+    text-align: center;
+    width: 110px;
     padding-top: 10px;
+}
+.PrivateNavItem a:hover {
+    background-color: black;
+    color: green;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .Logo {
@@ -183,18 +194,18 @@ body{
     width: 10px;
     padding: 4px;
 }
-.Page a:hover { 
+.Page a:hover {
     color: Black;
     text-decoration: none;
 }
-.Page a:visited { 
+.Page a:visited {
     color: Black;
     text-decoration: none;
 }
-.Page a:link { 
+.Page a:link {
     color: Black;
     text-decoration: none;
-} 
+}
 
 .Current_Page {
     background-color: Green;
@@ -205,18 +216,18 @@ body{
     padding: 4px;
 }
 
-.Current_Page a:hover { 
+.Current_Page a:hover {
     color: White;
     text-decoration: none;
 }
-.Current_Page a:visited { 
+.Current_Page a:visited {
     color: White;
     text-decoration: none;
 }
-.Current_Page a:link { 
+.Current_Page a:link {
     color: White;
     text-decoration: none;
-} 
+}
 
 /* General System */
 .Error {
