@@ -230,6 +230,15 @@ body{
 }
 
 /* General System */
+
+#Login-Error {
+    color: red;
+    background-color: pink;
+    margin: 1px;
+    padding: 2px;
+    border: 1px solid red;
+}
+
 .Error {
     color: red;
     background-color: pink;

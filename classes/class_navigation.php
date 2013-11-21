@@ -35,14 +35,24 @@ class Navigation {
                 echo "<a href='?view=my_account'>" . $_SESSION['Name'] . "</a> | <a href='?view=logout'>Logout</a>";
             } else {
                 echo "
-                    <form action='?view=login' method='post'>
+                    <form action='/' method='post'>
                         <input name='Username' type='text' size='10'>
                         <input name='Password' type='password' size='10'>
                         <input name='Login' type='hidden' value='true'>
                         <input type='submit' value='Login'>
                         | <a href='?view=register'>Register</a>
                     </form>";
+
             }
+    }
+
+    public static function write_Login_Error()
+    {
+		if(isset($_POST['Login'])) {
+                	$Auth = new Authentication;
+                        $Auth->Login($_POST['Username'],$_POST['Password']);
+                        if (isset($Auth->Error_Message)) { echo "<div class='Clear'></div><div id='Login-Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); }
+                }
     }
 
     public static function write_Public()

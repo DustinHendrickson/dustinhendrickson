@@ -37,6 +37,8 @@ Write_Log('views',"Site has logged an index view.");
 
         <div id="BodyWrapper">
 
+        <?php Navigation::write_Login_Error(); ?>
+
         <div id="Header">
             <a href='/'>
             <div class="Logo"></div>
