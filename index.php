@@ -40,9 +40,7 @@ Write_Log('views',"Site has logged an index view.");
         <?php Navigation::write_Login_Error(); ?>
 
         <div id="Header">
-            <a href='/'>
-            <div class="Logo"></div>
-            </a>
+            <a href='/' class="Logo"></a>
         </div>
 
         <div id="Public-Navigation">
@@ -57,34 +55,34 @@ Write_Log('views',"Site has logged an index view.");
 
         <table width=100% padding=10px>
             <tr>
-                <td><b>Friends</b></td>
-                <td><b>About</b></td>
-                <td><b>Contact</b></td>
-                <td><b>Community</b></td>
+                <td width="25%" height="25px"><b>Friends</b></td>
+                <td width="25%" height="25px"><b>About</b></td>
+                <td width="25%" height="25px"><b>Contact</b></td>
+                <td width="25%" height="25px"><b>Community</b></td>
             </tr>
             <tr>
-                <td><a href='http://omfg.fm' target='_blank'>OMFG.fm</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='http://omfg.fm' target='_blank'>OMFG.fm</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
             </tr>
             <tr>
-                <td><a href='http://kylemccarley.com' target='_blank'>KyleMcCarley.com</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='http://kylemccarley.com' target='_blank'>KyleMcCarley.com</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
             </tr>
             <tr>
-                <td><a href='http://fake.com' target='_blank'>Fake Site.com</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='http://fake.com' target='_blank'>Fake Site.com</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
             </tr>
             <tr>
-                <td><a href='http://blarg.net' target='_blank'>BLARG.net</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
-                <td><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='http://blarg.net' target='_blank'>BLARG.net</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
             </tr>
         </table>
 

@@ -40,8 +40,8 @@ class User {
         $this->Last_Name = $User_Result["Last_Name"];
         $this->Password = $User_Result["Password"];
         $this->Permissions = $User_Result["Permissions"];
-        $this->Account_Last_Login = date('F dS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
-        $this->Account_Created = date('F dS Y h:ia', strtotime($User_Result["Account_Created"]));
+        $this->Account_Last_Login = date('F jS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
+        $this->Account_Created = date('F jS Y h:ia', strtotime($User_Result["Account_Created"]));
         $this->Account_Locked = $User_Result["Account_Locked"];
     }
 

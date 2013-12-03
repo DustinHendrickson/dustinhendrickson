@@ -6,11 +6,11 @@ function Write_Log($log, $logEntry, $logPath='logs/')
     $backtrace = debug_backtrace();
 
     if (isset($backtrace[1]['function'])) {
-	$functionCalledFrom = " [CALLED FROM >> " . $backtrace[1]['function'] . "()]";	
+	$functionRanFrom = " [CALLED FROM >> " . $backtrace[1]['function'] . "()]";	
     }
 
     if (isset($_SERVER['REQUEST_URI'])) {
-	$viewCalledFrom = "[VIEW >> " . $_SERVER['REQUEST_URI'] . "]";
+	$paramsPassed = " [PARAMS >> " . $_SERVER['REQUEST_URI'] . "]";
     }
 
 
@@ -33,7 +33,7 @@ function Write_Log($log, $logEntry, $logPath='logs/')
     $logFile = fopen($logPath . $log . '.log', 'a');
 
     // We then write to the log and close the file.
-    fwrite($logFile,"[".$NOW."] | " . $IP . " | " . $logEntry . $viewCalledFrom . $functionCalledFrom . "\n");
+    fwrite($logFile,"[".$NOW."] | " . $IP . " | " . $logEntry . $paramsPassed . $functionRanFrom . "\n");
     fclose($logFile);
 }
 
