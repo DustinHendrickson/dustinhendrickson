@@ -1,5 +1,5 @@
 <?php
-                
+
                 if(isset($_POST['Register'])) {
                         $Auth = new Authentication;
                         $Auth->Register($_POST['Username'],$_POST['Password'],$_POST['EMail']);
@@ -8,12 +8,12 @@
 
 <?php if (isset($Auth->Error_Message)) { echo "<div class='Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); } ?>
 
-                    <b>Register</b>
+                    <div class='ContentHeader'>Register</div><hr>
                     <form action='?view=register' method='post'>
                         <table>
                             <tr>
                                 <td>
-                                    Username: 
+                                    Username:
                                 </td>
                                 <td>
                                     <input name='Username' type='text'>
@@ -22,7 +22,7 @@
 
                             <tr>
                                 <td>
-                                    Password: 
+                                    Password:
                                 </td>
                                 <td>
                                     <input name='Password' type='password'>
@@ -31,7 +31,7 @@
 
                             <tr>
                                 <td>
-                                    E-Mail: 
+                                    E-Mail:
                                 </td>
                                 <td>
                                     <input name='EMail' type='text'>

@@ -1,1 +1,1 @@
-<div class='ContentHeader'>Resume</div>
+<div class='ContentHeader'>Resume</div><hr>

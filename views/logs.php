@@ -16,7 +16,8 @@ foreach($logFiles as $file) {
         echo "</a> | ";
     }
 }
-echo '<br/><br/>';
+
+echo '<hr><br/><br/>';
 
 //Check if a log has been selected to view, if so start refreshing.
 //if ( isset($log) ) { Functions::Refresh_Page(10); }

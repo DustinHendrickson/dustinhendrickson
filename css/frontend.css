@@ -12,6 +12,9 @@ a:visited { color: black; text-decoration: none;}  /* visited link */
 a:hover { color: black; font-weight: bold; text-decoration: none; }  /* mouse over link */
 a:active { color: red; text-decoration: none; }   /* selected link */
 
+li a:hover { font-weight: normal; text-decoration: none; }  /* mouse over link */
+li a:link { color: black; text-decoration: none; }      /* unvisited link */
+
 body{
     padding: 0px;
     margin: 0px;
@@ -48,7 +51,6 @@ body{
     border-right: solid Black;
     border-bottom: solid Black;
     border-width: 1px;
-    overflow: hidden;
     position:fixed;
 }
 
@@ -301,4 +303,80 @@ body{
     padding: 2px;
     margin: 2px;
     border: 1px solid grey;
+}
+
+nav {
+    margin-top: -15px;
+    text-align: center;
+    z-index: 150;
+}
+
+nav ul ul {
+    display: none;
+}
+
+nav ul li:hover > ul {
+    display: block;
+}
+
+nav ul {
+    background: darkgreen;
+    box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
+    padding: 0 5px;
+    list-style: none;
+    position: relative;
+    display: inline-table;
+}
+nav ul:after {
+    content: ""; clear: both; display: block;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul li:hover {
+    background-image: url(../img/SubtleGrey_Light.png);
+}
+
+nav ul li:hover a {
+    color: black;
+}
+
+nav ul li a {
+    display: block; padding: 10px 40px;
+    color: #757575; text-decoration: none;
+}
+
+nav ul ul {
+    background: darkgreen;
+    border-radius: 0px;
+    padding: 0;
+    position: absolute; top: 100%;
+}
+nav ul ul li {
+    float: none;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black; position: relative;
+}
+nav ul ul li a {
+    padding: 5px 30px;
+    color: #fff;
+}
+nav ul ul li a:hover {
+    background-image: url(../img/SubtleGrey_Light.png);
+}
+
+nav ul ul ul {
+    position: absolute; left: 100%; top:0;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc);
+    background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc);
+    background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc);
+    background-image:      -o-linear-gradient(left, #ccc, #333, #ccc);
 }

@@ -1,1 +1,1 @@
-<div class='ContentHeader'>Projects</div>
+<div class='ContentHeader'>Projects</div><hr>

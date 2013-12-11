@@ -11,21 +11,34 @@ class Navigation {
     public static function write_Private()
     {
         if(Functions::Check_User_Permissions('User')){
-            $Nav_Items = array();
 
             //Build up the Login Navigation Array.
             //These will display for any user logged in unless
             //you do a permission check before adding the nav item.
-            array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_settings'>My Settings<a/></div>\n");
-            array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=my_points'>My Points</a></div>\n");
-            if (Functions::Check_User_Permissions('Staff')){
-                array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=blog_admin'>Blog Admin</a></div>\n");
-                array_push($Nav_Items, "<div class='PrivateNavItem'><a href='?view=logs'>Logs</a></div>\n");
+            echo "<nav><ul>";
+
+            if (Functions::Check_User_Permissions('Admin')){
+            echo "<li><a href='#'>Admin</a>";
+            echo "<ul>";
+            echo "<li><a href='?view=logs'>Logs</a></li>";
+            echo "</ul></li>";
             }
 
-            foreach ($Nav_Items as $Nav_Item){
-                echo $Nav_Item;
+            if (Functions::Check_User_Permissions('Staff')){
+            echo "<li><a href='#'>Staff</a>";
+            echo "<ul>";
+            echo "<li><a href='?view=blog_admin'>Blog Admin</a></li>";
+            echo "<li><a href='?view=servers'>Server Status</a></li>";
+            echo "</ul></li>";
             }
+
+            echo "<li><a href='#'>User</a>";
+            echo "<ul>";
+            echo "<li><a href='?view=settings'>Settings</a></li>";
+            echo "<li><a href='?view=points'>Points</a></li>";
+            echo "</ul></li>";
+
+            echo "</ul></nav>";
         }
     }
 

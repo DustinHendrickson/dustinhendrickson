@@ -1,1 +1,1 @@
-<div class='ContentHeader'>Media</div>
+<div class='ContentHeader'>Media</div><hr>
