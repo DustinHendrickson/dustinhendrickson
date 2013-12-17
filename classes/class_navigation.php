@@ -21,6 +21,7 @@ class Navigation {
             echo "<li><a href='#'>Admin</a>";
             echo "<ul>";
             echo "<li><a href='?view=logs'>Logs</a></li>";
+            echo "<li><a href='http://dustinhendrickson.com:8080' target='_blank'>Webcam</a></li>";
             echo "</ul></li>";
             }
 

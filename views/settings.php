@@ -8,6 +8,7 @@ switch ($_POST['Mode'])
     {
         case 'Save':
             $User->Save_Configuration($User->ID,$_POST['Items_Per_Page'],$_POST['Theme'],$_POST['Show_Help']);
+            Functions::Refresh_Page(1);
             break;
     }
 
@@ -41,7 +42,8 @@ switch ($_POST['Mode'])
     array_push($Theme_Options, "Default");
     array_push($Theme_Options, "Blue");
     array_push($Theme_Options, "Red");
-    array_push($Theme_Options, "Green");
+    array_push($Theme_Options, "Orange");
+    array_push($Theme_Options, "Pink");
 
     foreach ($Theme_Options as $Theme_Selection){
         $Theme_HTML = $Theme_HTML . "<option value='{$Theme_Selection}'" . (($User->Config_Settings['Theme'] == $Theme_Selection) ? "selected" : "" ) . ">{$Theme_Selection}</option>";

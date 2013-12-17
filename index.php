@@ -7,6 +7,7 @@ $GLOBALS['Path'] = $_SERVER["DOCUMENT_ROOT"] . '/'; //Site Path for anything tha
 
 //Setup requirements
 require_once("config/PHPConfig.php");               //php.ini config
+require_once("config/tracking.php");                //Google Analytics
 require_once("classes/class_logging.php");          //Logging
 require_once("classes/class_connection.php");       //Connection.
 require_once("classes/class_functions.php");        //Functions.
@@ -16,11 +17,12 @@ require_once("classes/class_authentication.php");   //Authentication.
 require_once("classes/class_blog.php");             //Blog.
 
 //Log each index visit.
-Write_Log('views',"Site has logged an index view.");
+Write_Log('views',"Site has logged a page view.");
 ?>
 <HTML>
     <HEAD>
         <link href="css/frontend.css" rel="stylesheet" type="text/css">
+        <?php $User = new User($_SESSION['ID']); $User->Display_Theme(); ?>
         <TITLE>
         DustinHendrickson.com - Official Site
         </TITLE>

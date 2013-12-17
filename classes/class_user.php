@@ -3,8 +3,7 @@
 /*
  * This class defines the objects and methods of the Users
  * in the system.
- * TO DO: Add the handeling of User Creation / Editing / Deleting to this class
- * and pull out the current code for this in class_authentication.
+ *
  * TO DO: Rewrite permissions method to not suck.
  *
  */
@@ -13,11 +12,11 @@
  * @author Dustin
  */
 class User {
-    //Non User Variables
+    // Non User Variables
     private $Connection;
     public $Message;
     public $Message_Type;
-    //User Variables
+    // User Variables
     public $ID;
     public $Username;
     public $First_Name;
@@ -28,9 +27,9 @@ class User {
     public $Account_Created;
     public $Account_Locked;
     public $Config_Settings = array();
-    
-    //Initial function to search the database for the desired user and populate this class object. 
-    private function Set_User_Info() 
+
+    // Initial function to search the database for the desired user and populate this class object.
+    private function Set_User_Info()
     {
         $User_Array = array (':ID'=>$this->ID);
         $User_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE ID = :ID LIMIT 1", $User_Array);
@@ -47,7 +46,7 @@ class User {
 
     private function Set_Config_Info()
     {
-        //Populate User Config Settings Into Object
+        // Populate User Config Settings Into Object
         $User_Config_Array = array (':ID'=>$this->ID);
         $User_Config_Result = $this->Connection->Custom_Query("SELECT * FROM users_settings WHERE userID = :ID LIMIT 1", $User_Config_Array);
 
@@ -64,7 +63,7 @@ class User {
         $this->Set_Config_Info();
     }
 
-    //This function saves the input settings to the DB and then updates the current object with the new values.
+    // This function saves the input settings to the DB and then updates the current object with the new values.
     public function Save_Configuration($UserID,$Items,$Theme,$Show_Help)
     {
         $Config_Array = array (':Items'=>$Items,':Theme'=>$Theme,':Show_Help'=>$Show_Help,':UserID'=>$UserID);
@@ -80,14 +79,14 @@ class User {
         }
     }
 
-    //Returns the Full Name of the user.
+    // Returns the Full Name of the user.
     // @returns string
     public function Get_Full_Name()
     {
         return $this->First_Name . " " . $this->Last_Name;
     }
 
-    //This Function checks the Users permissions and returns them in a readable format.
+    // This Function checks the Users permissions and returns them in a readable format.
     // @returns string
     public function Get_Permissions($ReturnType='String')
     {
@@ -124,11 +123,22 @@ class User {
 
     }
 
-    //Converts the Datbases 0,1 into Locked,Active.
+    // Converts the Datbases 0,1 into Locked,Active.
     // @returns string
     public function Get_Account_Status()
     {
         if ($this->Account_Locked = 1) { return "Active"; } else { return "Locked"; }
     }
+
+    // Retrieves the users saved theme setting and writes it out.
+    public function Display_Theme()
+    {
+        $Theme = $this->Config_Settings['Theme'];
+        $Theme = strtolower($Theme);
+        if ($Theme != 'Default' && isset($Theme)) {
+            echo "<link href='css/".$Theme . ".css' rel='stylesheet' type='text/css'>";
+        }
+    }
+
 }
 ?>

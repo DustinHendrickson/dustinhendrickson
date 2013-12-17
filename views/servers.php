@@ -20,10 +20,10 @@ function displayServerStatus($ServerStatus) {
       }
 }
 
-function getRemoteSeverStatusFromPort($PortNumber) {
+function getRemoteSeverStatusFromPort($RemoteSite, $PortNumber) {
   // Here we do a basic connection test to see if this port is reachable on the network, times out in 5 seconds,
   // if the timeout succeeds, we know that server is down. Otherwise it's up.
-  $socket = @fsockopen("dustinhendrickson.com", $PortNumber, $errorNumber, $errorString, 5);
+  $socket = @fsockopen($RemoteSite, $PortNumber, $errorNumber, $errorString, 5);
   if ($socket){
     fclose($socket);
     return "Up";
@@ -46,39 +46,49 @@ Functions::Refresh_Page(60);
 <div id='servers' name='servers' style='overflow:auto; height:60%; width:100%'>
 <br>
 
-<i>EXTERNAL SERVERS:</i><br><br>
-
-<b>Starbound</b> | Host: dustinhendrickson.com Pass: none
+<div style="text-align:center;"><i>EXTERNAL MACHINE SERVERS</i></div>
+<br>
+<div class="BorderBox">
+<b>Starbound</b> | Host: starbound.dustinhendrickson.com Pass: none
 <?php
-$ServerStatus=getRemoteSeverStatusFromPort(21025);
+$ServerStatus=getRemoteSeverStatusFromPort("starbound.dustinhendrickson.com", 21025);
 displayServerStatus($ServerStatus);
 ?>
 <br>
 
 <b>Terraria</b>
 <?php
-$ServerStatus=getRemoteSeverStatusFromPort(7777);
+$ServerStatus=getRemoteSeverStatusFromPort("dustinhendrickson.com",7777);
 displayServerStatus($ServerStatus);
 ?>
 <br>
 
 <b>Minecraft</b>
 <?php
-$ServerStatus=getRemoteSeverStatusFromPort(25565);
+$ServerStatus=getRemoteSeverStatusFromPort("dustinhendrickson.com",25565);
+displayServerStatus($ServerStatus);
+?>
+<br>
+
+<b>Webcam</b>
+<?php
+$ServerStatus=getRemoteSeverStatusFromPort("dustinhendrickson.com",8080);
 displayServerStatus($ServerStatus);
 ?>
 <br>
 
 <b>FTP</b> | <a target='_blank' href='ftp://dustinhendrickson.com'>ftp://dustinhendrickson.com</a> | User: guest Pass: none
 <?php
-$ServerStatus=getRemoteSeverStatusFromPort(21);
+$ServerStatus=getRemoteSeverStatusFromPort("dustinhendrickson.com", 21);
 displayServerStatus($ServerStatus);
 ?>
+</div>
+
 <br>
 
-
-<i>INTERNAL SERVERS:</i><br><br>
-
+<div style="text-align:center;"><i>SERVERS RUNNING ON THIS MACHINE</style></i></div>
+<br>
+<div class="BorderBox">
 <b>Mysql</b>
 <?php
 $ServerStatus=getServerStatus("mysql");
@@ -98,6 +108,6 @@ displayServerStatus($ServerStatus);
 $ServerStatus=getServerStatus("ruby");
 displayServerStatus($ServerStatus);
 ?>
-<br>
+</div>
 
 </div>

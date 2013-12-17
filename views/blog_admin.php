@@ -37,7 +37,7 @@
         <table>
             <tr>
                 <td>
-                    Title: 
+                    Title:
                 </td>
                 <td>
                     <input name='Title' type='text' value=':Title'>
@@ -45,7 +45,7 @@
             </tr>
             <tr>
                 <td>
-                    Body: 
+                    Body:
                 </td>
                 <td>
                     <textarea name='Body' type='text'>:Body</textarea>
@@ -71,11 +71,13 @@
     //New Blog Entry, we only show this on page 1.
     if($Page==1){
         echo "
+        <div class='ContentHeader'>Add a new blog post.</div><hr>
+        <div class='BorderBox'>
         <form action='?view=blog_admin&page={$Page}' method='post'>
             <table>
                 <tr>
                     <td>
-                        Title: 
+                        Title:
                     </td>
                     <td>
                         <input name='Title' type='text'>
@@ -83,7 +85,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Body: 
+                        Body:
                     </td>
                     <td>
                         <textarea name='Body' type='text'></textarea>
@@ -97,12 +99,18 @@
             </table>
             <input type='submit' value='Add' name='Mode'>
         </form>
-        <hr>
+        </div>
+        <br>
+        <br>
         ";
     }
 
+    echo "<div class='ContentHeader'>Edit an existing blog post.</div><hr>";
+    echo "<div class='BorderBox'>";
     $Blog->Write_Pagination_Nav();
 
     $Blog->Display_Blog_Page($Blog->Get_Page(),$Template);
 
     $Blog->Write_Pagination_Nav();
+
+    echo "</div>";

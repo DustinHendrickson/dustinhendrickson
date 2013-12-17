@@ -1,3 +1,5 @@
+<div class='ContentHeader'>Logs</div><hr>
+|
 <?php
 //Apply any page restrictions.
 Functions::Check_User_Permissions_Redirect('Admin');
@@ -17,7 +19,7 @@ foreach($logFiles as $file) {
     }
 }
 
-echo '<hr><br/><br/>';
+echo '<hr>';
 
 //Check if a log has been selected to view, if so start refreshing.
 //if ( isset($log) ) { Functions::Refresh_Page(10); }

@@ -10,10 +10,14 @@
 a:link { color: black; text-decoration: none; }      /* unvisited link */
 a:visited { color: black; text-decoration: none;}  /* visited link */
 a:hover { color: black; font-weight: bold; text-decoration: none; }  /* mouse over link */
-a:active { color: red; text-decoration: none; }   /* selected link */
+a:active { color: green; text-decoration: none; }   /* selected link */
 
-li a:hover { font-weight: normal; text-decoration: none; }  /* mouse over link */
-li a:link { color: black; text-decoration: none; }      /* unvisited link */
+li a:hover { color: white; font-weight: bold; text-decoration: none; }  /* mouse over link */
+li a:link { color: white; font-weight: bold; text-decoration: none; }      /* unvisited link */
+li a:visited { color: white; font-weight: bold; text-decoration: none; }      /* unvisited link */
+
+nav ul ul li a:link { color: white; font-weight: bold; text-decoration: none; }      /* unvisited link */
+nav ul ul li a:visited { color: white; font-weight: bold; text-decoration: none; }      /* unvisited link */
 
 body{
     padding: 0px;
@@ -86,6 +90,20 @@ body{
     border-width: 2px;
 }
 
+.BorderBox {
+    width: 90%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 1.0); /* WHITE */
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border-style: solid;
+    border-color: Black;
+    border-width: 2px;
+}
+
 .ContentHeader {
     font-style: bold;
     font-size: 20px;
@@ -126,6 +144,7 @@ body{
     width: 110px;
     padding-top: 10px;
 }
+
 .PrivateNavItem a:hover {
     background-color: black;
     color: green;
@@ -134,6 +153,8 @@ body{
 }
 
 .Logo {
+    position:relative;
+    z-index: -1;
     background-image: url(../img/smLogo.png);
     background-repeat: no-repeat;
     display:block;
@@ -306,7 +327,7 @@ body{
 }
 
 nav {
-    margin-top: -15px;
+    margin-top: -16px;
     text-align: center;
     z-index: 150;
 }
@@ -321,7 +342,7 @@ nav ul li:hover > ul {
 
 nav ul {
     background: darkgreen;
-    box-shadow: 0px 0px 9px rgba(0,0,0,0.15);
+    box-shadow: 0px 0px 35px rgba(0,0,0,0.35);
     padding: 0 5px;
     list-style: none;
     position: relative;
@@ -365,6 +386,7 @@ nav ul ul li a {
 }
 nav ul ul li a:hover {
     background-image: url(../img/SubtleGrey_Light.png);
+    color: black;
 }
 
 nav ul ul ul {
