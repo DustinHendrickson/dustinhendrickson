@@ -1,2 +1,6 @@
 DBConfig.ini
 logs/
+composer.*
+vendor/
+robots.txt
+

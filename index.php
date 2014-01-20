@@ -59,7 +59,7 @@ Write_Log('views',"Site has logged a page view.");
             <tr>
                 <td width="25%" height="25px"><b>Friends</b></td>
                 <td width="25%" height="25px"><b>About</b></td>
-                <td width="25%" height="25px"><b>Contact</b></td>
+                <td width="25%" height="25px"><b>Links</b></td>
                 <td width="25%" height="25px"><b>Community</b></td>
             </tr>
             <tr>

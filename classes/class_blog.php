@@ -15,12 +15,12 @@ class Blog
     function __construct()
     {
         $this->Connection = new Connection();
-        
+
         //We populate the pagination when the object is created.
         //Here we get the user config for items per page to display, if not logged in, set to default.
         $User = new User($_SESSION['ID']);
         if(isset($User->Config_Settings['Items_Per_Page'])) { $PerPage=$User->Config_Settings['Items_Per_Page']; }
-        
+
         //If the user config exists we'll populate the posts with that, otherwise use the defaults.
         if (isset($PerPage)) {
             $this->Get_Posts($PerPage);
@@ -68,10 +68,10 @@ class Blog
         }
     }
 
-    function Edit_Post($PostID,$UserID,$Title,$Body)
+    function Edit_Post($PostID,$Title,$Body)
     {
-        $Post_Array = array (':PostID'=>$PostID,':UserID'=>$UserID,':Title'=>$Title,':Body'=>$Body);
-        $Results = $this->Connection->Custom_Execute("UPDATE blog SET UserID=:UserID, Title=:Title, Body=:Body WHERE ID=:PostID", $Post_Array);
+        $Post_Array = array (':PostID'=>$PostID,':Title'=>$Title,':Body'=>$Body);
+        $Results = $this->Connection->Custom_Execute("UPDATE blog SET Title=:Title, Body=:Body WHERE ID=:PostID", $Post_Array);
 
         if ($Results){
             $this->Message="Blog post [{$PostID}] successfully edited.";
@@ -180,7 +180,7 @@ class Blog
         }
 
         if ($Limit != 0) {
-            $Limit_Text = "LIMIT {$Limit}";        
+            $Limit_Text = "LIMIT {$Limit}";
         }
 
         if ($GetID != 0) {
@@ -214,7 +214,7 @@ class Blog
 
         //We need to make sure the current page array is set, otherwise decrease it by one.
         if(!isset($this->Blog_Page[$CurrentPage])) { $CurrentPage = $CurrentPage-1; }
-        //We're done, so we set the last page so we can loop later. 
+        //We're done, so we set the last page so we can loop later.
         $this->Total_Pages = $CurrentPage;
 
         return $Post_Result;
