@@ -1,6 +1,6 @@
 DBConfig.ini
 logs/
-composer.*
+composer.lock
 vendor/
 robots.txt
 
