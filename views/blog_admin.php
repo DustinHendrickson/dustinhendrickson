@@ -4,18 +4,18 @@
     Functions::Prepare_TinyMCE();
 
     //Logic to perform based on post data.
-    $String_Protector_Array = array("<script","</script>","<source","<audio","('","')");
+    $String_Protector_Array = array("<script","</script>","<source","<audio","('","')", "window.location", "onerror=");
     switch ($_POST['Mode'])
     {
         case 'Edit':
             $Blog = new Blog();
-            $Blog->Edit_Post($_POST['postID'],$_POST['userID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
+            $Blog->Edit_Post($_POST['postID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
             $Blog->Display_Message();
             break;
 
         case 'Add':
             $Blog = new Blog();
-            $Blog->Add_Post($_POST['userID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
+            $Blog->Add_Post($_SESSION['ID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
             $Blog->Display_Message();
             break;
 
@@ -54,7 +54,6 @@
             <tr>
                 <td>
                     <input name='postID' type='hidden' value=':ID'>
-                    <input name='userID' type='hidden' value=':UserID'>
                 </td>
                 <td>
                     <div class='BlogCreation'>Post ID[:ID] by :Username - :CreationDate</div>
@@ -89,11 +88,6 @@
                     </td>
                     <td>
                         <textarea name='Body' type='text'></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input name='userID' type='hidden' value='{$_SESSION['ID']}'>
                     </td>
                 </tr>
             </table>
