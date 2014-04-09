@@ -19,7 +19,7 @@ class Connection
         //PDO Error Catching
         } catch(PDOException $exception) {
             echo 'An Error occured connecting to the server.';
-            Write_Log("sql", "Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
+            Write_Log("sql", "[ Error #" . $exception->getCode() . " ] Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
         }
 
     }

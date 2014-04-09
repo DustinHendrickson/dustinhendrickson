@@ -58,37 +58,48 @@ Write_Log('views',"Site has logged a page view.");
         <table width=100% padding=10px>
             <tr>
                 <td width="25%" height="25px"><b>Friends</b></td>
-                <td width="25%" height="25px"><b>About</b></td>
-                <td width="25%" height="25px"><b>Links</b></td>
+                <td width="25%" height="25px"><b>Social</b></td>
                 <td width="25%" height="25px"><b>Community</b></td>
+                <td width="25%" height="25px"><b></b></td>
             </tr>
             <tr>
-                <td width="25%" height="25px"><a href='http://omfg.fm' target='_blank'>OMFG.fm</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='http://donutboys.com' target='_blank'>Dontboys.com</a></td>
+                <td width="25%" height="25px"><a href='http://github.com/dustinhendrickson' target='_blank'>Github</a></td>
+                <td width="25%" height="25px"><a href='http://dustinhendrickson.proboards.com/' target='_blank'>Forums</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
             </tr>
             <tr>
                 <td width="25%" height="25px"><a href='http://kylemccarley.com' target='_blank'>KyleMcCarley.com</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='https://www.facebook.com/dustinhendrickson' target='_blank'>Facebook</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
             </tr>
             <tr>
-                <td width="25%" height="25px"><a href='http://fake.com' target='_blank'>Fake Site.com</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='http://sc2mapster.com' target='_blank'>SC2Mapster.com</a></td>
+                <td width="25%" height="25px"><a href='https://twitter.com/DustinTheBadass' target='_blank'>Twitter</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
             </tr>
             <tr>
-                <td width="25%" height="25px"><a href='http://blarg.net' target='_blank'>BLARG.net</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
-                <td width="25%" height="25px"><a href='' target='_blank'>Link</a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+            </tr>
+            <tr>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+            </tr>
+            <tr>
+                <td width="25%" height="25px"><i>&copy; 2012-<?php echo date("Y"); ?> - Dustin Hendrickson</a></i></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
             </tr>
         </table>
 
         </div>
-
     </BODY>
 </HTML>
