@@ -18,7 +18,7 @@ class Connection
 
         //PDO Error Catching
         } catch(PDOException $exception) {
-            echo 'An Error occured connecting to the server.';
+            echo '<br>An Error occured connecting to the server.<br>';
             Write_Log("sql", "[ Error #" . $exception->getCode() . " ] Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
         }
 
@@ -36,7 +36,7 @@ class Connection
             }
 
         } catch(PDOException $exception) {
-            echo "A Query Error has occured.";
+            echo "<br>A Query Error has occured.<br>";
             Write_Log("sql", "Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
         }
 
@@ -51,7 +51,7 @@ class Connection
             $Results = $PDO_Prepped->execute($query_array);
 
         } catch(PDOException $exception) {
-            echo "An Execute Error has occured.";
+            echo "<br>An Execute Error has occured.<br>";
             Write_Log("sql", "Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
         }
 

@@ -37,10 +37,17 @@
         <table>
             <tr>
                 <td>
+                </td>
+                <td>
+                    <div class='BlogCreation'>Post ID[:ID] by :Username at :CreationDate</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     Title:
                 </td>
                 <td>
-                    <input name='Title' type='text' value=':Title'>
+                    <input name='Title' style='width:80%' type='text' value=':Title'> <input type='submit' size='10' value='Edit' name='Mode'> <input size='10' style='color:red;' type='submit' value='Delete' name='Mode'>
                 </td>
             </tr>
             <tr>
@@ -54,11 +61,6 @@
             <tr>
                 <td>
                     <input name='postID' type='hidden' value=':ID'>
-                </td>
-                <td>
-                    <div class='BlogCreation'>Post ID[:ID] by :Username - :CreationDate</div>
-                    <input type='submit' value='Edit' name='Mode'>
-                    <input type='submit' value='Delete' name='Mode'>
                 </td>
             </tr>
         </table>
@@ -79,7 +81,7 @@
                         Title:
                     </td>
                     <td>
-                        <input name='Title' type='text'>
+                        <input name='Title' style='width:80%' type='text'> <input size='10' type='submit' value='Add' name='Mode'>
                     </td>
                 </tr>
                 <tr>
@@ -91,7 +93,6 @@
                     </td>
                 </tr>
             </table>
-            <input type='submit' value='Add' name='Mode'>
         </form>
         </div>
         <br>

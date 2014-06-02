@@ -43,7 +43,7 @@ class Blog
     function Add_Post($UserID,$Title,$Body)
     {
         $Post_Array = array (':UserID'=>$UserID,':Title'=>$Title,':Body'=>$Body);
-        $Results = $this->Connection->Custom_Execute("INSERT INTO blog (UserID, Title, Body, Creation_Date) VALUES (:UserID, :Title, :Body, NOW()) ", $Post_Array, true);
+        $Results = $this->Connection->Custom_Execute("INSERT INTO blog (UserID, Title, Body, Creation_Date) VALUES (:UserID, :Title, :Body, NOW())", $Post_Array, true);
 
         if ($Results) {
             $this->Message='Blog post successfully added.';
@@ -131,7 +131,7 @@ class Blog
             ':ID' => $Blog_Post['ID'],
             ':Title' => $Blog_Post['Title'],
             ':Body' => $Blog_Post['Body'],
-            ':CreationDate' => $Blog_Post['Creation_Date'],
+            ':CreationDate' => date('h:i A l F j, Y', strtotime($Blog_Post['Creation_Date'])),
             ':Username' => $User->Username,
             ':UserID' => $User->ID
         );

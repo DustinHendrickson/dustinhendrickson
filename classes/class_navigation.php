@@ -37,6 +37,7 @@ class Navigation {
             echo "<ul>";
             echo "<li><a href='?view=settings'>Settings</a></li>";
             echo "<li><a href='?view=points'>Points</a></li>";
+            echo "<li><a href='?view=bnet'>Battle.Net Status</a></li>";
             echo "</ul></li>";
 
             echo "</ul></nav>";

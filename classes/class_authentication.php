@@ -38,6 +38,8 @@ function Login($User,$Pass)
                         $Last_Login_Array = array(':Account_Last_Login'=>date(self::DATE_FORMAT),':ID'=>$_SESSION['ID']);
                         $this->Connection->Custom_Execute("UPDATE users SET Account_Last_Login=:Account_Last_Login WHERE ID=:ID",$Last_Login_Array);
                         Write_Log("php", "ACCOUNT: Successfull login attempt for account [$Username] and password [$Password]");
+
+                        // Redirect user to index page after login.
                         header( 'Location: /' ) ;
                     } else {
                         $this->Error_Message = "This account is locked and may not log in.";

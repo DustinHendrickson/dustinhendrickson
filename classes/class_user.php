@@ -26,6 +26,7 @@ class User {
     public $Account_Last_Login;
     public $Account_Created;
     public $Account_Locked;
+    public $Points;
     public $Config_Settings = array();
 
     // Initial function to search the database for the desired user and populate this class object.
@@ -42,6 +43,7 @@ class User {
         $this->Account_Last_Login = date('F jS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
         $this->Account_Created = date('F jS Y h:ia', strtotime($User_Result["Account_Created"]));
         $this->Account_Locked = $User_Result["Account_Locked"];
+        $this->Points = $User_Result["Points"];
     }
 
     private function Set_Config_Info()
@@ -130,12 +132,49 @@ class User {
         if ($this->Account_Locked = 1) { return "Active"; } else { return "Locked"; }
     }
 
+    // Retrieves Points
+    public function Get_Points()
+    {
+        return $this->Points;
+    }
+
+    // Set's Points
+    public function Set_Points($Points)
+    {
+        $this->Points = $Points;
+        $Config_Array = array (':Points'=>$Points,':ID'=>$this->ID);
+        $Results = $this->Connection->Custom_Execute("UPDATE users SET Points=:Points WHERE ID=:ID", $Config_Array);
+
+        if ($Results) {
+            $this->Message='Points were added successfully';
+            $this->Message_Type='Success';
+        } else {
+            $this->Message='There was an issue adding points to the user, please try again.';
+            $this->Message_Type='Error';
+        }
+
+        Write_Log('points', "Trying to set points to [" . $Points . "] for UserID [" . $this->ID . "]");
+        Write_Log('points', $this->Message_Type . " - " . $this->Message);
+    }
+
+    // Add Points
+    public function Add_Points($Points)
+    {
+        $this->Set_Points($this->Points + $Points);
+    }
+
+    // Subtract Points
+    public function Subtract_Points($Points)
+    {
+        $this->Set_Points($this->Points - $Points);
+    }
+
     // Retrieves the users saved theme setting and writes it out.
     public function Display_Theme()
     {
         $Theme = $this->Config_Settings['Theme'];
         $Theme = strtolower($Theme);
-        if ($Theme != 'Default' && isset($Theme)) {
+        if ($Theme != 'Default' && isset($Theme) && $Theme != '') {
             echo "<link href='css/".$Theme . ".css' rel='stylesheet' type='text/css'>";
         }
     }
