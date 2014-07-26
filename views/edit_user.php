@@ -10,17 +10,17 @@ switch ($_POST['Mode'])
             $User->Edit_User(Functions::Make_Safe($_POST['First_Name']), Functions::Make_Safe($_POST['Last_Name']), Functions::Make_Safe($_POST['EMail']), Functions::Make_Safe($_POST['Permissions']), Functions::Make_Safe($_POST['Password']));
             $User->Display_Message();
             break;
-        case 'Search-UN':
+        case 'Search by Username':
             $Connection = new Connection();
             $User_Array = array (':Username'=>$_POST['SearchUsername']);
             $User_Results = $Connection->Custom_Query("SELECT * from users WHERE Username=:Username", $User_Array);
             break;
-        case 'Search-FN':
+        case 'Search by First':
             $Connection = new Connection();
             $User_Array = array (':First_Name'=>$_POST['SearchFirstName']);
             $User_Results = $Connection->Custom_Query("SELECT * from users WHERE First_Name=:First_Name", $User_Array);
             break;
-        case 'Search-LN':
+        case 'Search by Last':
             $Connection = new Connection();
             $User_Array = array (':Last_Name'=>$_POST['SearchLastName']);
             $User_Results = $Connection->Custom_Query("SELECT * from users WHERE Last_Name=:Last_Name", $User_Array);
@@ -39,7 +39,7 @@ echo "
                     <input name='SearchUsername' value=''>
                 </td>
                 <td>
-                    <input type='submit' value='Search-UN' name='Mode'>
+                    <input type='submit' value='Search by Username' name='Mode'>
                 </td>
             </tr>
         </table>
@@ -55,7 +55,7 @@ echo "
                     <input name='SearchFirstName' value=''>
                 </td>
                 <td>
-                    <input type='submit' value='Search-FN' name='Mode'>
+                    <input type='submit' value='Search by First' name='Mode'>
                 </td>
             </tr>
         </table>
@@ -71,7 +71,7 @@ echo "
                     <input name='SearchLastName' value=''>
                 </td>
                 <td>
-                    <input type='submit' value='Search-LN' name='Mode'>
+                    <input type='submit' value='Search by Last' name='Mode'>
                 </td>
             </tr>
         </table>
@@ -79,7 +79,7 @@ echo "
 ";
 
 
-if ($_POST['Mode'] = 'Search') 
+if ($_POST['Mode'] = 'Search')
 {
     if ($User_Results)
     {
@@ -91,7 +91,7 @@ if ($_POST['Mode'] = 'Search')
         <table>
             <tr>
                 <td>
-                Username: 
+                Username:
                 </td>
                 <td>
                     <input size='50' type='text' value='{$User_Results['Username']}' name='Username' disabled>
@@ -99,7 +99,7 @@ if ($_POST['Mode'] = 'Search')
             </tr>
             <tr>
                 <td>
-                First Name: 
+                First Name:
                 </td>
                 <td>
                     <input size='50' type='text' value='{$User_Results['First_Name']}' name='First_Name'>
@@ -107,7 +107,7 @@ if ($_POST['Mode'] = 'Search')
             </tr>
             <tr>
                 <td>
-                Last Name: 
+                Last Name:
                 </td>
                 <td>
                     <input size='50' type='text' value='{$User_Results['Last_Name']}' name='Last_Name'>
@@ -115,7 +115,7 @@ if ($_POST['Mode'] = 'Search')
             </tr>
             <tr>
                 <td>
-                Password: 
+                Password:
                 </td>
                 <td>
                     <input size='50' type='text' value='' name='Password'>
@@ -123,7 +123,7 @@ if ($_POST['Mode'] = 'Search')
             </tr>
             <tr>
                 <td>
-                Email: 
+                Email:
                 </td>
                 <td>
                     <input size='50' type='text' value='{$User_Results['EMail']}' name='EMail'>
@@ -131,7 +131,7 @@ if ($_POST['Mode'] = 'Search')
             </tr>
                 <tr>
                 <td>
-                Permissions: 
+                Permissions:
                 </td>
                 <td>
                     <input size='50' type='text' value='{$User_Results['Permissions']}' name='Permissions'>
@@ -153,6 +153,6 @@ if ($_POST['Mode'] = 'Search')
     <br>
     ";
     } else {
-    echo "Please enter a valid username into a searchbox.";
+    echo "No users found, please refine your search and try again.";
     }
 }

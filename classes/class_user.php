@@ -23,13 +23,14 @@ class User {
     public $First_Name;
     public $Last_Name;
     public $Permissions;
+    public $EMail;
     public $Account_Last_Login;
     public $Account_Created;
     public $Account_Locked;
     public $Points;
     public $Points_Last_Recieved;
     public $Config_Settings = array();
-    public $SECONDS_INTERVAL = 100;
+    public $SECONDS_INTERVAL = 86400;     // Interval in seconds that point redemption refreshes.
     public $TODAYS_DATE;
 
     // Initial function to search the database for the desired user and populate this class object.
@@ -43,6 +44,7 @@ class User {
         $this->Last_Name            = $User_Result["Last_Name"];
         $this->Password             = $User_Result["Password"];
         $this->Permissions          = $User_Result["Permissions"];
+        $this->EMail                = $User_Result["EMail"];
         $this->Account_Last_Login   = date('F jS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
         $this->Account_Created      = date('F jS Y h:ia', strtotime($User_Result["Account_Created"]));
         $this->Account_Locked       = $User_Result["Account_Locked"];
@@ -157,6 +159,7 @@ class User {
         }
 
         if ($Results) {
+            $this->Set_User_Info();
             $this->Message='User was edited successfully';
             $this->Message_Type='Success';
         } else {

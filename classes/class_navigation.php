@@ -21,7 +21,6 @@ class Navigation {
             echo "<li><a href='#'>Admin</a>";
             echo "<ul>";
             echo "<li><a href='?view=logs'>Logs</a></li>";
-            echo "<li><a href='http://dustinhendrickson.com:8080' target='_blank'>Webcam</a></li>";
             echo "</ul></li>";
             }
 
@@ -29,7 +28,7 @@ class Navigation {
             echo "<li><a href='#'>Staff</a>";
             echo "<ul>";
             echo "<li><a href='?view=blog_admin'>Blog Admin</a></li>";
-            echo "<li><a href='?view=servers'>Server Status</a></li>";
+            echo "<li><a href='?view=servers'>View Servers</a></li>";
             echo "<li><a href='?view=edit_user'>Edit Users</a></li>";
             echo "</ul></li>";
             }
@@ -48,7 +47,8 @@ class Navigation {
     public static function write_Login()
     {
             if(Functions::Check_User_Permissions('User')) {
-                echo "<a href='?view=my_account'>" . $_SESSION['Name'] . "</a> | <a href='?view=logout'>Logout</a>";
+                $User = new User($_SESSION['ID']);
+                echo "[ <b><a href='?view=points'>{$User->Get_Points()}</a></b> ] <a href='?view=my_account'>" . $_SESSION['Name'] . "</a> | <a href='?view=logout'>Logout</a>";
             } else {
                 echo "
                     <form action='/' method='post'>
