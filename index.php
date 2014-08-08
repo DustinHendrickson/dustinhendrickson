@@ -1,26 +1,13 @@
 <?php
-//Start Session
-session_start();
-
-//Setup Globals
-$GLOBALS['Path'] = $_SERVER["DOCUMENT_ROOT"] . '/'; //Site Path for anything that needs it.
-
-//Setup requirements
-require_once("config/PHPConfig.php");               //php.ini config
-require_once("config/tracking.php");                //Google Analytics
-require_once("classes/class_logging.php");          //Logging
-require_once("classes/class_connection.php");       //Connection.
-require_once("classes/class_functions.php");        //Functions.
-require_once("classes/class_navigation.php");       //Navigation.
-require_once("classes/class_user.php");             //User.
-require_once("classes/class_authentication.php");   //Authentication.
-require_once("classes/class_blog.php");             //Blog.
+include('headerincludes.php');
 
 //Log each index visit.
 Write_Log('views',"Site has logged a page view.");
 ?>
 <HTML>
     <HEAD>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <?php Functions::RefreshDivs() ?>
         <link href="css/frontend.css" rel="stylesheet" type="text/css">
         <?php $User = new User($_SESSION['ID']); $User->Display_Theme(); ?>
         <TITLE>

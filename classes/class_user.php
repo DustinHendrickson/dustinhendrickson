@@ -22,6 +22,7 @@ class User {
     public $Username;
     public $First_Name;
     public $Last_Name;
+    public $FightBot_Name;
     public $Permissions;
     public $EMail;
     public $Account_Last_Login;
@@ -42,6 +43,7 @@ class User {
         $this->Username             = $User_Result["Username"];
         $this->First_Name           = $User_Result["First_Name"];
         $this->Last_Name            = $User_Result["Last_Name"];
+        $this->FightBot_Name        = $User_Result["FightBot_Name"];
         $this->Password             = $User_Result["Password"];
         $this->Permissions          = $User_Result["Permissions"];
         $this->EMail                = $User_Result["EMail"];
@@ -143,19 +145,19 @@ class User {
     {
         $Theme = $this->Config_Settings['Theme'];
         $Theme = strtolower($Theme);
-        if ($Theme != 'Default' && isset($Theme) && $Theme != '') {
+        if ($Theme != 'Default' && $Theme != 'default' && isset($Theme) && $Theme != '') {
             echo "<link href='css/".$Theme . ".css' rel='stylesheet' type='text/css'>";
         }
     }
 
-    public function Edit_User($First_Name, $Last_Name, $EMail, $Permissions, $Password)
+    public function Edit_User($First_Name, $Last_Name, $EMail, $Permissions, $Password, $FightBot_Name='')
     {
         if ($Password != '') {
-            $Config_Array = array (':ID'=>$this->ID,':First_Name'=>$First_Name, ':Last_Name'=>$Last_Name, ':EMail'=>$EMail, ':Permissions'=>$Permissions, ':Password'=>md5($Password));
-            $Results = $this->Connection->Custom_Execute("UPDATE users SET First_Name=:First_Name, Last_Name=:Last_Name, EMail=:EMail, Permissions=:Permissions, Password=:Password  WHERE ID=:ID", $Config_Array);
+            $Config_Array = array (':ID'=>$this->ID,':First_Name'=>$First_Name, ':Last_Name'=>$Last_Name, ':EMail'=>$EMail, ':Permissions'=>$Permissions, ':Password'=>md5($Password), ':FightBot_Name'=>$FightBot_Name);
+            $Results = $this->Connection->Custom_Execute("UPDATE users SET First_Name=:First_Name, Last_Name=:Last_Name, EMail=:EMail, Permissions=:Permissions, Password=:Password, FightBot_Name=:FightBot_Name  WHERE ID=:ID", $Config_Array);
         } else {
-            $Config_Array = array (':ID'=>$this->ID,':First_Name'=>$First_Name, ':Last_Name'=>$Last_Name, ':EMail'=>$EMail, ':Permissions'=>$Permissions);
-            $Results = $this->Connection->Custom_Execute("UPDATE users SET First_Name=:First_Name, Last_Name=:Last_Name, EMail=:EMail, Permissions=:Permissions  WHERE ID=:ID", $Config_Array);
+            $Config_Array = array (':ID'=>$this->ID,':First_Name'=>$First_Name, ':Last_Name'=>$Last_Name, ':EMail'=>$EMail, ':Permissions'=>$Permissions, ':FightBot_Name'=>$FightBot_Name);
+            $Results = $this->Connection->Custom_Execute("UPDATE users SET First_Name=:First_Name, Last_Name=:Last_Name, EMail=:EMail, Permissions=:Permissions, FightBot_Name=:FightBot_Name  WHERE ID=:ID", $Config_Array);
         }
 
         if ($Results) {

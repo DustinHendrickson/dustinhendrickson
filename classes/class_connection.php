@@ -8,7 +8,7 @@ class Connection
     function __construct()
     {
         //Read in Config file for use in the connection.
-        $this->Config = parse_ini_file("DBConfig.ini");
+        $this->Config = parse_ini_file($GLOBALS['Path'] . "DBConfig.ini");
 
         try {
         //Define the DATABASE CONNECTION using PDO, also set attributes needed.
@@ -26,6 +26,7 @@ class Connection
 
     function Custom_Query($query_string,$query_array,$ALL=false)
     {
+
         try {
             $PDO_Prepped = $this->PDO_Connection->prepare($query_string);
             $PDO_Prepped->execute($query_array);

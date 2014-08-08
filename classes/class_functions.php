@@ -111,7 +111,7 @@ class Functions {
 					         'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
 					         'save table contextmenu directionality emoticons template paste textcolor'
 					   ],
-					   toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons', 
+					   toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons',
 					   style_formats: [
 					        {title: 'Bold text', inline: 'b'},
 					        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
@@ -127,7 +127,56 @@ class Functions {
         ";
     }
 
-    public static function getServerStatus($ServerName) {
+    // This function calls custom divs to refresh their PHP content from js/views/ this can be pass variables through GET or POST
+    // Each page called from .load must include "include('../../headerincludes.php');" so that the page can reference librarys.
+    public static function RefreshDivs()
+    {
+        if (self::Get_View() == 'fightbot') {
+            echo '<script type="text/javascript">';
+            echo '$(document).ready(function() {';
+            echo '$.ajaxSetup({ cache: false });';
+            echo 'setInterval(function() {';
+            echo '$("#FightBotStats").load("js/views/fightbot.php", {UserSessionID:'. $_SESSION["ID"] .'});';
+            echo 'if (status == "error") {';
+            echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
+            echo '}';
+            echo '}, 3000);';
+            echo '});';
+            echo '</script>';
+        }
+
+        if (self::Get_View() == 'logs') {
+            echo '<script type="text/javascript">';
+            echo '$(document).ready(function() {';
+            echo '$.ajaxSetup({ cache: false });';
+            echo 'setInterval(function() {';
+            echo '$("#LogBox").load("js/views/logs.php?log='.$_GET["log"].'");';
+            echo 'if (status == "error") {';
+            echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
+            echo '}';
+            echo '}, 3000);';
+            echo '});';
+            echo '</script>';
+        }
+
+        if (self::Get_View() == 'servers') {
+            echo '<script type="text/javascript">';
+            echo '$(document).ready(function() {';
+            echo '$.ajaxSetup({ cache: false });';
+            echo 'setInterval(function() {';
+            echo '$("#ServerList").load("js/views/servers.php");';
+            echo 'if (status == "error") {';
+            echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
+            echo '}';
+            echo '}, 3000);';
+            echo '});';
+            echo '</script>';
+        }
+
+    }
+
+    public static function getServerStatus($ServerName)
+    {
       exec("ps aux | pgrep " . $ServerName, $ServerStatus);
 
        if ($ServerStatus[0] != "") {
@@ -137,7 +186,8 @@ class Functions {
        }
     }
 
-    public static function displayServerStatus($ServerStatus) {
+    public static function displayServerStatus($ServerStatus)
+    {
       switch ($ServerStatus){
             case "Up":
               echo "<div class='success'> {$ServerStatus} </div>";
@@ -148,7 +198,8 @@ class Functions {
           }
     }
 
-    public static function getRemoteSeverStatusFromPort($RemoteSite, $PortNumber) {
+    public static function getRemoteSeverStatusFromPort($RemoteSite, $PortNumber)
+    {
       // Here we do a basic connection test to see if this port is reachable on the network, times out in 1 seconds,
       // if the timeout succeeds, we know that server is down. Otherwise it's up.
       $socket = @fsockopen($RemoteSite, $PortNumber, $errorNumber, $errorString, 1);
@@ -160,7 +211,8 @@ class Functions {
       }
     }
 
-    public static function getNumberOfConnectionsOnPort($PortNumber) {
+    public static function getNumberOfConnectionsOnPort($PortNumber)
+    {
       // Only works on internal connections, returns the number of connections to the specific port.
       $count = shell_exec("netstat -an | grep :{$PortNumber} | grep ESTABLISHED | wc --lines");
       return $count;

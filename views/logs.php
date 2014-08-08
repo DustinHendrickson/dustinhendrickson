@@ -1,5 +1,4 @@
 <div class='ContentHeader'>Logs</div><hr>
-|
 <?php
 //Apply any page restrictions.
 Functions::Check_User_Permissions_Redirect('Admin');
@@ -28,15 +27,8 @@ echo '<hr>';
 if ( isset($log) ) {
 
     //Here we setup our scrolling text box so the log doesn't take up to much space.
-    echo '<div id="logs" name="logs" style="overflow:auto; height:60%; width:100%">';
-
-    //Read in the Log file to an array and reverse the order for html display.
-    $logLines = array_reverse(file($GLOBALS['Path'] . '/logs/' . $log));
-
-    //Loop through each line and echo the string.
-    foreach ($logLines as $Index => $Line) {
-        echo Color_Log_Entry($Index . ". " . $Line);
-    }
-
+    echo '<div id="LogBox" name="logs" style="overflow:auto; height:60%; width:100%">';
+    echo '<img src="../img/ajax-loader.gif"> <b>Loading Logs...</b>';
     echo '</div>';
 }
+?>
