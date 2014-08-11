@@ -1,6 +1,7 @@
 <?php
 
-echo "<div class='Error'> ERROR: The page you're requesting can't be found.<br></div><hr> ";
+echo "<div class='Error'> 404 ERROR: The page you're requesting can't be found.</div><hr> ";
 
+echo "<br><b>WHOOPSIE!</b><br>Seems you have navigated to a dead link.<br>Please try your request again!<br>";
 
-echo "<br>404 :(<br>";
+echo "<img src='../img/whoopsie.png'>";
