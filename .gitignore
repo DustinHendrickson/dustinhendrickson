@@ -3,4 +3,4 @@ logs/
 composer.lock
 vendor/
 robots.txt
-
+uploads/

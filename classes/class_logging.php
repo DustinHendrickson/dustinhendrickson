@@ -2,7 +2,7 @@
 //Writes to a specified LOG file.
 function Write_Log($log, $logEntry, $logPath='logs/')
 {
-    // We need to setup some backtracing to find hte function that called this function.
+    // We need to setup some backtracing to find the function that called this function.
     $backtrace = debug_backtrace();
 
     if (isset($backtrace[1]['function'])) {
@@ -45,8 +45,9 @@ function Color_Log_Entry($logLine='')
     // These are defined in frontend.css as .Log{Color}
     $Color_Types["NOTICE"] = 'Orange';
     $Color_Types["ACCOUNT"] = 'Blue';
-    $Color_Types["WARNING"] = 'Red';
+    $Color_Types["WARNING"] = 'Orange';
     $Color_Types["FAIL"] = 'Red';
+    $Color_Types["ERROR"] = 'Red';
     $Color_Types["SUCCESS"] = 'Green';
     $Color_Types["DEFAULT"] = 'Grey';
 

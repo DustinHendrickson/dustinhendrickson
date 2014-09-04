@@ -31,6 +31,7 @@ class Navigation {
             echo "<li><a href='?view=blog_admin'>Blog Admin</a></li>";
             echo "<li><a href='?view=servers'>View Servers</a></li>";
             echo "<li><a href='?view=edit_user'>Edit Users</a></li>";
+            echo "<li><a href='?view=upload'>Upload File</a></li>";
             echo "</ul></li>";
             }
 
