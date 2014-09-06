@@ -93,6 +93,26 @@ class Functions {
         ";
     }
 
+    //Rereshes page once.
+    public static function Refresh_Page_Once()
+    {
+        echo "
+        <head>
+        <script type='text/JavaScript'>
+        <!--
+        function onceRefresh() {
+             if(!window.location.hash) {
+                window.location = window.location + '#loaded';
+                window.location.reload();
+            }
+        }
+        //   -->
+        </script>
+        </head>
+        <body onload='JavaScript:onceRefresh();'>
+        ";
+    }
+
     //Anytime you need fancy text inputs, call this at the top of the page.
     //This replaces any <textarea> with a fancy editor.
     public static function Prepare_TinyMCE()

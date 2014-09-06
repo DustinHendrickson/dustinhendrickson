@@ -8,7 +8,7 @@ switch ($_POST['Mode'])
     {
         case 'Save':
             $User->Save_Configuration($User->ID,$_POST['Items_Per_Page'],$_POST['Theme'],$_POST['Show_Help']);
-            Functions::Refresh_Page(1);
+            Functions::Refresh_Page_Once();
             break;
     }
 

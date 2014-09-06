@@ -11,6 +11,7 @@
     <div class='BlogTitle'><a href='?view=blog_post&blog_id=:ID&from_blog_page={$Blog->Get_Page()}'>:Title</a></div>
     <div class='BlogCreation'>by :Username - :CreationDate</div>
     <div class='BlogBody'>:Body</div>
+    <div class='BlogCommentLink'><a href='?view=blog_post&blog_id=:ID&from_blog_page={$Blog->Get_Page()}'>Comments: :CommentCount</a></div>
     </div>
     ";
 

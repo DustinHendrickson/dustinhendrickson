@@ -80,11 +80,14 @@ Write_Log('views',"Site has logged a page view.");
                 <td width="25%" height="25px"><a href='' target='_blank'></a></td>
             </tr>
             <tr>
-                <td width="25%" height="25px"><i>&copy; 2012-<?php echo date("Y"); ?> - Dustin Hendrickson</a></i></td>
+                <td width="25%" height="25px"><a href='' target='_blank'></a></td>
                 <td width="25%" height="25px"><a href='' target='_blank'></a></td>
                 <td width="25%" height="25px"><a href='' target='_blank'></a></td>
                 <td width="25%" height="25px"><a href='' target='_blank'></a></td>
             </tr>
+        </table>
+        <table>
+        <tr><td width="50%" height="25px"><i>&copy; 2012-<?php echo date("Y"); ?> - Dustin Hendrickson</a></i></td></tr>
         </table>
 
         </div>

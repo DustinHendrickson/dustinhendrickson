@@ -9,6 +9,7 @@ class Blog
     //Pagination Variables
     public $Blog_Page; //This is an array of all blog posts on the selected page. Example: $Blog_Page[Page#][BlogPost#] $Blog_Page[1][0] -> Will return the first post on page 1.
     public $Total_Pages;
+    public $Comments; //Array of comments on the blog post.
 
 
     //Construction Method
@@ -82,6 +83,53 @@ class Blog
         }
     }
 
+    //Comment Data Manipulation
+    function Add_Comment($CommentUserID,$BlogPostID,$CommentText)
+    {
+        if ($CommentText != '') {
+            $Comment_Array = array (':CommentUserID'=>$CommentUserID,':BlogPostID'=>$BlogPostID,':CommentText'=>$CommentText);
+            $Results = $this->Connection->Custom_Execute("INSERT INTO blog_comments (CommentUserID, BlogPostID, CommentText, CommentDate) VALUES (:CommentUserID, :BlogPostID, :CommentText, NOW())", $Comment_Array, true);
+        }
+
+        if ($Results && $CommentText != '') {
+            $this->Message='Blog comment successfully added.';
+            $this->Message_Type='Success';
+        } else {
+            $this->Message='Blog comment encountered an error.';
+            $this->Message_Type='Error';
+        }
+    }
+
+    function Delete_Comment($CommentID)
+    {
+        $Comment_Array = array (':CommentID'=>$CommentID);
+        $Results = $this->Connection->Custom_Execute("DELETE FROM blog_comments WHERE CommentID=:CommentID", $Comment_Array);
+
+        if ($Results){
+            $this->Message="Blog comment [{$CommentID}] successfully deleted.";
+            $this->Message_Type='Success';
+        } else {
+            $this->Message='Blog comment delete [{$CommentID}] encountered an error.';
+            $this->Message_Type='Error';
+        }
+    }
+
+    function Edit_Comment($CommentID,$CommentText)
+    {
+        if ($CommentText != '') {
+            $Comment_Array = array (':CommentID'=>$CommentID,':CommentText'=>$CommentText);
+            $Results = $this->Connection->Custom_Execute("UPDATE blog_comments SET CommentText=:CommentText WHERE CommentID=:CommentID", $Comment_Array);
+        }
+
+        if ($Results && $CommentText != ''){
+            $this->Message="Blog comment [{$CommentID}] successfully edited.";
+            $this->Message_Type='Success';
+        } else {
+            $this->Message='Blog comment edit [{$CommentID}] encountered an error.';
+            $this->Message_Type='Error';
+        }
+    }
+
     //Writes out the links for all blog pages after Get_Posts() has been run.
     function Write_Pagination_Nav()
     {
@@ -118,13 +166,22 @@ class Blog
         return $BlogID;
     }
 
+    function Get_Blog_Post_Comment_Count($BlogPostID)
+    {
+        $SQL = "SELECT COUNT(*) FROM blog_comments WHERE BlogPostID = :BlogPostID";
+        $Array = array(':BlogPostID' => $BlogPostID);
+        $Result = $this->Connection->Custom_Count_Query($SQL, $Array);
+
+        return $Result[0];
+    }
+
     //This functions takes an array of blog post data and formats it versus a template object.
     private function Display_Blog_Page_Post($Blog_Post,$Template)
     {
         //Setup a new object for the Blog Post author id.
         $User = new User($Blog_Post['UserID']);
 
-        //Templating Engine
+        //Template Engine
         //This is where we setup the ID's
         //and their values that will get replaced.
         $Template_Replacement = array(
@@ -133,13 +190,105 @@ class Blog
             ':Body' => $Blog_Post['Body'],
             ':CreationDate' => date('h:i A l F j, Y', strtotime($Blog_Post['Creation_Date'])),
             ':Username' => $User->Username,
-            ':UserID' => $User->ID
+            ':UserID' => $User->ID,
+            ':CommentCount' => $this->Get_Blog_Post_Comment_Count($Blog_Post['ID'])
         );
 
         //Replace the template strings with their values.
         $Template_Return = str_replace(array_keys($Template_Replacement),array_values($Template_Replacement),$Template);
 
         echo $Template_Return;
+
+    }
+
+    public function Display_Blog_Post_Comments($BlogPostID,$Template)
+    {
+        $Copied_Template = $Template;
+        $SQL = "SELECT * FROM blog_comments WHERE BlogPostID = :BlogPostID ORDER BY CommentDate DESC";
+        $Array = array(':BlogPostID' => $BlogPostID);
+        $Result = $this->Connection->Custom_Query($SQL, $Array, true);
+
+        // Display each comment for the post.
+        if(isset($Result)) {
+            foreach($Result as $Row){
+
+                $CommentUser = new User($Row['CommentUserID']);
+                $SessionUser = new User($_SESSION['ID']);
+
+                //Template Engine
+                //This is where we setup the ID's
+                //and their values that will get replaced.
+                $Template_Replacement = array(
+                    ':CommentUsername' => $CommentUser->Username,
+                    ':CommentText' => $Row['CommentText'],
+                    ':CommentDate' => date('h:i A l F j, Y', strtotime($Row['CommentDate'])),
+                    ':CommentID' => $Row['CommentID'],
+                    ':CommentUserID' => $Row['CommentUserID'],
+                    ':BlogPostID' => $BlogPostID
+                );
+
+                //Here we check if the current user is the owner of the comment, if so, give them options to Edit or Delete.
+                if ($SessionUser->ID == $CommentUser->ID){
+
+                    $Template_Copy ="
+                    <hr>
+                    <form action='?view=blog_post&blog_id={$_GET['blog_id']}&from_blog_page={$_GET['from_blog_page']}' method='post'>
+                    <div class='CommentWrapper'>
+                    <div class='CommentUsername'>:CommentUsername - 
+                        <input size='10' type='submit' value='Edit' name='Mode'>
+                        <input size='10' style='color:red;' type='submit' value='Delete' name='Mode'>
+                    </div>
+                    <div class='CommentText'><textarea name='CommentText' type='text'>:CommentText</textarea></div><br>
+                    <div class='CommentDate'>last updated :CommentDate</div>
+                    <input name='CommentID' type='hidden' value=':CommentID'>
+                    <input name='CommentUserID' type='hidden' value=':CommentUserID'>
+                    <input name='BlogPostID' type='hidden' value=':BlogPostID'>
+                    </div>
+                    </form>
+                    <hr>
+                    ";
+
+                    $Template_Replacement = array(
+                    ':CommentUsername' => $CommentUser->Username,
+                    ':CommentText' => $Row['CommentText'],
+                    ':CommentDate' => date('h:i A l F j, Y', strtotime($Row['CommentDate'])),
+                    ':CommentID' => $Row['CommentID'],
+                    ':CommentUserID' => $Row['CommentUserID'],
+                    ':BlogPostID' => $BlogPostID
+                    );
+
+                } else {
+                    //Here we reset the template to it's original if no modifications were necessary
+                    $Template_Copy = $Template;
+
+                    //If the user has admin access, give them a button to delete the post.
+                    if (Functions::Check_User_Permissions("Admin")){
+                        $Template_Copy ="
+                        <hr>
+                        <form action='?view=blog_post&blog_id={$_GET['blog_id']}&from_blog_page={$_GET['from_blog_page']}' method='post'>
+                        <div class='CommentWrapper'>
+                        <div class='CommentUsername'>:CommentUsername - 
+                            <input size='10' style='color:red;' type='submit' value='Delete' name='Mode'>
+                        </div>
+                        <div class='CommentText'>:CommentText</div><br>
+                        <div class='CommentDate'>last updated :CommentDate</div>
+                        <input name='CommentID' type='hidden' value=':CommentID'>
+                        <input name='CommentUserID' type='hidden' value=':CommentUserID'>
+                        <input name='BlogPostID' type='hidden' value=':BlogPostID'>
+                        </div>
+                        </form>
+                        <hr>
+                        ";
+                    }
+                }
+
+                //Replace the template strings with their values.
+                $Template_Return = str_replace(array_keys($Template_Replacement),array_values($Template_Replacement),$Template_Copy);
+
+                echo $Template_Return;
+
+            }
+        }
 
     }
 

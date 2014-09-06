@@ -4,3 +4,4 @@ composer.lock
 vendor/
 robots.txt
 uploads/
+mysql/

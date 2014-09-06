@@ -39,8 +39,8 @@ function Login($User,$Pass)
                         $this->Connection->Custom_Execute("UPDATE users SET Account_Last_Login=:Account_Last_Login WHERE ID=:ID",$Last_Login_Array);
                         Write_Log("php", "ACCOUNT: Successfull login attempt for account [$Username] and password [$Password]");
 
-                        // Redirect user to index page after login.
-                        header( 'Location: /' ) ;
+                        // Redirect user to Last Page Visited after login.
+                        header( 'Location: ' . $GLOBALS['Query_String'] ) ;
                     } else {
                         $this->Error_Message = "This account is locked and may not log in.";
                         Write_Log("php", "ACCOUNT: Locked login attempt for account [$Username] and password [$Password]");
@@ -134,7 +134,8 @@ function Logout()
 {
     $_SESSION = array();
     session_destroy();
-    header( 'Location: ?' );
+    header( 'Location: ' . $GLOBALS['Query_String'] ) ;
+
 }
 
 } // END CLASS

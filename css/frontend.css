@@ -33,7 +33,7 @@ body{
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin: 0 auto -150px; /* the bottom margin is the negative value of the footer's height */
+    margin: 0 auto -175px; /* the bottom margin is the negative value of the footer's height */
 }
 
 #Header {
@@ -113,7 +113,7 @@ body{
 #Footer {
     clear: both;
     width: 100%;
-    height: 200px;
+    height: 225px;
     position: relative;
     border-top: solid Black;
     border-width: 2px;
@@ -183,7 +183,7 @@ body{
     border-style: solid;
     border-color: black;
     border-width: 1px;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
     margin-left: 1%;
 }
 
@@ -201,6 +201,29 @@ body{
 .BlogCreation {
     color: grey;
     font-size: small;
+}
+
+.CommentWrapper {
+    width: 95%;
+    background-color: White;
+    padding: 1px;
+    margin-bottom: 10px;
+    margin-left: 1%;
+}
+
+.CommentDate {
+    color: grey;
+    font-size: small;
+}
+
+.CommentUsername {
+    font-style: bold;
+    font-size: large;
+}
+
+.CommentText {
+    font-style: italic;
+    font-size: medium;
 }
 
 /* Pagination */

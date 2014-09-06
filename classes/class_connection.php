@@ -21,8 +21,8 @@ class Connection
             echo '<br>An Error occured connecting to the server.<br>';
             Write_Log("sql", "[ Error #" . $exception->getCode() . " ] Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
         }
-
     }
+
 
     function Custom_Query($query_string,$query_array,$ALL=false)
     {
@@ -42,8 +42,26 @@ class Connection
         }
 
         return $PDO_Results;
-
     }
+
+
+    function Custom_Count_Query($query_string,$query_array)
+    {
+
+        try {
+            $PDO_Prepped = $this->PDO_Connection->prepare($query_string);
+            $PDO_Prepped->execute($query_array);
+
+            $PDO_Results = $PDO_Prepped->fetch(PDO::FETCH_NUM);
+
+        } catch(PDOException $exception) {
+            echo "<br>A Query Error has occured.<br>";
+            Write_Log("sql", "Line #" . $exception->getLine() . " on " . $exception->getFile() . " >> " . $exception->getMessage());
+        }
+
+        return $PDO_Results;
+    }
+
 
     function Custom_Execute($query_string,$query_array)
     {
@@ -57,7 +75,6 @@ class Connection
         }
 
         return $Results;
-
     }
 
 }//END OF CLASS
