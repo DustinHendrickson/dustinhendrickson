@@ -45,7 +45,7 @@
     <div class='CommentWrapper'>
     <div class='CommentUsername'>:CommentUsername</div>
     <div class='CommentText'>:CommentText</div><br>
-    <div class='CommentDate'>:CommentDate</div>
+    <div class='CommentDate'>last updated :CommentDate</div>
     <input name='CommentID' type='hidden' value=':CommentID'>
     <input name='CommentUserID' type='hidden' value=':CommentUserID'>
     <input name='BlogPostID' type='hidden' value=':BlogPostID'>
