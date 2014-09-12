@@ -31,7 +31,7 @@ class User {
     public $Points;
     public $Points_Last_Recieved;
     public $Config_Settings = array();
-    public $SECONDS_INTERVAL = 86400;     // Interval in seconds that point redemption refreshes.
+    public $SECONDS_INTERVAL = 43200;     // Interval in seconds that point redemption refreshes.
     public $TODAYS_DATE;
 
     // Initial function to search the database for the desired user and populate this class object.

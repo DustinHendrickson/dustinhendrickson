@@ -149,7 +149,8 @@ class Functions {
 
     // This function calls custom divs to refresh their PHP content from js/views/ this can be pass variables through GET or POST
     // Each page called from .load must include "include('../../headerincludes.php');" so that the page can reference librarys.
-    public static function RefreshDivs()
+    // If the variable $SpecificDivToRefresh is set the included file and div need to be named the same.
+    public static function RefreshDivs($SpecificDivToRefresh="")
     {
         if (self::Get_View() == 'fightbot') {
             echo '<script type="text/javascript">';
@@ -189,6 +190,20 @@ class Functions {
             echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
             echo '}';
             echo '}, 3000);';
+            echo '});';
+            echo '</script>';
+        }
+
+        if ($SpecificDivToRefresh != "") {
+            echo '<script type="text/javascript">';
+            echo '$(document).ready(function() {';
+            echo '$.ajaxSetup({ cache: false });';
+            echo 'setInterval(function() {';
+            echo '$("#' . $SpecificDivToRefresh . '").load("js/views/' .$SpecificDivToRefresh . '.php");';
+            echo 'if (status == "error") {';
+            echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
+            echo '}';
+            echo '}, 1000);';
             echo '});';
             echo '</script>';
         }

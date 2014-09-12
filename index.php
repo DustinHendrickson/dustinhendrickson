@@ -7,7 +7,7 @@ Write_Log('views',"Site has logged a page view.");
 <HTML>
     <HEAD>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <?php Functions::RefreshDivs() ?>
+        <?php Functions::RefreshDivs(); Functions::RefreshDivs('showtime'); ?>
         <link href="css/frontend.css" rel="stylesheet" type="text/css">
         <?php $User = new User($_SESSION['ID']); $User->Display_Theme(); ?>
         <TITLE>
@@ -87,7 +87,12 @@ Write_Log('views',"Site has logged a page view.");
             </tr>
         </table>
         <table>
-        <tr><td width="50%" height="25px"><i>&copy; 2012-<?php echo date("Y"); ?> - Dustin Hendrickson</a></i></td></tr>
+        <tr><td width="15%" height="25px" align="center">
+        <i>&copy; 2012-<?php echo date("Y"); ?> - Dustin Hendrickson</a></i>
+        <div id='showtime'>
+        <img src="../img/ajax-loader.gif"> <b>Loading Time...</b>
+        </div>
+        </td></tr>
         </table>
 
         </div>
