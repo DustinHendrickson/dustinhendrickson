@@ -49,6 +49,13 @@ Functions::displayServerStatus($ServerStatus);
  ?>
 <br>
 
+<b>Console</b>
+<?php
+$ServerStatus=Functions::getServerStatus("shellinaboxd");
+Functions::displayServerStatus($ServerStatus);
+ ?>
+<br>
+
 <b>IRC GUI</b>
 <?php
 $ServerStatus=Functions::getServerStatus("kiwiirc");

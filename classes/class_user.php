@@ -57,12 +57,18 @@ class User {
     private function Set_Config_Info()
     {
         // Populate User Config Settings Into Object
-        $User_Config_Array = array (':ID'=>$this->ID);
-        $User_Config_Result = $this->Connection->Custom_Query("SELECT * FROM users_settings WHERE userID = :ID LIMIT 1", $User_Config_Array);
+        if(isset($this->ID)){
+            $User_Config_Array = array (':ID'=>$this->ID);
+            $User_Config_Result = $this->Connection->Custom_Query("SELECT * FROM users_settings WHERE UserID = :ID LIMIT 1", $User_Config_Array);
 
-		$this->Config_Settings['Items_Per_Page'] = $User_Config_Result['Items_Per_Page'];
-		$this->Config_Settings['Theme']          = $User_Config_Result['Theme'];
-		$this->Config_Settings['Show_Help']      = $User_Config_Result['Show_Help'];
+            if (!$User_Config_Result){
+                Write_Log('users', "NOTICE: Could not locate user settings for ID [" . $this->ID . "]");
+            } else {
+                $this->Config_Settings['Items_Per_Page'] = $User_Config_Result['Items_Per_Page'];
+                $this->Config_Settings['Theme']          = $User_Config_Result['Theme'];
+                $this->Config_Settings['Show_Help']      = $User_Config_Result['Show_Help'];
+            }
+        }
     }
 
     function __construct($ID)
@@ -77,11 +83,20 @@ class User {
     // This function saves the input settings to the DB and then updates the current object with the new values.
     public function Save_Configuration($UserID, $Items, $Theme, $Show_Help)
     {
+        // Here we check to see if the user already has a settings entry. If not, we add one, if they do, we update it.
+        $Checker_Array = array(':UserID'=>$UserID);
+        $Checker_Results = $this->Connection->Custom_Query("SELECT * FROM users_settings WHERE UserID=:UserID", $Checker_Array);
+
         $Config_Array = array (':Items'=>$Items,':Theme'=>$Theme,':Show_Help'=>$Show_Help,':UserID'=>$UserID);
-        $Results = $this->Connection->Custom_Execute("UPDATE users_settings SET Items_Per_Page=:Items, Theme=:Theme, Show_Help=:Show_Help WHERE UserID=:UserID", $Config_Array);
-        $this->Set_Config_Info();
+        if (!$Checker_Results) {
+            $Results = $this->Connection->Custom_Execute("INSERT INTO users_settings (UserID, Items_Per_Page, Theme, Show_Help) VALUES (:UserID, :Items, :Theme, :Show_Help)", $Config_Array);
+        } else {
+            $Results = $this->Connection->Custom_Execute("UPDATE users_settings SET Items_Per_Page=:Items, Theme=:Theme, Show_Help=:Show_Help WHERE UserID=:UserID", $Config_Array);
+        }
+
 
         if ($Results) {
+            $this->Set_Config_Info();
             $this->Message='Settings successfully edited.';
             $this->Message_Type='Success';
         } else {

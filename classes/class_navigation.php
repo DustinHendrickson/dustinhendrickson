@@ -22,7 +22,7 @@ class Navigation {
             echo "<ul>";
             echo "<li><a href='?view=logs'>Logs</a></li>";
             echo "<li><a href='?view=console'>Console</a></li>";
-            echo "<li><a href='mysql/'>Mysql</a></li>";
+            echo "<li><a target='_blank' href='mysql/'>Mysql</a></li>";
             echo "</ul></li>";
             }
 
