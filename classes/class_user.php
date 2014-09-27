@@ -61,12 +61,14 @@ class User {
             $User_Config_Array = array (':ID'=>$this->ID);
             $User_Config_Result = $this->Connection->Custom_Query("SELECT * FROM users_settings WHERE UserID = :ID LIMIT 1", $User_Config_Array);
 
-            if (!$User_Config_Result){
-                Write_Log('users', "NOTICE: Could not locate user settings for ID [" . $this->ID . "]");
-            } else {
+            if ($User_Config_Result){
                 $this->Config_Settings['Items_Per_Page'] = $User_Config_Result['Items_Per_Page'];
                 $this->Config_Settings['Theme']          = $User_Config_Result['Theme'];
                 $this->Config_Settings['Show_Help']      = $User_Config_Result['Show_Help'];
+            } else {
+                $this->Config_Settings['Items_Per_Page'] = 5;
+                $this->Config_Settings['Theme']          = "Default";
+                $this->Config_Settings['Show_Help']      = 1;
             }
         }
     }
