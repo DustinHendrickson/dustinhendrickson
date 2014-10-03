@@ -26,12 +26,12 @@ CREATE TABLE `blog` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `UserID` int(11) NOT NULL,
   `Title` varchar(54) NOT NULL,
-  `Body` text NOT NULL,
+  `Body` mediumtext NOT NULL,
   `Creation_Date` datetime NOT NULL,
   `Active` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`ID`),
   KEY `UserID` (`UserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,11 +44,11 @@ DROP TABLE IF EXISTS `blog_comments`;
 CREATE TABLE `blog_comments` (
   `CommentID` int(255) NOT NULL AUTO_INCREMENT,
   `BlogPostID` int(255) NOT NULL,
-  `CommentText` text NOT NULL,
+  `CommentText` mediumtext NOT NULL,
   `CommentUserID` varchar(100) NOT NULL,
   `CommentDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`CommentID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `users` (
   `Points_Last_Recieved` datetime DEFAULT NULL,
   `FightBot_Name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,13 +84,13 @@ DROP TABLE IF EXISTS `users_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_settings` (
+  `SettingID` int(100) NOT NULL AUTO_INCREMENT,
   `UserID` int(100) NOT NULL,
   `Items_Per_Page` int(100) NOT NULL DEFAULT '5',
   `Theme` varchar(26) NOT NULL DEFAULT 'Default',
   `Show_Help` tinyint(1) NOT NULL DEFAULT '1',
-  `SettingID` int(100) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`SettingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -102,4 +102,4 @@ CREATE TABLE `users_settings` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-27  7:38:10
+-- Dump completed on 2014-10-02  7:36:57
