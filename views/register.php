@@ -6,8 +6,6 @@
                 }
 ?>
 
-<?php if (isset($Auth->Error_Message)) { echo "<div class='Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); } ?>
-
                     <div class='ContentHeader'>Register</div><hr>
                     <form action='?view=register' method='post'>
                         <table>

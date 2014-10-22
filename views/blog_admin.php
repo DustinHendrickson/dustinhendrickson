@@ -10,19 +10,16 @@
         case 'Edit':
             $Blog = new Blog();
             $Blog->Edit_Post($_POST['postID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
-            $Blog->Display_Message();
             break;
 
         case 'Add':
             $Blog = new Blog();
             $Blog->Add_Post($_SESSION['ID'],str_replace($String_Protector_Array,"",$_POST['Title']),str_replace($String_Protector_Array,"",$_POST['Body']));
-            $Blog->Display_Message();
             break;
 
         case 'Delete':
             $Blog = new Blog();
             $Blog->Delete_Post($_POST['postID']);
-            $Blog->Display_Message();
             break;
     }
 

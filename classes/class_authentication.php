@@ -3,7 +3,6 @@
 class Authentication
 {
 public $Connection;
-public $Error_Message;
 const DATE_FORMAT = 'Y-m-d H:i:s';
 
 function __construct()
@@ -39,18 +38,22 @@ function Login($User,$Pass)
                         $this->Connection->Custom_Execute("UPDATE users SET Account_Last_Login=:Account_Last_Login WHERE ID=:ID",$Last_Login_Array);
                         Write_Log("php", "ACCOUNT: Successfull login attempt for account [$Username] and password [$Password]");
 
+                        // Display success toast.
+                        Toasts::addNewToast("You have logged in as " . $_SESSION['Name'], "success");
+
                         // Redirect user to Last Page Visited after login.
                         header( 'Location: ' . $GLOBALS['Query_String'] ) ;
+                        exit();
                     } else {
-                        $this->Error_Message = "This account is locked and may not log in.";
+                        Toasts::addNewToast("This account is locked and may not log in.", "error");
                         Write_Log("php", "ACCOUNT: Locked login attempt for account [$Username] and password [$Password]");
                     }
             } else {
-                $this->Error_Message = "Username and Password combination is incorrect.";
+                Toasts::addNewToast("Username and Password combination is incorrect.", "error");
                 Write_Log("php", "ACCOUNT: Failed login attempt for account [$Username] and password [$Password]");
             }
     } else {
-        $this->Error_Message = "Please fill out all required fields.";
+        Toasts::addNewToast("Please fill out all required fields.", "error");
         Write_Log("php", "ACCOUNT: Not all login fields given.");
     }
 }
@@ -105,27 +108,27 @@ function Register($User,$Pass,$Mail,$Permissions='4')
                             self::Login($Username,$Password);
 
                         } else {
-                            $this->Error_Message = "There was a problem creating this account. Please try again.";
+                            Toasts::addNewToast("There was a problem creating this account. Please try again.", "error");
                             Write_Log("php", "ACCOUNT: Unknown error, couldn't register user to database.");
                         }
                      } else {
-                        $this->Error_Message = "That email has been taken. Please select a new one.";
+                        Toasts::addNewToast("That email has been taken. Please select a new one.", "error");
                         Write_Log("php", "ACCOUNT: Failed register attempt for account [$Username], email [$EMail] already exists.");
                     }
                 } else {
-                    $this->Error_Message = "That username has been taken. Please select a new one.";
+                    Toasts::addNewToast("That username has been taken. Please select a new one.", "error");
                     Write_Log("php", "ACCOUNT: Failed register attempt for account [$Username] username already exists.");
                 }
             } else {
-                $this->Error_Message = "Please select an valid email";
+                Toasts::addNewToast("Please select a valid email.", "error");
                 Write_Log("php", "ACCOUNT: Non valid email given.");
             }
         } else {
-            $this->Error_Message = "Please select an valid alphanumeric username ";
+            Toasts::addNewToast("Please select a valid alphanumeric username.", "error");
             Write_Log("php", "ACCOUNT: Non alphanumeric username given.");
         }
     } else {
-        $this->Error_Message = "Please fill out all required fields.";
+        Toasts::addNewToast("Please fill out all required fields.", "error");
         Write_Log("php", "ACCOUNT: Not all register fields given.");
     }
 }
@@ -134,8 +137,9 @@ function Logout()
 {
     $_SESSION = array();
     session_destroy();
-    header( 'Location: ' . $GLOBALS['Query_String'] ) ;
 
+    header( 'Location: ' . $GLOBALS['Query_String'] ) ;
+    exit();
 }
 
 } // END CLASS

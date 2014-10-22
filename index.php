@@ -6,7 +6,10 @@ Write_Log('views',"Site has logged a page view.");
 ?>
 <HTML>
     <HEAD>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" type="text/javascript"></script>
+        <script src="js/jquery/jquery.growl.js" type="text/javascript"></script>
+        <link href="css/jquery.growl.css" rel="stylesheet" type="text/css" />
+
         <?php Functions::RefreshDivs(); Functions::RefreshDivs('showtime'); ?>
         <link href="css/frontend.css" rel="stylesheet" type="text/css">
         <?php $User = new User($_SESSION['ID']); $User->Display_Theme(); ?>
@@ -98,3 +101,4 @@ Write_Log('views',"Site has logged a page view.");
         </div>
     </BODY>
 </HTML>
+<?php Toasts::displayAllToasts(); ?>

@@ -9,7 +9,6 @@ switch ($_POST['Mode'])
         case 'Save':
             $User = new User($_POST['userID']);
             $User->Edit_User(Functions::Make_Safe($_POST['First_Name']), Functions::Make_Safe($_POST['Last_Name']), Functions::Make_Safe($User->EMail), Functions::Make_Safe($User->Permissions), Functions::Make_Safe($_POST['Password']), Functions::Make_Safe($_POST['FightBot_Name']));
-            $User->Display_Message();
             break;
         
     }

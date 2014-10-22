@@ -7,19 +7,16 @@
         case 'Edit':
             $Blog = new Blog();
             $Blog->Edit_Comment($_POST['CommentID'],str_replace($String_Protector_Array,"",$_POST['CommentText']));
-            $Blog->Display_Message();
             break;
 
         case 'Add':
             $Blog = new Blog();
             $Blog->Add_Comment($_SESSION['ID'], str_replace($String_Protector_Array,"",$_POST['BlogPostID']), str_replace($String_Protector_Array,"",$_POST['CommentText']) );
-            $Blog->Display_Message();
             break;
 
         case 'Delete':
             $Blog = new Blog();
             $Blog->Delete_Comment($_POST['CommentID']);
-            $Blog->Display_Message();
             break;
     }
 

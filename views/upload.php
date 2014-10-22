@@ -12,12 +12,14 @@ switch ($_POST['Mode'])
             if ($_FILES["file"]["error"] > 0) {
                 echo "Error: " . $_FILES["file"]["error"] . "<br>";
                 echo "<hr><br>";
+                Toasts::addNewToast('Something went wrong with the file upload. Please try again.','error');
                 Write_Log("upload", "UPLOAD:ERROR " . $User->Username . " tried uploading file " . $_FILES["file"]["name"] . " and ran into error " . $_FILES["file"]["error"]);
             } else {
 
                 // Make sure there is not already a file with that name on the system.
                 if (file_exists("/var/www/uploads/" . $_FILES["file"]["name"])) {
                     echo "ERROR: " . $_FILES["file"]["name"] . " already exists. ";
+                    Toasts::addNewToast('That file already exists, please pick a different file or rename it.','error');
                     Write_Log("upload", "UPLOAD:ERROR " . $User->Username . " tried uploading file " . $_FILES["file"]["name"] . " but it already exists.");
                 } else {
 
@@ -30,6 +32,7 @@ switch ($_POST['Mode'])
                     // Here we move the file from the tmp directory to the server uploads directory and link the file to the user.
                     move_uploaded_file($_FILES["file"]["tmp_name"], "/var/www/uploads/" . $_FILES["file"]["name"]);
                     echo "<b>Link to file:</b> " . "<a target='_blank' href='https://dustinhendrickson.com/uploads/" . $_FILES["file"]["name"] . "'> https://dustinhendrickson.com/uploads/" . $_FILES["file"]["name"] ."</a>";
+                    Toasts::addNewToast('File upload was successful.','success');
                     Write_Log("upload", "UPLOAD:SUCCESS " . $User->Username . " successfully uploaded file " . $_FILES["file"]["name"]);
                 }
 

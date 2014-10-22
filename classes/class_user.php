@@ -99,11 +99,9 @@ class User {
 
         if ($Results) {
             $this->Set_Config_Info();
-            $this->Message='Settings successfully edited.';
-            $this->Message_Type='Success';
+            Toasts::addNewToast('Settings successfully edited.','success');
         } else {
-            $this->Message='There was an issue saving this configuration, please try again.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('There was an issue saving this configuration, please try again.','error');
         }
     }
 
@@ -177,17 +175,17 @@ class User {
             $Results = $this->Connection->Custom_Execute("UPDATE users SET First_Name=:First_Name, Last_Name=:Last_Name, EMail=:EMail, Permissions=:Permissions, FightBot_Name=:FightBot_Name  WHERE ID=:ID", $Config_Array);
         }
 
+        Write_Log('users', "Trying to edit UserID [" . $this->ID . "]");
+
         if ($Results) {
             $this->Set_User_Info();
-            $this->Message='User was edited successfully';
-            $this->Message_Type='Success';
+            Toasts::addNewToast('User was edited successfully.','success');
+            Write_Log('users', "Success - Edited user [" . $this->ID . "]"  );
         } else {
-            $this->Message='There was an issue editing a user, please try again.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('There was an issue editing a user, please try again.','error');
+            Write_Log('users', "Error - Could not edited user [" . $this->ID . "]"  );
         }
 
-        Write_Log('users', "Trying to edit UserID [" . $this->ID . "]");
-        Write_Log('users', $this->Message_Type . " - " . $this->Message);
     }
 
     // POINTS SYSTEM ===================================================================================================
@@ -205,16 +203,16 @@ class User {
         $Config_Array = array (':Points'=>$Points,':ID'=>$this->ID);
         $Results = $this->Connection->Custom_Execute("UPDATE users SET Points=:Points WHERE ID=:ID", $Config_Array);
 
+        Write_Log('points', "Trying to set points to [" . $Points . "] for UserID [" . $this->ID . "]");
+
         if ($Results) {
-            $this->Message='Points were added successfully';
-            $this->Message_Type='Success';
+            Toasts::addNewToast('Points were added successfully.','success');
+            Write_Log('points', "Success - Points were added successfully");
         } else {
-            $this->Message='There was an issue adding points to the user, please try again.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('There was an issue adding points to the user, please try again.','error');
+            Write_Log('points', "Error - There was an issue adding points to the user, please try again.");
         }
 
-        Write_Log('points', "Trying to set points to [" . $Points . "] for UserID [" . $this->ID . "]");
-        Write_Log('points', $this->Message_Type . " - " . $this->Message);
     }
 
     // Add Points
@@ -263,30 +261,19 @@ class User {
 
         $this->Points_Last_Recieved = $this->TODAYS_DATE;
 
+        Write_Log('points', "Redeeming [" . $Points . "] points for UserID [" . $this->ID . "]");
+
         if ($Results) {
-            $this->Message='Points were redeemed successfully';
-            $this->Message_Type='Success';
+            Write_Log('points', "Success - Points were redeemed successfully.");
             $this->Add_Points($Points);
         } else {
-            $this->Message='There was an issue redeeming points, please try again.';
-            $this->Message_Type='Error';
+            Write_Log('points', "Error - There was an issue redeeming points, please try again.");
         }
 
-        Write_Log('points', "Redeeming [" . $Points . "] points for UserID [" . $this->ID . "]");
-        Write_Log('points', $this->Message_Type . " - " . $this->Message);
     }
 
     // END POINTS SYSTEM ================================================================================================
 
-    //Displays the current message set for this object then unsets it.
-    function Display_Message()
-    {
-        if (isset($this->Message))
-            {
-                echo "<div class='{$this->Message_Type}'>" . $this->Message . "</div>";
-                unset($this->Message);
-            }
-    }
 
 }
 ?>

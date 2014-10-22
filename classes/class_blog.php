@@ -4,8 +4,6 @@ class Blog
 {
     //Internal Variables
     private $Connection;
-    public $Message;
-    public $Message_Type;
     //Pagination Variables
     public $Blog_Page; //This is an array of all blog posts on the selected page. Example: $Blog_Page[Page#][BlogPost#] $Blog_Page[1][0] -> Will return the first post on page 1.
     public $Total_Pages;
@@ -30,16 +28,6 @@ class Blog
         }
     }
 
-    //Displays the current message set for this object then unsets it.
-    function Display_Message()
-    {
-        if (isset($this->Message))
-            {
-                echo "<div class='{$this->Message_Type}'>" . $this->Message . "</div>";
-                unset($this->Message);
-            }
-    }
-
     //Data Manipulation
     function Add_Post($UserID,$Title,$Body)
     {
@@ -47,11 +35,9 @@ class Blog
         $Results = $this->Connection->Custom_Execute("INSERT INTO blog (UserID, Title, Body, Creation_Date) VALUES (:UserID, :Title, :Body, NOW())", $Post_Array, true);
 
         if ($Results) {
-            $this->Message='Blog post successfully added.';
-            $this->Message_Type='Success';
+            Toasts::addNewToast('Blog post successfully added.','success');
         } else {
-            $this->Message='Blog post encountered an error.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('Blog post encountered an error.','error');
         }
     }
 
@@ -61,11 +47,9 @@ class Blog
         $Results = $this->Connection->Custom_Execute("DELETE FROM blog WHERE ID=:PostID", $Post_Array);
 
         if ($Results){
-            $this->Message="Blog post [{$PostID}] successfully deleted.";
-            $this->Message_Type='Success';
+            Toasts::addNewToast('Blog post ['.$PostID .'] successfully deleted.','success');
         } else {
-            $this->Message='Blog post delete [{$PostID}] encountered an error.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('Blog post delete ['.$PostID .'] encountered an error.','error');
         }
     }
 
@@ -75,11 +59,9 @@ class Blog
         $Results = $this->Connection->Custom_Execute("UPDATE blog SET Title=:Title, Body=:Body WHERE ID=:PostID", $Post_Array);
 
         if ($Results){
-            $this->Message="Blog post [{$PostID}] successfully edited.";
-            $this->Message_Type='Success';
+            Toasts::addNewToast('Blog post ['.$PostID .'] successfully edited.','success');
         } else {
-            $this->Message='Blog post edit [{$PostID}] encountered an error.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('Blog post edit['.$PostID .'] encountered an error.','error');
         }
     }
 
@@ -92,11 +74,9 @@ class Blog
         }
 
         if ($Results && $CommentText != '') {
-            $this->Message='Blog comment successfully added.';
-            $this->Message_Type='Success';
+            Toasts::addNewToast('Blog comment successfully added.','success');
         } else {
-            $this->Message='Blog comment encountered an error.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('Blog comment encountered an error.','error');
         }
     }
 
@@ -106,11 +86,9 @@ class Blog
         $Results = $this->Connection->Custom_Execute("DELETE FROM blog_comments WHERE CommentID=:CommentID", $Comment_Array);
 
         if ($Results){
-            $this->Message="Blog comment [{$CommentID}] successfully deleted.";
-            $this->Message_Type='Success';
+            Toasts::addNewToast('Blog comment successfully deleted.','success');
         } else {
-            $this->Message='Blog comment delete [{$CommentID}] encountered an error.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('Blog comment delete encountered an error.','error');
         }
     }
 
@@ -122,11 +100,9 @@ class Blog
         }
 
         if ($Results && $CommentText != ''){
-            $this->Message="Blog comment [{$CommentID}] successfully edited.";
-            $this->Message_Type='Success';
+            Toasts::addNewToast('Blog comment successfully edited.','success');
         } else {
-            $this->Message='Blog comment edit [{$CommentID}] encountered an error.';
-            $this->Message_Type='Error';
+            Toasts::addNewToast('Blog comment edit encountered an error.','error');
         }
     }
 

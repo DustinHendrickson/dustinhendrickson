@@ -285,6 +285,14 @@ body{
     border: 1px solid red;
 }
 
+.BlackBox {
+    color: black;
+    background-color: white;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid black;
+}
+
 .Error {
     color: red;
     background-color: pink;

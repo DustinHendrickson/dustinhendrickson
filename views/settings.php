@@ -12,9 +12,6 @@ switch ($_POST['Mode'])
             break;
     }
 
-    //Display any messages from the logic.
-    if (isset($User->Message)) { echo "<div class='{$User->Message_Type}'>".$User->Message."</div>"; unset($User->Message); }
-
 
     //Build up Items Per Page Drop down boxes
     $Items_Per_Page_Options = array();

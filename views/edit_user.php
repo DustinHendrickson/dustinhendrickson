@@ -7,8 +7,7 @@ switch ($_POST['Mode'])
     {
         case 'Edit':
             $User = new User($_POST['userID']);
-            $User->Edit_User(Functions::Make_Safe($_POST['First_Name']), Functions::Make_Safe($_POST['Last_Name']), Functions::Make_Safe($_POST['EMail']), Functions::Make_Safe($_POST['Permissions']), Functions::Make_Safe($_POST['Password']));
-            $User->Display_Message();
+            $User->Edit_User(Functions::Make_Safe($_POST['First_Name']), Functions::Make_Safe($_POST['Last_Name']), Functions::Make_Safe($_POST['EMail']), Functions::Make_Safe($_POST['Permissions']), Functions::Make_Safe($_POST['Password']),Functions::Make_Safe($_POST['FightBot_Name']));
             break;
         case 'Search by Username':
             $Connection = new Connection();
@@ -129,7 +128,15 @@ if ($_POST['Mode'] = 'Search')
                     <input size='50' type='text' value='{$User_Results['EMail']}' name='EMail'>
                 </td>
             </tr>
-                <tr>
+            <tr>
+                <td>
+                FightBot Name:
+                </td>
+                <td>
+                    <input size='50' type='text' value='{$User_Results['FightBot_Name']}' name='FightBot_Name'>
+                </td>
+            </tr>
+            <tr>
                 <td>
                 Permissions:
                 </td>

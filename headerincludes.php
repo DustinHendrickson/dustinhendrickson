@@ -15,6 +15,7 @@ require_once("config/tracking.php");                //Google Analytics
 require_once("classes/class_logging.php");          //Logging
 require_once("classes/class_connection.php");       //Connection.
 require_once("classes/class_functions.php");        //Functions.
+require_once("classes/class_toasts.php");           //Pop up Toasts
 require_once("classes/class_navigation.php");       //Navigation.
 require_once("classes/class_user.php");             //User.
 require_once("classes/class_authentication.php");   //Authentication.
