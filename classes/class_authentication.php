@@ -40,6 +40,8 @@ function Login($User,$Pass)
 
                         // Display success toast.
                         Toasts::addNewToast("You have logged in as " . $_SESSION['Name'], "success");
+                        $User = new User($_SESSION["ID"]);
+                        $User->Add_Achievement("Logged In");
 
                         // Redirect user to Last Page Visited after login.
                         header( 'Location: ' . $GLOBALS['Query_String'] ) ;

@@ -72,7 +72,8 @@ class Toasts {
                 break;
         }
         echo '</script>';
-
     }
+
+
 
 } // End Class

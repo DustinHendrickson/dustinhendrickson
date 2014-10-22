@@ -1,3 +1,9 @@
+<?php
+if (isset($_SESSION['ID'])) {
+    $User = new User($_SESSION['ID']);
+    $User->Add_Achievement("View About Me");
+}
+?>
 <div class='ContentHeader'>About Me</div><hr>
 I'm a programmer, gamer and tech enthusiast.<br><br>
 I use be part of WoW Radio and OMFG, podcasting and live streaming radio shows that were held every week.<br><br>

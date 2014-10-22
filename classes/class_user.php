@@ -28,6 +28,7 @@ class User {
     public $Account_Last_Login;
     public $Account_Created;
     public $Account_Locked;
+    public $Achievements_Unlocked;
     public $Points;
     public $Points_Last_Recieved;
     public $Config_Settings = array();
@@ -40,18 +41,19 @@ class User {
         $User_Array = array (':ID'=>$this->ID);
         $User_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE ID = :ID LIMIT 1", $User_Array);
 
-        $this->Username             = $User_Result["Username"];
-        $this->First_Name           = $User_Result["First_Name"];
-        $this->Last_Name            = $User_Result["Last_Name"];
-        $this->FightBot_Name        = $User_Result["FightBot_Name"];
-        $this->Password             = $User_Result["Password"];
-        $this->Permissions          = $User_Result["Permissions"];
-        $this->EMail                = $User_Result["EMail"];
-        $this->Account_Last_Login   = date('F jS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
-        $this->Account_Created      = date('F jS Y h:ia', strtotime($User_Result["Account_Created"]));
-        $this->Account_Locked       = $User_Result["Account_Locked"];
-        $this->Points               = $User_Result["Points"];
-        $this->Points_Last_Recieved = date('F jS Y h:ia', strtotime($User_Result["Points_Last_Recieved"]));
+        $this->Username                 = $User_Result["Username"];
+        $this->First_Name               = $User_Result["First_Name"];
+        $this->Last_Name                = $User_Result["Last_Name"];
+        $this->FightBot_Name            = $User_Result["FightBot_Name"];
+        $this->Password                 = $User_Result["Password"];
+        $this->Permissions              = $User_Result["Permissions"];
+        $this->EMail                    = $User_Result["EMail"];
+        $this->Account_Last_Login       = date('F jS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
+        $this->Account_Created          = date('F jS Y h:ia', strtotime($User_Result["Account_Created"]));
+        $this->Account_Locked           = $User_Result["Account_Locked"];
+        $this->Achievements_Unlocked    = $User_Result["Achievements_Unlocked"];
+        $this->Points                   = $User_Result["Points"];
+        $this->Points_Last_Recieved     = date('F jS Y h:ia', strtotime($User_Result["Points_Last_Recieved"]));
     }
 
     private function Set_Config_Info()
@@ -185,11 +187,68 @@ class User {
             Toasts::addNewToast('There was an issue editing a user, please try again.','error');
             Write_Log('users', "Error - Could not edited user [" . $this->ID . "]"  );
         }
-
     }
 
-    // POINTS SYSTEM ===================================================================================================
 
+
+    // ACHIEVEMENT SYSTEM ====================================================================================================
+    public function Add_Achievement($Name)
+    {
+
+        if(!$this->Is_Achievement_Unlocked($Name)) {
+
+            $this->Achievements_Unlocked .= $this->Get_Achievement_ID_By_Name($Name) . ",";
+
+            $Config_Array = array (':ID'=>$this->ID, ':Achievements_Unlocked'=>$this->Achievements_Unlocked);
+            $Results = $this->Connection->Custom_Execute("UPDATE users SET Achievements_Unlocked=:Achievements_Unlocked WHERE ID=:ID", $Config_Array);
+
+            $Achievement = $this->Get_Achievement_Info($Name);
+
+            if ($Results) {
+                Toasts::addNewToast($Achievement['Description'] . " +" . $Achievement['Points'] . " points.",'achievement');
+                Write_Log('users', "Success - Added achievement [" . $Achievement['ID'] . "] " . $Achievement['Name'] . " to user " . $this->ID );
+                $this->Add_Points($Achievement['Points']);
+            } else {
+                Write_Log('users', "Error - Tried adding achievement [" . $Achievement['ID'] . "] " . $Achievement['Name'] . " to user " . $this->ID . " FAILED.");
+            }
+        }
+    }
+
+    // Checks to see if the achievement has been unlocked by the user already.
+    public function Is_Achievement_Unlocked($Name)
+    {
+        $Achievements_Array = explode(",", $this->Achievements_Unlocked);
+        foreach ($Achievements_Array as $Achievement) {
+            if ($this->Get_Achievement_ID_By_Name($Name) == $Achievement) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    //
+    public function Get_Achievement_Info($Name)
+    {
+        $Checker_Array = array(':Name'=>$Name);
+        $Checker_Results = $this->Connection->Custom_Query("SELECT * FROM achievements WHERE Name=:Name", $Checker_Array);
+
+        return $Checker_Results;
+    }
+
+    public function Get_Achievement_ID_By_Name($Name)
+    {
+        $Checker_Results = $this->Get_Achievement_Info($Name);
+
+        $ID = $Checker_Results['ID'];
+
+        return $ID;
+    }
+    // END ACHIEVEMENT SYSTEM ================================================================================================
+
+
+
+    // POINTS SYSTEM ===================================================================================================
     // Retrieves Points
     public function Get_Points()
     {
@@ -206,10 +265,8 @@ class User {
         Write_Log('points', "Trying to set points to [" . $Points . "] for UserID [" . $this->ID . "]");
 
         if ($Results) {
-            Toasts::addNewToast('Points were added successfully.','success');
             Write_Log('points', "Success - Points were added successfully");
         } else {
-            Toasts::addNewToast('There was an issue adding points to the user, please try again.','error');
             Write_Log('points', "Error - There was an issue adding points to the user, please try again.");
         }
 
@@ -227,13 +284,13 @@ class User {
         $this->Set_Points($this->Points - $Points);
     }
 
-    // Returns the date a user last recieved reedemtion points in human readable format.
+    // Returns the date a user last received redemption points in human readable format.
     public function Get_Last_Recieved_Points_DateTime()
     {
         return date('F jS Y h:ia', strtotime($this->Points_Last_Recieved));
     }
 
-    // Returns the date a user last recieved reedemtion points in computer readable format.
+    // Returns the date a user last received redemption points in computer readable format.
     public function Get_Last_Recieved_Points_UnixTime()
     {
         return strtotime($this->Points_Last_Recieved);
@@ -264,9 +321,11 @@ class User {
         Write_Log('points', "Redeeming [" . $Points . "] points for UserID [" . $this->ID . "]");
 
         if ($Results) {
+            Toasts::addNewToast('Points were added successfully. +' . $Points . " points" ,'success');
             Write_Log('points', "Success - Points were redeemed successfully.");
             $this->Add_Points($Points);
         } else {
+            Toasts::addNewToast('There was an issue adding points to the user, please try again.','error');
             Write_Log('points', "Error - There was an issue redeeming points, please try again.");
         }
 

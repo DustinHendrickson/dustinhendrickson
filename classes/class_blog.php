@@ -4,6 +4,7 @@ class Blog
 {
     //Internal Variables
     private $Connection;
+    private $User;
     //Pagination Variables
     public $Blog_Page; //This is an array of all blog posts on the selected page. Example: $Blog_Page[Page#][BlogPost#] $Blog_Page[1][0] -> Will return the first post on page 1.
     public $Total_Pages;
@@ -17,8 +18,8 @@ class Blog
 
         //We populate the pagination when the object is created.
         //Here we get the user config for items per page to display, if not logged in, set to default.
-        $User = new User($_SESSION['ID']);
-        if(isset($User->Config_Settings['Items_Per_Page'])) { $PerPage=$User->Config_Settings['Items_Per_Page']; }
+        $this->User = new User($_SESSION['ID']);
+        if(isset($this->User->Config_Settings['Items_Per_Page'])) { $PerPage=$this->User->Config_Settings['Items_Per_Page']; }
 
         //If the user config exists we'll populate the posts with that, otherwise use the defaults.
         if (isset($PerPage)) {
@@ -36,6 +37,7 @@ class Blog
 
         if ($Results) {
             Toasts::addNewToast('Blog post successfully added.','success');
+            $this->User->Add_Achievement("Add Blog Post");
         } else {
             Toasts::addNewToast('Blog post encountered an error.','error');
         }
@@ -48,6 +50,7 @@ class Blog
 
         if ($Results){
             Toasts::addNewToast('Blog post ['.$PostID .'] successfully deleted.','success');
+            $this->User->Add_Achievement("Delete Blog Post");
         } else {
             Toasts::addNewToast('Blog post delete ['.$PostID .'] encountered an error.','error');
         }
@@ -75,6 +78,7 @@ class Blog
 
         if ($Results && $CommentText != '') {
             Toasts::addNewToast('Blog comment successfully added.','success');
+            $this->User->Add_Achievement("Add Comment");
         } else {
             Toasts::addNewToast('Blog comment encountered an error.','error');
         }
@@ -87,6 +91,7 @@ class Blog
 
         if ($Results){
             Toasts::addNewToast('Blog comment successfully deleted.','success');
+            $this->User->Add_Achievement("Delete Comment");
         } else {
             Toasts::addNewToast('Blog comment delete encountered an error.','error');
         }
