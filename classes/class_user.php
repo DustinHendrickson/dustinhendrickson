@@ -202,7 +202,7 @@ class User {
             $Config_Array = array (':ID'=>$this->ID, ':Achievements_Unlocked'=>$this->Achievements_Unlocked);
             $Results = $this->Connection->Custom_Execute("UPDATE users SET Achievements_Unlocked=:Achievements_Unlocked WHERE ID=:ID", $Config_Array);
 
-            $Achievement = $this->Get_Achievement_Info($Name);
+            $Achievement = $this->Get_Achievement_Info_By_Name($Name);
 
             if ($Results) {
                 Toasts::addNewToast($Achievement['Description'] . " +" . $Achievement['Points'] . " points.",'achievement');
@@ -228,7 +228,7 @@ class User {
     }
 
     //
-    public function Get_Achievement_Info($Name)
+    public function Get_Achievement_Info_By_Name($Name)
     {
         $Checker_Array = array(':Name'=>$Name);
         $Checker_Results = $this->Connection->Custom_Query("SELECT * FROM achievements WHERE Name=:Name", $Checker_Array);
@@ -236,13 +236,42 @@ class User {
         return $Checker_Results;
     }
 
+    public function Get_List_Of_All_Achievements()
+    {
+        $Return_String = '';
+        $Checker_Array = array();
+        $Checker_Results = $this->Connection->Custom_Query("SELECT * FROM achievements", $Checker_Array, true);
+        foreach ($Checker_Results as $Row) {
+            $Return_String .= $Row['ID'] . ',';
+        }
+
+        return $Return_String;
+    }
+
+    public function Get_Achievement_Info_By_ID($ID)
+    {
+        $Checker_Array = array(':ID'=>$ID);
+        $Checker_Results = $this->Connection->Custom_Query("SELECT * FROM achievements WHERE ID=:ID", $Checker_Array);
+
+        return $Checker_Results;
+    }
+
     public function Get_Achievement_ID_By_Name($Name)
     {
-        $Checker_Results = $this->Get_Achievement_Info($Name);
+        $Checker_Results = $this->Get_Achievement_Info_By_Name($Name);
 
         $ID = $Checker_Results['ID'];
 
         return $ID;
+    }
+
+    public function Get_Achievement_Name_By_ID($ID)
+    {
+        $Checker_Results = $this->Get_Achievement_Info_By_ID($ID);
+
+        $Name = $Checker_Results['Name'];
+
+        return $Name;
     }
     // END ACHIEVEMENT SYSTEM ================================================================================================
 

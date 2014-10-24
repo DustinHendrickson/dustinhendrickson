@@ -42,6 +42,7 @@ class Navigation {
             echo "<li><a href='?view=fightbot'>FightBot</a></li>";
             echo "<li><a href='?view=points'>Points</a></li>";
             echo "<li><a href='?view=bnet'>Battle.Net Status</a></li>";
+            echo "<li><a href='?view=achievements'>Achievements</a></li>";
             echo "</ul></li>";
 
             echo "</ul></nav>";
