@@ -115,6 +115,27 @@ class Functions {
         ";
     }
 
+    public static function Setup_Div_Toggle()
+    {
+        echo '
+        <script language="javascript">
+        function ToggleDiv(showHideDiv, switchTextDiv) {
+                var ele = document.getElementById(showHideDiv);
+                var text = document.getElementById(switchTextDiv);
+                if(ele.style.display == "block") {
+                        ele.style.display = "none";
+                        text.innerHTML = "+ Show Contents";
+                }
+                else {
+                        ele.style.display = "block";
+                        text.innerHTML = "- Hide Contents";
+                }
+        }
+        </script>
+        ';
+
+    }
+
     //Anytime you need fancy text inputs, call this at the top of the page.
     //This replaces any <textarea> with a fancy editor.
     public static function Prepare_TinyMCE()
@@ -210,6 +231,37 @@ class Functions {
             echo '</script>';
         }
 
+    }
+
+    // Function that returns the count of files in a directory on the server.
+    public static function countFilesInDirectory($Directory)
+    {
+        $size = 0;
+        // Here we define the file names to be rejected in the count.
+        $fileignore = array('.','..','cgi-bin','.DS_Store' );
+        // Here we define the extensions to be rejected in the count.
+        $extensionignore = array('ss0', 'sav', 'bin', 'srm', 'ss1' );
+
+        // Loop through each file and directory and increase our size counter.
+        $files = scandir($Directory);
+        foreach($files as $file) {
+            $filename = new SplFileInfo($file);
+            $fileextension = $filename->getExtension();
+
+            // If we do hit an ignore marker, just skip the rest of the loop.
+            if(in_array($file, $fileignore) || in_array($fileextension, $extensionignore)) {
+                continue;
+            }
+
+            // Otherwise go ahead an increase the size counter.
+            if (is_dir(rtrim($Directory, '/') . '/' . $file)) {
+                $size += Functions::countFilesInDirectory(rtrim($Directory, '/') . '/' . $file);
+            } else {
+                $size++;
+            }
+        }
+
+        return $size;
     }
 
     public static function getServerStatus($ServerName)
