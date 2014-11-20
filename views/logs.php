@@ -11,7 +11,7 @@ $logFiles = scandir($GLOBALS['Path'] . '/logs/');
 
 //We loop through each file and echo it's link.
 foreach($logFiles as $file) {
-    if ($file != '.' && $file != '..') {
+    if ($file != '.' && $file != '..' && $file != '.htaccess') {
         echo "<a href='?view=logs&log={$file}'>";
         echo $file;
         echo "</a> | ";
