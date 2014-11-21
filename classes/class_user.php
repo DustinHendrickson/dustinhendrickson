@@ -350,11 +350,11 @@ class User {
         Write_Log('points', "Redeeming [" . $Points . "] points for UserID [" . $this->ID . "]");
 
         if ($Results) {
-            Toasts::addNewToast('Points were added successfully. +' . $Points . " points" ,'success');
+            Toasts::addNewToast('Points were redeemed successfully. +' . $Points . " points" ,'success');
             Write_Log('points', "Success - Points were redeemed successfully.");
             $this->Add_Points($Points);
         } else {
-            Toasts::addNewToast('There was an issue adding points to the user, please try again.','error');
+            Toasts::addNewToast('There was an issue redeeming points, please try again.','error');
             Write_Log('points', "Error - There was an issue redeeming points, please try again.");
         }
 

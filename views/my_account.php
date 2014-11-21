@@ -13,7 +13,6 @@ switch ($_POST['Mode'])
                 $User->Add_Achievement("Set FightBot Name");
             }
             break;
-        
     }
 
 echo "<form action='?view={$View}' method='post'>";
