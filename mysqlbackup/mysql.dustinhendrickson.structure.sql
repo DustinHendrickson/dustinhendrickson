@@ -91,7 +91,7 @@ CREATE TABLE `users` (
   `FightBot_Name` varchar(50) DEFAULT NULL,
   `Achievements_Unlocked` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +108,7 @@ CREATE TABLE `users_settings` (
   `Theme` varchar(26) NOT NULL DEFAULT 'Default',
   `Show_Help` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`SettingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -120,4 +120,4 @@ CREATE TABLE `users_settings` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-20  8:05:23
+-- Dump completed on 2014-11-21  7:37:16
