@@ -4,7 +4,7 @@ session_start();
 
 //Setup Globals
 $GLOBALS['Path'] = $_SERVER["DOCUMENT_ROOT"] . '/'; //Site Path for anything that needs it.
-$GLOBALS['Query_String'] = substr($_SERVER['HTTP_REFERER'],29,100);
+$GLOBALS['Query_String'] = $_SERVER['REQUEST_URI'];
 
 //Write_Log('debug', '<pre>'.print_r($_SERVER, TRUE).'</pre>');
 

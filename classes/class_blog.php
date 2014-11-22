@@ -11,7 +11,7 @@ class Blog
     public $Comments; //Array of comments on the blog post.
 
 
-    //Construction Method
+    // Construction Method
     function __construct()
     {
         $this->Connection = new Connection();
@@ -29,7 +29,7 @@ class Blog
         }
     }
 
-    //Data Manipulation
+    // Data Manipulation
     function Add_Post($UserID,$Title,$Body)
     {
         $Post_Array = array (':UserID'=>$UserID,':Title'=>$Title,':Body'=>$Body);
@@ -49,7 +49,14 @@ class Blog
         $Results = $this->Connection->Custom_Execute("DELETE FROM blog WHERE ID=:PostID", $Post_Array);
 
         if ($Results){
+            // First we buildup an array of all comments on the post and then delete them.
+            $BlogPostComments = $this->Get_All_Comments_For_Blog_Post($PostID);
+            foreach ($BlogPostComments as $BlogPostComment){
+                $this->Delete_Comment($BlogPostComment['CommentID'], false);
+            }
+
             Toasts::addNewToast('Blog post ['.$PostID .'] successfully deleted.','success');
+            Toasts::addNewToast('Blog comments successfully deleted.','success');
             $this->User->Add_Achievement("Delete Blog Post");
         } else {
             Toasts::addNewToast('Blog post delete ['.$PostID .'] encountered an error.','error');
@@ -68,7 +75,7 @@ class Blog
         }
     }
 
-    //Comment Data Manipulation
+    // Comment Data Manipulation
     function Add_Comment($CommentUserID,$BlogPostID,$CommentText)
     {
         if ($CommentText != '') {
@@ -84,18 +91,23 @@ class Blog
         }
     }
 
-    function Delete_Comment($CommentID)
+    function Delete_Comment($CommentID,$ShowToast=true)
     {
         $Comment_Array = array (':CommentID'=>$CommentID);
         $Results = $this->Connection->Custom_Execute("DELETE FROM blog_comments WHERE CommentID=:CommentID", $Comment_Array);
 
         if ($Results){
+            if ($ShowToast==true) {
             Toasts::addNewToast('Blog comment successfully deleted.','success');
+            }
             $this->User->Add_Achievement("Delete Comment");
         } else {
+            if ($ShowToast==true) {
             Toasts::addNewToast('Blog comment delete encountered an error.','error');
+            }
         }
     }
+
 
     function Edit_Comment($CommentID,$CommentText)
     {
@@ -111,7 +123,7 @@ class Blog
         }
     }
 
-    //Writes out the links for all blog pages after Get_Posts() has been run.
+    // Writes out the links for all blog pages after Get_Posts() has been run.
     function Write_Pagination_Nav()
     {
         //Make sure we only write out if there's a page generated.
@@ -131,7 +143,7 @@ class Blog
     }
 
 
-    //Grabs the current page.
+    // Grabs the current page.
     function Get_Page()
     {
         if(isset($_GET['page'])){$Page=$_GET['page'];} else {$Page=1;}
@@ -139,7 +151,7 @@ class Blog
         return $Page;
     }
 
-    //Grabs the currently viewed Blog ID.
+    // Grabs the currently viewed Blog ID.
     function Get_Single_View_Blog_ID()
     {
         if(isset($_GET['blog_id'])){$BlogID=$_GET['blog_id'];} else {$BlogID=0;}
@@ -147,6 +159,7 @@ class Blog
         return $BlogID;
     }
 
+    // Returns the number of comments associated with a blog post id.
     function Get_Blog_Post_Comment_Count($BlogPostID)
     {
         $SQL = "SELECT COUNT(*) FROM blog_comments WHERE BlogPostID = :BlogPostID";
@@ -154,6 +167,16 @@ class Blog
         $Result = $this->Connection->Custom_Count_Query($SQL, $Array);
 
         return $Result[0];
+    }
+
+    // Returns an array of all blog comments on a blog post id.
+    function Get_All_Comments_For_Blog_Post($BlogPostID)
+    {
+        $SQL = "SELECT * FROM blog_comments WHERE BlogPostID = :BlogPostID";
+        $Array = array(':BlogPostID' => $BlogPostID);
+        $Result = $this->Connection->Custom_Query($SQL, $Array, true);
+
+        return $Result;
     }
 
     //This functions takes an array of blog post data and formats it versus a template object.

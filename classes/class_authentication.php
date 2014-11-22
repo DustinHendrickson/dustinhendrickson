@@ -140,7 +140,7 @@ function Logout()
     $_SESSION = array();
     session_destroy();
 
-    header( 'Location: ' . $GLOBALS['Query_String'] ) ;
+    header( 'Location: /' ) ;
     exit();
 }
 

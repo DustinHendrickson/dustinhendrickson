@@ -63,7 +63,6 @@
         </table>
     </form>
     </div>
-    <br>
     ";
 
     //New Blog Entry, we only show this on page 1.
