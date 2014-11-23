@@ -167,25 +167,48 @@ class User {
         }
     }
 
-    public function Edit_User($First_Name, $Last_Name, $EMail, $Permissions, $Password, $FightBot_Name='')
+    public function Edit_User($Parameters)
     {
-        if ($Password != '') {
-            $Config_Array = array (':ID'=>$this->ID,':First_Name'=>$First_Name, ':Last_Name'=>$Last_Name, ':EMail'=>$EMail, ':Permissions'=>$Permissions, ':Password'=>md5($Password), ':FightBot_Name'=>$FightBot_Name);
-            $Results = $this->Connection->Custom_Execute("UPDATE users SET First_Name=:First_Name, Last_Name=:Last_Name, EMail=:EMail, Permissions=:Permissions, Password=:Password, FightBot_Name=:FightBot_Name  WHERE ID=:ID", $Config_Array);
-        } else {
-            $Config_Array = array (':ID'=>$this->ID,':First_Name'=>$First_Name, ':Last_Name'=>$Last_Name, ':EMail'=>$EMail, ':Permissions'=>$Permissions, ':FightBot_Name'=>$FightBot_Name);
-            $Results = $this->Connection->Custom_Execute("UPDATE users SET First_Name=:First_Name, Last_Name=:Last_Name, EMail=:EMail, Permissions=:Permissions, FightBot_Name=:FightBot_Name  WHERE ID=:ID", $Config_Array);
-        }
+        // Make sure there wasn't NOTHING passed in.
+        if ($Parameters) {
+            $Config_Array = array();
+            $SQL = "UPDATE users SET ";
+            $Modified = "Setting ";
+            $Number_Of_Parameters = count($Parameters);
+            $i = 0;
 
-        Write_Log('users', "Trying to edit UserID [" . $this->ID . "]");
+            // Loop through each parameter to produce an Array and String to run an SQL query.
+            foreach ($Parameters as $ParameterName => $ParameterValue) {
+                $i++;
 
-        if ($Results) {
-            $this->Set_User_Info();
-            Toasts::addNewToast('User was edited successfully.','success');
-            Write_Log('users', "Success - Edited user [" . $this->ID . "]"  );
+                $KeyValue = ":".$ParameterName;
+                $Config_Array[$KeyValue] = $ParameterValue;
+                $SQL .= " " . $ParameterName . "=:" . $ParameterName;
+                $Modified .= $ParameterName . "=" . $ParameterValue . " ";
+
+                // Here we check if the parameter is the last one, if so we don't add a command in the SQL.
+                if ($i != $Number_Of_Parameters) {
+                    $SQL .= ", ";
+                }
+            }
+
+            $Config_Array[":ID"] = $this->ID;
+            $SQL .= " WHERE ID=:ID";
+
+            $Results = $this->Connection->Custom_Execute($SQL, $Config_Array);
+
+            Write_Log('users', "Trying to edit UserID [" . $this->ID . "]");
+
+            if ($Results) {
+                $this->Set_User_Info();
+                Toasts::addNewToast('User was edited successfully.','success');
+                Write_Log('users', "Success - Edited userid [" . $this->ID . "] " . $Modified . " Modified by userid [ " . $_SESSION['ID'] . " ]" );
+            } else {
+                Toasts::addNewToast('There was an issue editing a user, please try again.','error');
+                Write_Log('users', "Error - Could not edited user [" . $this->ID . "]" . " Called by userid [ " . $_SESSION['ID'] . " ]"  );
+            }
         } else {
-            Toasts::addNewToast('There was an issue editing a user, please try again.','error');
-            Write_Log('users', "Error - Could not edited user [" . $this->ID . "]"  );
+            Write_Log('users', "Error - Could not edited user [" . $this->ID . "] No parameters were given."  );
         }
     }
 

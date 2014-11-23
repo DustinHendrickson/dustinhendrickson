@@ -8,7 +8,14 @@ switch ($_POST['Mode'])
     {
         case 'Save':
             $User = new User($_POST['userID']);
-            $User->Edit_User(Functions::Make_Safe($_POST['First_Name']), Functions::Make_Safe($_POST['Last_Name']), Functions::Make_Safe($User->EMail), Functions::Make_Safe($User->Permissions), Functions::Make_Safe($_POST['Password']), Functions::Make_Safe($_POST['FightBot_Name']));
+
+            $User_Config = array();
+            if ($_POST['First_Name']!='' && $_POST['First_Name']!=$User->$First_Name){ $User_Config['First_Name'] = Functions::Make_Safe($_POST['First_Name']); }
+            if ($_POST['Last_Name']!='' && $_POST['Last_Name']!=$User->$Last_Name){ $User_Config['Last_Name'] = Functions::Make_Safe($_POST['Last_Name']); }
+            if ($_POST['Password']!=''){ md5($_POST['Password']); $User_Config['Password'] = Functions::Make_Safe($_POST['Password']); }
+            if ($_POST['FightBot_Name']!='' && $_POST['FightBot_Name']!=$User->$FightBot_Name){ $User_Config['FightBot_Name'] = Functions::Make_Safe($_POST['FightBot_Name']); }
+
+            $User->Edit_User($User_Config);
             if(isset($_POST['FightBot_Name']) && $_POST['FightBot_Name'] != '') {
                 $User->Add_Achievement("Set FightBot Name");
             }
