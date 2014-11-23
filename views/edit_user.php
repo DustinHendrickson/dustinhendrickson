@@ -18,6 +18,10 @@ switch ($_POST['Mode'])
 
             $User->Edit_User($User_Config);
             break;
+        case 'Delete':
+            $User = new User($_POST['userID']);
+            $User->Delete_User();
+            break;
         case 'Search by Username':
             $Connection = new Connection();
             $User_Array = array (':Username'=>$_POST['SearchUsername']);
@@ -169,6 +173,7 @@ if ($_POST['Mode'] = 'Search')
             <tr>
                 <td>
                     <input size='10' type='submit' value='Edit' name='Mode'>
+                    <input size='10' type='submit' style='color:red;' value='Delete' name='Mode'>
                 </td>
             </tr>
         </table>

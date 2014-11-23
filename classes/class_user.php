@@ -218,11 +218,25 @@ class User {
                 Write_Log('users', "Error - Could not edited user [" . $this->ID . "]" . " Called by userid [" . $_SESSION['ID'] . "]"  );
             }
         } else {
+            Toasts::addNewToast('Could not save changes, nothing was changed.','error');
             Write_Log('users', "Error - Could not edited user [" . $this->ID . "] No parameters were given."  );
         }
     }
 
+    // Deletes the user from the DB.
+    public function Delete_User()
+    {
+        $Config_Array = array (':ID'=>$this->ID);
+        $Results = $this->Connection->Custom_Execute("DELETE FROM users WHERE ID=:ID", $Config_Array);
 
+        if ($Results) {
+            Toasts::addNewToast('User was deleted successfully.','success');
+            Write_Log('users', "Success - Deleted userid [" . $this->ID . "] Deleted by userid [" . $_SESSION['ID'] . "]" );
+        } else {
+            Toasts::addNewToast('There was an issue editing a user, please try again.','error');
+            Write_Log('users', "Error - Could not edited user [" . $this->ID . "]" . " Called by userid [" . $_SESSION['ID'] . "]"  );
+        }
+    }
 
     // ACHIEVEMENT SYSTEM ====================================================================================================
     public function Add_Achievement($Name)
