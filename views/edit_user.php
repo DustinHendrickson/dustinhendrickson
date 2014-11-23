@@ -8,13 +8,13 @@ switch ($_POST['Mode'])
         case 'Edit':
             $User = new User($_POST['userID']);
 
-            if ($_POST['First_Name']!='' && $_POST['First_Name']!=$User->$First_Name){ $User_Config['First_Name'] = Functions::Make_Safe($_POST['First_Name']); }
-            if ($_POST['Last_Name']!='' && $_POST['Last_Name']!=$User->$Last_Name){ $User_Config['Last_Name'] = Functions::Make_Safe($_POST['Last_Name']); }
-            if ($_POST['EMail']!='' && $_POST['EMail']!=$User->$EMail){ $User_Config['EMail'] = Functions::Make_Safe($_POST['EMail']); }
-            if ($_POST['Permissions']!='' && $_POST['Permissions']!=$User->$Permissions){ $User_Config['Permissions'] = Functions::Make_Safe($_POST['Permissions']); }
-            if ($_POST['Password']!=''){ md5($_POST['Password']); $User_Config['Password'] = Functions::Make_Safe($_POST['Password']); }
-            if ($_POST['FightBot_Name']!='' && $_POST['FightBot_Name']!=$User->$FightBot_Name){ $User_Config['FightBot_Name'] = Functions::Make_Safe($_POST['FightBot_Name']); }
-            if ($_POST['Account_Locked']!='' && $_POST['Account_Locked']!=$User->$Account_Locked){ $User_Config['Account_Locked'] = Functions::Make_Safe($_POST['Account_Locked']); }
+            if ($_POST['First_Name']!='' && $_POST['First_Name']!=$User->First_Name){ $User_Config['First_Name'] = Functions::Make_Safe($_POST['First_Name']); }
+            if ($_POST['Last_Name']!='' && $_POST['Last_Name']!=$User->Last_Name){ $User_Config['Last_Name'] = Functions::Make_Safe($_POST['Last_Name']); }
+            if ($_POST['EMail']!='' && $_POST['EMail']!=$User->EMail){ $User_Config['EMail'] = Functions::Make_Safe($_POST['EMail']); }
+            if ($_POST['Permissions']!='' && $_POST['Permissions']!=$User->Permissions){ $User_Config['Permissions'] = Functions::Make_Safe($_POST['Permissions']); }
+            if ($_POST['Password']!=''){ $Password = md5(Functions::Make_Safe($_POST['Password'])); $User_Config['Password'] = $Password; }
+            if ($_POST['FightBot_Name']!='' && $_POST['FightBot_Name']!=$User->FightBot_Name){ $User_Config['FightBot_Name'] = Functions::Make_Safe($_POST['FightBot_Name']); }
+            if ($_POST['Account_Locked']!='' && $_POST['Account_Locked']!=$User->Account_Locked){ $User_Config['Account_Locked'] = Functions::Make_Safe($_POST['Account_Locked']); }
 
             $User->Edit_User($User_Config);
             break;

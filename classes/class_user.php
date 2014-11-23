@@ -154,7 +154,17 @@ class User {
     // @returns string
     public function Get_Account_Status()
     {
-        if ($this->Account_Locked = 1) { return "Active"; } else { return "Locked"; }
+        switch ($this->Account_Locked){
+            case 1:
+                return "Locked";
+                break;
+            case 0:
+                return "Active";
+                break;
+            default:
+                return "Unknown";
+                break;
+        }
     }
 
     // Retrieves the users saved theme setting and writes it out.
@@ -202,10 +212,10 @@ class User {
             if ($Results) {
                 $this->Set_User_Info();
                 Toasts::addNewToast('User was edited successfully.','success');
-                Write_Log('users', "Success - Edited userid [" . $this->ID . "] " . $Modified . " Modified by userid [ " . $_SESSION['ID'] . " ]" );
+                Write_Log('users', "Success - Edited userid [" . $this->ID . "] " . $Modified . " Modified by userid [" . $_SESSION['ID'] . "]" );
             } else {
                 Toasts::addNewToast('There was an issue editing a user, please try again.','error');
-                Write_Log('users', "Error - Could not edited user [" . $this->ID . "]" . " Called by userid [ " . $_SESSION['ID'] . " ]"  );
+                Write_Log('users', "Error - Could not edited user [" . $this->ID . "]" . " Called by userid [" . $_SESSION['ID'] . "]"  );
             }
         } else {
             Write_Log('users', "Error - Could not edited user [" . $this->ID . "] No parameters were given."  );
