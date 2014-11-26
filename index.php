@@ -22,14 +22,15 @@ Write_Log('views',"Site has logged a page view.");
 
         <div id="Top-Bar">
             <div class="Login_Area">
-                <?php Navigation::write_Login(); ?>
+                <?php
+                Navigation::write_Login();
+                Navigation::catch_Login();
+                ?>
             </div>
                 <?php Navigation::write_Private(); ?>
         </div>
 
         <div id="BodyWrapper">
-
-        <?php Navigation::write_Login_Error(); ?>
 
         <div id="Header">
             <a href='/' class="Logo"></a>

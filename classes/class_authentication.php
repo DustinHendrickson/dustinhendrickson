@@ -43,8 +43,8 @@ function Login($User,$Pass)
                         $User = new User($_SESSION["ID"]);
                         $User->Add_Achievement("Logged In");
 
-                        // Redirect user to Last Page Visited after login.
-                        header( 'Location: ' . $GLOBALS['Query_String'] ) ;
+                        // Redirect user to homepage.
+                        header( 'Location: /');
                         exit();
                     } else {
                         Toasts::addNewToast("This account is locked and may not log in.", "error");
@@ -140,7 +140,7 @@ function Logout()
     $_SESSION = array();
     session_destroy();
 
-    header( 'Location: /' ) ;
+    header( 'Location: /') ;
     exit();
 }
 

@@ -68,13 +68,12 @@ class Navigation {
             }
     }
 
-    public static function write_Login_Error()
+    public static function catch_Login()
     {
 		if(isset($_POST['Login'])) {
-                	$Auth = new Authentication;
-                        $Auth->Login($_POST['Username'],$_POST['Password']);
-                        if (isset($Auth->Error_Message)) { echo "<div class='Clear'></div><div id='Login-Error'>".$Auth->Error_Message."</div>"; unset($Auth->Error_Message); }
-                }
+            $Auth = new Authentication;
+            $Auth->Login($_POST['Username'],$_POST['Password']);
+        }
     }
 
     public static function write_Public()
