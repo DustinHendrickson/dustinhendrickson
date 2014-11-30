@@ -69,6 +69,38 @@ CREATE TABLE `blog_comments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `pets`
+--
+
+DROP TABLE IF EXISTS `pets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pets` (
+  `UserID` int(100) NOT NULL,
+  `Pet_ID` int(100) NOT NULL AUTO_INCREMENT,
+  `Pet_Image` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
+  `Pet_Offense` int(11) NOT NULL,
+  `Pet_Defense` int(11) NOT NULL,
+  `Pet_Current_Health` int(11) NOT NULL,
+  `Pet_Max_Health` int(11) NOT NULL,
+  `Pet_Current_AP` int(11) NOT NULL,
+  `Pet_Max_AP` int(11) NOT NULL,
+  `Pet_Skill_1` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `Pet_Skill_2` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `Pet_Bonus_Offense` int(11) NOT NULL,
+  `Pet_Bonus_Defense` int(11) NOT NULL,
+  `Pet_Bonus_Health` int(11) NOT NULL,
+  `Pet_Bonus_EXP` int(11) NOT NULL,
+  `Pet_Exp` int(11) NOT NULL,
+  `Pet_Level` int(11) NOT NULL,
+  `Pet_Name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `Pet_Type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `Pet_Status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`Pet_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `users`
 --
 
@@ -120,4 +152,4 @@ CREATE TABLE `users_settings` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-25  8:02:59
+-- Dump completed on 2014-11-29  7:43:19
