@@ -23,18 +23,98 @@ switch ($_POST['Mode'])
             break;
     }
 ?>
+<div class='ContentHeader'>Account Details</div><hr>
 
 <form action='?view=<?php echo $View; ?>' method='post'>
-<b>Username:</b> <?php echo $User->Username; ?><br /><br />
-<b>First Name:</b> <input size='50' type='text' value='<?php echo $User->First_Name; ?>' name='First_Name'> <br />
-<b>Last Name:</b> <input size='50' type='text' value='<?php echo $User->Last_Name; ?>' name='Last_Name'> <br />
-<b>Fight Name:</b> <input size='50' type='text' value='<?php echo $User->FightBot_Name; ?>' name='FightBot_Name'> <br />
-<b>Email:</b> <?php echo $User->EMail; ?> <br />
-<b>Password:</b> <input size='50' type='text' value='' name='Password'> <br /><br />
-<b>Permissions:</b> <?php echo $User->Get_Permissions(); ?> <br />
-<b>Last Login:</b> <?php echo $User->Account_Last_Login; ?> <br /><br />
-<b>Account Creation:</b> <?php echo $User->Account_Created; ?> <br />
-<b>Account Status:</b> <?php echo $User->Get_Account_Status(); ?> <br /><br />
-<input name='userID' type='hidden' value='<?php echo $User->ID; ?>'>
-<input size='10' type='submit' value='Save' name='Mode'>
-</form>
+        <table>
+
+            <tr>
+                <td>
+                    First Name:
+                </td>
+                <td>
+                    <input size='50' type='text' value='<?php echo $User->First_Name; ?>' name='First_Name'>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Last Name:
+                </td>
+                <td>
+                    <input size='50' type='text' value='<?php echo $User->Last_Name; ?>' name='Last_Name'>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Fight Name:
+                </td>
+                <td>
+                    <input size='50' type='text' value='<?php echo $User->FightBot_Name; ?>' name='FightBot_Name'> <br />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Email:
+                </td>
+                <td>
+                    <?php echo $User->EMail; ?>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Password:
+                </td>
+                <td>
+                    <input size='50' type='text' value='' name='Password'>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Permissions:
+                </td>
+                <td>
+                    <?php echo $User->Get_Permissions(); ?>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Last Login:
+                </td>
+                <td>
+                    <?php echo $User->Account_Last_Login; ?>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Account Creation:
+                </td>
+                <td>
+                    <?php echo $User->Account_Created; ?>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    Account Status:
+                </td>
+                <td>
+                    <?php echo $User->Get_Account_Status(); ?>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input name='userID' type='hidden' value='<?php echo $User->ID; ?>'>
+                </td>
+            </tr>
+
+        </table>
+        <input size='10' type='submit' value='Save' name='Mode'>
+    </form>
