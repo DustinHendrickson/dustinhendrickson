@@ -102,6 +102,10 @@ private function Set_Pet_Info($Pet_ID)
 // Creates a new random pet for the user and adds them to the DB.
 public function Create_Random_Pet()
 {
+    // Setup YAML stuff.
+    $RandomPet = Spyc::YAMLLoad('/home/var/www/petbattles/data/base_pet_list.yml');
+    $Pet_Name = $RandomPet[][][][];
+
     // Here I will load up a random pet from a YAML config file and then add it to the DB.
     $Pet_Array = array (':Pet_ID'=>$Pet_ID);
     $Pet_SQL = "INSERT INTO pets (Pet_ID, User_ID) VALUES (:Pet_ID, :User_ID)";
