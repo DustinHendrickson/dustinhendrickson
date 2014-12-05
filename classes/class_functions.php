@@ -233,6 +233,24 @@ class Functions {
 
     }
 
+    // Takes an Int 1 or 0 and converts it to a Boolean for display.
+    public static function Convert_Int_To_Boolean($Int)
+    {
+        switch ($Int) {
+            case 0:
+                return "False";
+                break;
+
+            case 1:
+                return "True";
+                break;
+
+            default:
+                return "False";
+                break;
+        }
+    }
+
     // Function that returns the count of files in a directory on the server.
     public static function countFilesInDirectory($Directory)
     {

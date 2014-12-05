@@ -37,6 +37,9 @@ switch ($_POST['Mode'])
     array_push($Items_Per_Page_Options, "10");
     array_push($Items_Per_Page_Options, "20");
     array_push($Items_Per_Page_Options, "30");
+    array_push($Items_Per_Page_Options, "40");
+    array_push($Items_Per_Page_Options, "50");
+    array_push($Items_Per_Page_Options, "100");
 
     foreach ($Items_Per_Page_Options as $Items_Per_Page_Selection){
         $ItemsPerPage_HTML .= "<option value='{$Items_Per_Page_Selection}'" . (($User->Config_Settings['Items_Per_Page'] == $Items_Per_Page_Selection) ? "selected" : "" ) . ">{$Items_Per_Page_Selection}</option>";
@@ -64,7 +67,8 @@ switch ($_POST['Mode'])
     array_push($Show_Help_Options, "1");
 
     foreach ($Show_Help_Options as $Show_Help_Selection){
-        $Show_Help_HTML .= "<option value='{$Show_Help_Selection}'" . (($User->Config_Settings['Show_Help'] == $Show_Help_Selection) ? "selected" : "" ) . ">{$Show_Help_Selection}</option>";
+        $Show_Help_Selection_Parsed = Functions::Convert_Int_To_Boolean($Show_Help_Selection);
+        $Show_Help_HTML .= "<option value='{$Show_Help_Selection}'" . (($User->Config_Settings['Show_Help'] == $Show_Help_Selection) ? "selected" : "" ) . ">{$Show_Help_Selection_Parsed}</option>";
     }
     //===============================
 ?>
