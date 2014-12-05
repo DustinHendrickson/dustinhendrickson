@@ -85,19 +85,92 @@ class User {
 
 
     // This function saves the input settings to the DB and then updates the current object with the new values.
-    public function Save_Configuration($UserID, $Items, $Theme, $Show_Help)
+    public function Save_Configuration($Parameters)
     {
+
         // Here we check to see if the user already has a settings entry. If not, we add one, if they do, we update it.
-        $Checker_Array = array(':UserID'=>$UserID);
+        $Checker_Array = array(':UserID'=>$this->ID);
         $Checker_Results = $this->Connection->Custom_Query("SELECT * FROM users_settings WHERE UserID=:UserID", $Checker_Array);
 
-        $Config_Array = array (':Items'=>$Items,':Theme'=>$Theme,':Show_Help'=>$Show_Help,':UserID'=>$UserID);
         if (!$Checker_Results) {
-            $Results = $this->Connection->Custom_Execute("INSERT INTO users_settings (UserID, Items_Per_Page, Theme, Show_Help) VALUES (:UserID, :Items, :Theme, :Show_Help)", $Config_Array);
-        } else {
-            $Results = $this->Connection->Custom_Execute("UPDATE users_settings SET Items_Per_Page=:Items, Theme=:Theme, Show_Help=:Show_Help WHERE UserID=:UserID", $Config_Array);
-        }
+             // Make sure there wasn't NOTHING passed in.
+            if ($Parameters) {
+                $Config_Array = array();
+                $Parameters["UserID"] = $this->ID;
+                $SQL = "INSERT INTO users_settings (";
+                
+                $Number_Of_Parameters = count($Parameters);
+                $i = 0;
 
+                // Loop through each parameter to produce an Array and String to run an SQL query.
+                foreach ($Parameters as $ParameterName => $ParameterValue) {
+                    $i++;
+
+                    $KeyValue = ":".$ParameterName;
+                    $Config_Array[$KeyValue] = $ParameterValue;
+                    $SQL .= " " . $ParameterName;
+
+                    // Here we check if the parameter is the last one, if so we don't add a command in the SQL.
+                    if ($i != $Number_Of_Parameters) {
+                        $SQL .= ", ";
+                    }
+                }
+
+                $SQL .= ") VALUES (";
+
+                $i = 0;
+
+                foreach ($Parameters as $ParameterName => $ParameterValue) {
+                    $i++;
+
+                    $KeyValue = ":".$ParameterName;
+                    $Config_Array[$KeyValue] = $ParameterValue;
+                    $SQL .= " :" . $ParameterName;
+
+                    // Here we check if the parameter is the last one, if so we don't add a command in the SQL.
+                    if ($i != $Number_Of_Parameters) {
+                        $SQL .= ", ";
+                    }
+                }
+
+                $SQL .= ")";
+
+                Write_Log('debug', "SQL: " . $SQL);
+                $Results = $this->Connection->Custom_Execute($SQL, $Config_Array);
+            }
+
+
+        } else {
+
+            // Make sure there wasn't NOTHING passed in.
+            if ($Parameters) {
+                $Config_Array = array();
+                $SQL = "UPDATE users_settings SET ";
+
+                $Number_Of_Parameters = count($Parameters);
+                $i = 0;
+
+                // Loop through each parameter to produce an Array and String to run an SQL query.
+                foreach ($Parameters as $ParameterName => $ParameterValue) {
+                    $i++;
+
+                    $KeyValue = ":".$ParameterName;
+                    $Config_Array[$KeyValue] = $ParameterValue;
+                    $SQL .= " " . $ParameterName . "=:" . $ParameterName;
+
+                    // Here we check if the parameter is the last one, if so we don't add a command in the SQL.
+                    if ($i != $Number_Of_Parameters) {
+                        $SQL .= ", ";
+                    }
+                }
+                
+                $SQL .= " WHERE UserID=:UserID";
+                $Config_Array[":UserID"] = $this->ID;
+
+                Write_Log('debug', "SQL: " . $SQL);
+                $Results = $this->Connection->Custom_Execute($SQL, $Config_Array);
+            }
+        }
 
         if ($Results) {
             $this->Set_Config_Info();

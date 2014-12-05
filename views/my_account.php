@@ -14,24 +14,27 @@ switch ($_POST['Mode'])
             if ($_POST['Password']!=''){ $Password = md5(Functions::Make_Safe($_POST['Password'])); $User_Config['Password'] = $Password; }
             if ($_POST['FightBot_Name']!='' && $_POST['FightBot_Name']!=$User->FightBot_Name){ $User_Config['FightBot_Name'] = Functions::Make_Safe($_POST['FightBot_Name']); }
 
-            $User->Edit_User($User_Config);
-            if(isset($_POST['FightBot_Name']) && $_POST['FightBot_Name'] != '') {
-                $User->Add_Achievement("Set FightBot Name");
+            if ($User_Config) {
+                $User->Edit_User($User_Config);
+                if(isset($_POST['FightBot_Name']) && $_POST['FightBot_Name'] != '') {
+                    $User->Add_Achievement("Set FightBot Name");
+                }
             }
             break;
     }
+?>
 
-echo "<form action='?view={$View}' method='post'>";
-echo "<b>Username:</b> " . $User->Username . "<br /><br />";
-echo "<b>First Name:</b> <input size='50' type='text' value='{$User->First_Name}' name='First_Name'> <br />";
-echo "<b>Last Name:</b> <input size='50' type='text' value='{$User->Last_Name}' name='Last_Name'> <br />";
-echo "<b>Fight Name:</b> <input size='50' type='text' value='{$User->FightBot_Name}' name='FightBot_Name'> <br />";
-echo "<b>Email:</b> {$User->EMail} <br />";
-echo "<b>Password:</b> <input size='50' type='text' value='' name='Password'> <br /><br />";
-echo "<b>Permissions:</b> " . $User->Get_Permissions()  . "<br />";
-echo "<b>Last Login:</b> " . $User->Account_Last_Login. "<br /><br />";
-echo "<b>Account Creation:</b> " . $User->Account_Created . "<br />";
-echo "<b>Account Status:</b> " .  $User->Get_Account_Status() . "<br /><br />";
-echo "<input name='userID' type='hidden' value='{$User->ID}'>";
-echo "<input size='10' type='submit' value='Save' name='Mode'>";
-echo "</form>";
+<form action='?view=<?php echo $View; ?>' method='post'>
+<b>Username:</b> <?php echo $User->Username; ?><br /><br />
+<b>First Name:</b> <input size='50' type='text' value='<?php echo $User->First_Name; ?>' name='First_Name'> <br />
+<b>Last Name:</b> <input size='50' type='text' value='<?php echo $User->Last_Name; ?>' name='Last_Name'> <br />
+<b>Fight Name:</b> <input size='50' type='text' value='<?php echo $User->FightBot_Name; ?>' name='FightBot_Name'> <br />
+<b>Email:</b> <?php echo $User->EMail; ?> <br />
+<b>Password:</b> <input size='50' type='text' value='' name='Password'> <br /><br />
+<b>Permissions:</b> <?php echo $User->Get_Permissions(); ?> <br />
+<b>Last Login:</b> <?php echo $User->Account_Last_Login; ?> <br /><br />
+<b>Account Creation:</b> <?php echo $User->Account_Created; ?> <br />
+<b>Account Status:</b> <?php echo $User->Get_Account_Status(); ?> <br /><br />
+<input name='userID' type='hidden' value='<?php echo $User->ID; ?>'>
+<input size='10' type='submit' value='Save' name='Mode'>
+</form>

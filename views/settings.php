@@ -7,12 +7,19 @@ $View = Functions::Get_View();
 switch ($_POST['Mode'])
     {
         case 'Save':
-            $Items_Per_Page = Functions::Make_Safe($_POST['Items_Per_Page']);
-            $Theme =Functions::Make_Safe($_POST['Theme']);
-            $Show_Help =Functions::Make_Safe($_POST['Show_Help']);
 
-            $User->Save_Configuration($User->ID,$Items_Per_Page, $Theme, $Show_Help);
-            Functions::Refresh_Page_Once();
+            $User_Config = array();
+
+            if ($_POST['Items_Per_Page']!='' && $_POST['Items_Per_Page']!=$User->Config_Settings['Items_Per_Page']){ $User_Config['Items_Per_Page'] = Functions::Make_Safe($_POST['Items_Per_Page']); }
+            if ($_POST['Theme']!='' && $_POST['Theme']!=$User->Config_Settings['Theme']){ $User_Config['Theme'] = Functions::Make_Safe($_POST['Theme']); }
+            if ($_POST['Show_Help']!='' && $_POST['Show_Help']!=$User->Config_Settings['Show_Help']){ $User_Config['Show_Help'] = Functions::Make_Safe($_POST['Show_Help']); }
+
+
+            // Make sure we actually changed something before submit.
+            if ($User_Config) {
+                $User->Save_Configuration($User_Config);
+                Functions::Refresh_Page_Once();
+            }
             break;
     }
 
