@@ -13,6 +13,7 @@ switch ($_POST['Mode'])
             if ($_POST['Items_Per_Page']!='' && $_POST['Items_Per_Page']!=$User->Config_Settings['Items_Per_Page']){ $User_Config['Items_Per_Page'] = Functions::Make_Safe($_POST['Items_Per_Page']); }
             if ($_POST['Theme']!='' && $_POST['Theme']!=$User->Config_Settings['Theme']){ $User_Config['Theme'] = Functions::Make_Safe($_POST['Theme']); }
             if ($_POST['Show_Help']!='' && $_POST['Show_Help']!=$User->Config_Settings['Show_Help']){ $User_Config['Show_Help'] = Functions::Make_Safe($_POST['Show_Help']); }
+            if ($_POST['Show_Toasts']!='' && $_POST['Show_Toasts']!=$User->Config_Settings['Show_Toasts']){ $User_Config['Show_Toasts'] = Functions::Make_Safe($_POST['Show_Toasts']); }
 
             // Make sure we actually changed something before submit.
             if ($User_Config) {
@@ -23,7 +24,7 @@ switch ($_POST['Mode'])
     }
 
 
-    //Build up Items Per Page Drop down boxes
+    // Build up Items Per Page Drop down boxes
     $Items_Per_Page_Options = array();
     array_push($Items_Per_Page_Options, "1");
     array_push($Items_Per_Page_Options, "2");
@@ -47,7 +48,7 @@ switch ($_POST['Mode'])
     //===============================================
 
 
-    //Build up Theme Drop Down Boxes.
+    // Build up Theme Drop Down Boxes.
     $Theme_Options = array();
     array_push($Theme_Options, "Default");
     array_push($Theme_Options, "Blue");
@@ -69,6 +70,18 @@ switch ($_POST['Mode'])
     foreach ($Show_Help_Options as $Show_Help_Selection){
         $Show_Help_Selection_Parsed = Functions::Convert_Int_To_Boolean($Show_Help_Selection);
         $Show_Help_HTML .= "<option value='{$Show_Help_Selection}'" . (($User->Config_Settings['Show_Help'] == $Show_Help_Selection) ? "selected" : "" ) . ">{$Show_Help_Selection_Parsed}</option>";
+    }
+    //===============================
+
+
+    // Build up Show_Toasts Drop Down Boxes.
+    $Show_Toasts_Options = array();
+    array_push($Show_Toasts_Options, "0");
+    array_push($Show_Toasts_Options, "1");
+
+    foreach ($Show_Toasts_Options as $Show_Toasts_Selection){
+        $Show_Toasts_Selection_Parsed = Functions::Convert_Int_To_Boolean($Show_Toasts_Selection);
+        $Show_Toasts_HTML .= "<option value='{$Show_Toasts_Selection}'" . (($User->Config_Settings['Show_Toasts'] == $Show_Toasts_Selection) ? "selected" : "" ) . ">{$Show_Toasts_Selection_Parsed}</option>";
     }
     //===============================
 ?>
@@ -103,6 +116,16 @@ switch ($_POST['Mode'])
                 <td>
                     <select name='Show_Help'>
                     <?php echo $Show_Help_HTML; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Show Toasts:
+                </td>
+                <td>
+                    <select name='Show_Toasts'>
+                    <?php echo $Show_Toasts_HTML; ?>
                     </select>
                 </td>
             </tr>

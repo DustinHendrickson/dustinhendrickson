@@ -67,10 +67,12 @@ class User {
                 $this->Config_Settings['Items_Per_Page'] = $User_Config_Result['Items_Per_Page'];
                 $this->Config_Settings['Theme']          = $User_Config_Result['Theme'];
                 $this->Config_Settings['Show_Help']      = $User_Config_Result['Show_Help'];
+                $this->Config_Settings['Show_Toasts']      = $User_Config_Result['Show_Toasts'];
             } else {
                 $this->Config_Settings['Items_Per_Page'] = 5;
                 $this->Config_Settings['Theme']          = "Default";
                 $this->Config_Settings['Show_Help']      = 1;
+                $this->Config_Settings['Show_Toasts']      = 1;
             }
         }
     }
@@ -98,7 +100,7 @@ class User {
                 $Config_Array = array();
                 $Parameters["UserID"] = $this->ID;
                 $SQL = "INSERT INTO users_settings (";
-                
+
                 $Number_Of_Parameters = count($Parameters);
                 $i = 0;
 
@@ -163,7 +165,7 @@ class User {
                         $SQL .= ", ";
                     }
                 }
-                
+
                 $SQL .= " WHERE UserID=:UserID";
                 $Config_Array[":UserID"] = $this->ID;
 

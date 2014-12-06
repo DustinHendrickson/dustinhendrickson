@@ -66,7 +66,7 @@ class Toasts {
             case 'achievement':
                 echo '$.growl.achievement({ message: "' . $Message . '" });';
                 break;
-            
+
             default:
                  echo '$.growl.notice({ message: "' . $Message . '" });';
                 break;
