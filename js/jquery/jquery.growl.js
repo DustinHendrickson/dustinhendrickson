@@ -230,7 +230,7 @@ Copyright 2013 Kevin Sylvestre
     return $.growl($.extend(settings, options));
   };
 
-    $.growl.achievement = function(options) {
+   $.growl.achievement = function(options) {
     var settings;
     if (options == null) {
       options = {};
@@ -238,6 +238,18 @@ Copyright 2013 Kevin Sylvestre
     settings = {
       title: "Achievement Unlocked!",
       style: "achievement"
+    };
+    return $.growl($.extend(settings, options));
+   };
+
+  $.growl.petbattle = function(options) {
+    var settings;
+    if (options == null) {
+      options = {};
+    }
+    settings = {
+      title: "Petbattle Alert!",
+      style: "petbattle"
     };
     return $.growl($.extend(settings, options));
   };

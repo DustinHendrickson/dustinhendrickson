@@ -20,6 +20,7 @@ require_once("classes/class_navigation.php");       //Navigation.
 require_once("classes/class_user.php");             //User.
 require_once("classes/class_authentication.php");   //Authentication.
 require_once("classes/class_blog.php");             //Blog.
+require_once("classes/class_battlepets.php");       //Battle Pets.
 require_once("/home/dustin/spyc/Spyc.php");         //YAML Library.
 
 Functions::Setup_Div_Toggle();

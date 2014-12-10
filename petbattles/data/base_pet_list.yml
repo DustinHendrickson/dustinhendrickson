@@ -1,0 +1,45 @@
+pets:
+  1:
+    - name: 'Battle Turtle'
+      image: 'battleturtle.png'
+      offense: 2
+      defense: 4
+      max_health: 25
+      max_ap: 10
+      skill_1: 'Squirt'
+      skill_2: 'Shell Shock'
+      skill_3: 'Water Cannon'
+      type: 'Water'
+
+    - name: 'Fire Fox'
+      image: 'firefox.png'
+      offense: 4
+      defense: 2
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Claw'
+      skill_2: 'Howl'
+      skill_3: 'Fire Pillar'
+      type: 'Fire'
+
+    - name: 'Hunting Falcon'
+      image: 'huntingfalcon.png'
+      offense: 3
+      defense: 3
+      max_health: 18
+      max_ap: 10
+      skill_1: 'Dive Bomb'
+      skill_2: 'Fly'
+      skill_3: 'Tornado'
+      type: 'Wind'
+  2:
+    - name: 'Grizzly Bear'
+      image: 'grizzlybear.png'
+      offense: 7
+      defense: 6
+      max_health: 40
+      max_ap: 10
+      skill_1: 'Slash'
+      skill_2: 'Overbear'
+      skill_3: 'Ravish'
+      type: 'Wind'

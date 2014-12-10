@@ -65,7 +65,7 @@ CREATE TABLE `blog_comments` (
   `CommentUserID` varchar(100) NOT NULL,
   `CommentDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`CommentID`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ DROP TABLE IF EXISTS `pets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pets` (
-  `UserID` int(100) NOT NULL,
+  `User_ID` int(100) NOT NULL,
   `Pet_ID` int(100) NOT NULL AUTO_INCREMENT,
   `Pet_Image` varchar(400) COLLATE utf8_unicode_ci NOT NULL,
   `Pet_Offense` int(11) NOT NULL,
@@ -85,19 +85,21 @@ CREATE TABLE `pets` (
   `Pet_Max_Health` int(11) NOT NULL,
   `Pet_Current_AP` int(11) NOT NULL,
   `Pet_Max_AP` int(11) NOT NULL,
-  `Pet_Skill_1` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `Pet_Skill_2` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `Pet_Bonus_Offense` int(11) NOT NULL,
-  `Pet_Bonus_Defense` int(11) NOT NULL,
-  `Pet_Bonus_Health` int(11) NOT NULL,
-  `Pet_Bonus_EXP` int(11) NOT NULL,
-  `Pet_Exp` int(11) NOT NULL,
-  `Pet_Level` int(11) NOT NULL,
+  `Pet_Skill_1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Pet_Skill_2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Pet_Skill_3` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Pet_Bonus_Offense` int(11) NOT NULL DEFAULT '0',
+  `Pet_Bonus_Defense` int(11) NOT NULL DEFAULT '0',
+  `Pet_Bonus_Health` int(11) NOT NULL DEFAULT '0',
+  `Pet_Bonus_EXP` int(11) NOT NULL DEFAULT '0',
+  `Pet_Exp` int(11) NOT NULL DEFAULT '0',
+  `Pet_Level` int(11) NOT NULL DEFAULT '1',
   `Pet_Name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `Pet_Type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `Pet_Status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `Pet_Status` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Alive',
+  `Pet_Active` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Pet_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +125,7 @@ CREATE TABLE `users` (
   `FightBot_Name` varchar(50) DEFAULT NULL,
   `Achievements_Unlocked` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,8 +141,9 @@ CREATE TABLE `users_settings` (
   `Items_Per_Page` int(100) NOT NULL DEFAULT '5',
   `Theme` varchar(26) NOT NULL DEFAULT 'Default',
   `Show_Help` tinyint(1) NOT NULL DEFAULT '1',
+  `Show_Toasts` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`SettingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -152,4 +155,4 @@ CREATE TABLE `users_settings` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-12-05  7:59:06
+-- Dump completed on 2014-12-09  7:48:12

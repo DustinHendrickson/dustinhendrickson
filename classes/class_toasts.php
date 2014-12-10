@@ -9,7 +9,7 @@ class Toasts {
     public static function addNewToast($Message, $Type)
     {
         // Here we check to make sure these variables have been setup before trying to push to them.
-         $AllToastTypes = array("achievement", "error", "notice", "success");
+         $AllToastTypes = array("achievement", "error", "notice", "success", "petbattle");
         foreach ($AllToastTypes as $ToastType){
             if (!isset($_SESSION[$ToastType])){ $_SESSION[$ToastType] = array();}
         }
@@ -18,6 +18,10 @@ class Toasts {
         switch ($Type) {
             case 'achievement':
                 array_push($_SESSION['achievement'], $Message);
+                break;
+
+            case 'petbattle':
+                array_push($_SESSION['petbattle'], $Message);
                 break;
 
             case 'error':
@@ -34,11 +38,20 @@ class Toasts {
         }
     }
 
+    public static function clearAllToasts()
+    {
+        $_SESSION['achievement'] = array();
+        $_SESSION['petbattle'] = array();
+        $_SESSION['error'] = array();
+        $_SESSION['success'] = array();
+        $_SESSION['notice'] = array();
+    }
+
     //Strips strings.
     public static function displayAllToasts()
     {
         // Here we loop through
-        $AllToastTypes = array("achievement", "error", "notice", "success");
+        $AllToastTypes = array("achievement", "error", "notice", "success", "petbattle");
         foreach ($AllToastTypes as $ToastType){
             if(isset($_SESSION[$ToastType])){
                 foreach ($_SESSION[$ToastType] as $Toast){
@@ -65,6 +78,9 @@ class Toasts {
                 break;
             case 'achievement':
                 echo '$.growl.achievement({ message: "' . $Message . '" });';
+                break;
+            case 'petbattle':
+                echo '$.growl.petbattle({ message: "' . $Message . '" });';
                 break;
 
             default:

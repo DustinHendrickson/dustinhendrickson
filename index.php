@@ -103,7 +103,14 @@ Write_Log('views',"Site has logged a page view.");
     </BODY>
 </HTML>
 <?php
-if ($User->Config_Settings["Show_Toasts"] == 1) {
+if ($User) {
+    if ($User->Config_Settings["Show_Toasts"] == 1) {
+        Toasts::displayAllToasts();
+    } else {
+        Toasts::clearAllToasts();
+    }
+} else {
     Toasts::displayAllToasts();
 }
+
 ?>
