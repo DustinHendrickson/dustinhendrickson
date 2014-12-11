@@ -1,0 +1,26 @@
+abilities:
+  1:
+    - name: 'Clobber'
+      damage: 3
+      damagetype: 'Normal'
+      effect: 'Normal'
+
+    - name: 'Claw'
+      damage: 4
+      damagetype: 'Normal'
+      effect: 'Normal'
+
+    - name: 'Bite'
+      damage: 5
+      damagetype: 'Normal'
+      effect: 'Normal'
+
+    - name: 'Peck'
+      damage: 3
+      damagetype: 'Normal'
+      effect: 'Normal'
+  2:
+    - name: 'Slash'
+      damage: 6
+      damagetype: 'Normal'
+      effect: 'Bleed'

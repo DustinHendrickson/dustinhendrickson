@@ -61,7 +61,7 @@ function __construct($User_ID)
     } else {
         // Otherwise we check and create a new pet.
         if ($this->Get_Total_Pet_Count() < 1) {
-            Toasts::addNewToast("It looks like you don't have any pets :( Here is a free one to get started!", 'success');
+            Toasts::addNewToast("It looks like you don't have any pets :( <br>Here is a free one to get started!", 'success');
             $this->Give_Random_Pet();
         }
     }
@@ -169,8 +169,8 @@ public function Give_Random_Pet($Tier=1)
     $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
 
     if ($Results){
-        Toasts::addNewToast("You received a new Pet! [{$Pet_Name}]", 'petbattle');
-        Write_Log('pets', $this->User_ID . " just received a new pet!");
+        Toasts::addNewToast("You received a new Pet! <br>[{$Pet_Name}]", 'petbattle');
+        Write_Log('pets', "User_ID [" . $this->User_ID . "] just received a new pet!");
     }
 }
 
@@ -192,7 +192,20 @@ public function Catch_Pet($Pet_ID)
         Toasts::addNewToast("You just caught [{$Pet_To_Catch->Pet_Name}]", 'petbattle');
     } else {
         // YOU MISSED! WTF!?
-        Toasts::addNewToast("Pet [{$Pet_To_Catch->Pet_Name}] just got away.", 'petbattle');
+        Toasts::addNewToast("Pet [{$Pet_To_Catch->Pet_Name}] just got away!", 'petbattle');
+    }
+}
+
+// Deletes a pet from the database.
+public function Release_Pet($Pet_ID)
+{
+    $Pet_Array[':Pet_ID'] = $Pet_ID;
+    $Pet_SQL = "DELETE FROM pets WHERE Pet_ID=:Pet_ID";
+    
+    $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
+
+    if ($Results) {
+        Toasts::addNewToast("You just released a pet back into the wild.", 'petbattle');
     }
 }
 

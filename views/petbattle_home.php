@@ -35,20 +35,47 @@ switch ($_POST['Action'])
 <div class='ContentHeader'>Pet Battles Homescreen</div>
 <hr>
 <br>
- <b>Current Active Pet</b>
-<div class='BlackBox'>
+ <b>Current Active Pet</b><br>
+
 <?php
     $ActivePet = $Pet->Get_Active_Pet();
     if ($ActivePet) {
-        echo "Name: " . $ActivePet["Pet_Name"] . "<br>";
-        echo "Level: " . $ActivePet["Pet_Level"] . "<br>";
-        echo "Health : " . $ActivePet["Pet_Current_Health"] . " / " . $ActivePet["Pet_Max_Health"]  . "<br>";
-        echo "Action Points : " . $ActivePet["Pet_Current_AP"] . " / " . $ActivePet["Pet_Max_AP"]  . "<br>";
+        echo "<b>[ " . $ActivePet["Pet_Name"] . " ]</b>";
+        echo "<div class='BlackBox'>";
+            echo "<table width='100%'>";
+              echo "<tr>";
+                echo "<td>";
+                  echo "<img height='65' width='65' src='petbattles/images/".$ActivePet["Pet_Image"] ."'>";
+                echo "</td>";
+                echo "<td>";
+                  echo "<b>Level</b>: " . $ActivePet["Pet_Level"] . "<br>";
+                  echo "<b>EXP</b>: " . $ActivePet["Pet_Exp"] . "<br>";
+                echo "</td>";
+                echo "<td>";
+                  echo "<b>Offense</b>: " . $ActivePet["Pet_Offense"] . "<br>";
+                  echo "<b>Defense</b>: " . $ActivePet["Pet_Defense"] . "<br>";
+                echo "</td>";
+                echo "<td>";
+                  echo "<b>Health</b>: " . $ActivePet["Pet_Current_Health"] . " / " . $ActivePet["Pet_Max_Health"]  . "<br>";
+                  echo "<b>Action Points</b>: " . $ActivePet["Pet_Current_AP"] . " / " . $ActivePet["Pet_Max_AP"]  . "<br>";
+                echo "</td>";
+                echo "<td>";
+                  echo "<b>Skill</b> 1: " . $ActivePet["Pet_Skill_1"] . "<br>";
+                  echo "<b>Skill</b> 2: " . $ActivePet["Pet_Skill_2"] . "<br>";
+                  echo "<b>Skill</b> 3: " . $ActivePet["Pet_Skill_3"] . "<br>";
+                echo "</td>";
+                echo "<td>";
+                  echo "<b>Type</b>: " . $ActivePet["Pet_Type"] . "<br>";
+                echo "</td>";
+              echo "</tr>";
+            echo "</table>";
+        echo "</div>";
     } else {
-        echo "Looks like you don't have a pet set as your active pet yet, look below to set your active pet.";
+        echo "<div class='BlackBox'>";
+        echo "Looks like you don't have a pet set as your active pet yet, look below to set your active pet.<br> You will be unable to fight until you do so.";
+        echo "</div>";
     }
 ?>
-</div>
 <br>
 
 <form action='?view=<?php echo $View; ?>' method='post'>
@@ -56,8 +83,8 @@ switch ($_POST['Action'])
     <tr>
         <td>
             <center>
-                <input type="submit" name="Action" value="Fight Wild Pet"  style="height:200px; width:30%" />
-                <input type="submit" name="Action" value="Fight User Pet"  style="height:200px; width:30%" />
+                <input <?php if (!$ActivePet) {echo "disabled";} ?> type="submit" name="Action" value="Fight Wild Pet"  style="height:200px; width:30%" />
+                <input <?php if (!$ActivePet) {echo "disabled";} ?> type="submit" name="Action" value="Fight User Pet"  style="height:200px; width:30%" />
                 <input type="submit" name="Action" value="Set Active Pet"  style="height:200px; width:30%" />
             </center>
         </td>

@@ -6,8 +6,8 @@ pets:
       defense: 4
       max_health: 25
       max_ap: 10
-      skill_1: 'Squirt'
-      skill_2: 'Shell Shock'
+      skill_1: 'Clobber'
+      skill_2: 'Squirt'
       skill_3: 'Water Cannon'
       type: 'Water'
 
@@ -17,7 +17,7 @@ pets:
       defense: 2
       max_health: 20
       max_ap: 10
-      skill_1: 'Claw'
+      skill_1: 'Bite'
       skill_2: 'Howl'
       skill_3: 'Fire Pillar'
       type: 'Fire'
@@ -28,10 +28,21 @@ pets:
       defense: 3
       max_health: 18
       max_ap: 10
-      skill_1: 'Dive Bomb'
+      skill_1: 'Peck'
       skill_2: 'Fly'
       skill_3: 'Tornado'
       type: 'Wind'
+
+    - name: 'Rabid Rodent'
+      image: 'rabidrodent.png'
+      offense: 5
+      defense: 2
+      max_health: 15
+      max_ap: 10
+      skill_1: 'Claw'
+      skill_2: 'Burrow'
+      skill_3: 'Shred'
+      type: 'Earth'
   2:
     - name: 'Grizzly Bear'
       image: 'grizzlybear.png'
@@ -42,4 +53,4 @@ pets:
       skill_1: 'Slash'
       skill_2: 'Overbear'
       skill_3: 'Ravish'
-      type: 'Wind'
+      type: 'Earth'
