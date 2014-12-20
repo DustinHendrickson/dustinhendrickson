@@ -26,7 +26,7 @@ pets:
       image: 'huntingfalcon.png'
       offense: 3
       defense: 3
-      max_health: 18
+      max_health: 22
       max_ap: 10
       skill_1: 'Peck'
       skill_2: 'Fly'
@@ -37,10 +37,10 @@ pets:
       image: 'rabidrodent.png'
       offense: 5
       defense: 2
-      max_health: 15
+      max_health: 18
       max_ap: 10
       skill_1: 'Claw'
-      skill_2: 'Burrow'
+      skill_2: 'Burrow Strike'
       skill_3: 'Shred'
       type: 'Earth'
   2:

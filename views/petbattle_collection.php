@@ -5,9 +5,30 @@ $User = new User($_SESSION['ID']);
 $View = Functions::Get_View();
 $Loaded_Pet = new BattlePet($_SESSION['ID']);
 
-if ($_POST['Pet_ID']) {
-  $Loaded_Pet->Release_Pet($_POST['Pet_ID']);
-}
+switch ($_POST['Mode'])
+    {
+        case 'Release':
+            if ($_POST['Pet_ID']) {
+              $Loaded_Pet->Release_Pet($_POST['Pet_ID']);
+            }
+            break;
+        case 'Level Up':
+            if ($_POST['Pet_ID']) {
+                $Loaded_Pet->LevelUp_Pet($_POST['Pet_ID']);
+            }
+            break;
+        case 'Exp 50':
+            if ($_POST['Pet_ID']) {
+                $Loaded_Pet->Give_Exp($_POST['Pet_ID'], 50);
+            }
+            break;
+        case 'Exp 250':
+            if ($_POST['Pet_ID']) {
+                $Loaded_Pet->Give_Exp($_POST['Pet_ID'], 250);
+            }
+            break;
+    }
+
 
 $Pets = $Loaded_Pet->Get_All_Pets();
 
@@ -44,11 +65,19 @@ foreach ($Pets as $Pet) {
             echo "</td>";
             echo "<td>";
               echo "<b>Type</b>: " . $Pet["Pet_Type"] . "<br>";
+              echo "<b>Tier</b>: " . $Pet["Pet_Tier"] . "<br>";
               echo "<b>Status</b>: " . $Pet["Pet_Status"] . "<br>";
             echo "</td>";
-            echo "<td>";
+            echo "</tr>";
+            echo "<tr>";
+            echo "<td colspan='6' bgcolor='black'>";
+            echo "<center>";
               echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
-              echo "<input type='submit' name='SetActive' value='Release Pet'  style='height:30px; width:100px; color:red;' />";
+              echo "<input type='submit' name='Mode' value='Release'  style='height:30px; width:24.5%; color:red;' /> ";
+              if ($_SESSION["ID"] == 1) {echo "<input type='submit' name='Mode' value='Level Up'  style='height:30px; width:24.5%; color:blue;' /> ";}
+              if ($_SESSION["ID"] == 1) {echo "<input type='submit' name='Mode' value='Exp 50'  style='height:30px; width:24.5%; color:purple;' /> ";}
+              if ($_SESSION["ID"] == 1) {echo "<input type='submit' name='Mode' value='Exp 250'  style='height:30px; width:24.5%; color:purple;' /> ";}
+            echo "</center>";
             echo "</td>";
           echo "</tr>";
         echo "</table>";

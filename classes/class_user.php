@@ -35,6 +35,11 @@ class User {
     public $SECONDS_INTERVAL = 43200;     // Interval in seconds that point redemption refreshes.
     public $TODAYS_DATE;
 
+    // Pet Vars
+    public $Pet_Battles_Won;
+    public $Pet_Battles_Lost;
+    public $Pets_Caught;
+
     // Initial function to search the database for the desired user and populate this class object.
     private function Set_User_Info()
     {
@@ -54,6 +59,10 @@ class User {
         $this->Achievements_Unlocked    = $User_Result["Achievements_Unlocked"];
         $this->Points                   = $User_Result["Points"];
         $this->Points_Last_Recieved     = date('F jS Y h:ia', strtotime($User_Result["Points_Last_Recieved"]));
+
+        $this->Pet_Battles_Won          = $User_Result["Pet_Battles_Won"];
+        $this->Pet_Battles_Lost         = $User_Result["Pet_Battles_Lost"];
+        $this->Pets_Caught              = $User_Result["Pets_Caught"];
     }
 
     private function Set_Config_Info()

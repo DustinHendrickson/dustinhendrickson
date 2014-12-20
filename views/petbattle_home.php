@@ -143,7 +143,7 @@ switch ($_POST['Action'])
                         Number of pets caught:
                     </td>
                     <td>
-                        0
+                        <?php echo $User->Pets_Caught; ?>
                     </td>
                 </tr>
 
@@ -152,7 +152,7 @@ switch ($_POST['Action'])
                         Number of pet battle wins:
                     </td>
                     <td>
-                        0
+                        <?php echo $User->Pet_Battles_Won; ?>
                     </td>
                 </tr>
 
@@ -161,7 +161,7 @@ switch ($_POST['Action'])
                         Number of pet battle losses:
                     </td>
                     <td>
-                        0
+                        <?php echo $User->Pet_Battles_Lost; ?>
                     </td>
                 </tr>
 
