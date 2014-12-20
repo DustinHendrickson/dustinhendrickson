@@ -447,21 +447,21 @@ hr {
 }
 
 .PetBattleScreen {
-    background-image: url(../petbattles/images/bg/forest.jpg);
+    background-image: url(../petbattles/images/bg/forestbg.png);
     border-style: solid;
     border-width: 2px;
     border-color: black;
     margin-left: auto;
     margin-right: auto;
-    width: 600px;
-    height: 400px;
+    width: 400px;
+    height: 235px;
     z-index: 1;
 }
 
 .PetBattleAttacker {
     position: relative;
-    left: 285px;
-    top: 300px;
+    left: 40px;
+    top: 145px;
     width: 65px;
     height: 65px;
     z-index: 2;
@@ -469,8 +469,8 @@ hr {
 
 .PetBattleDefender {
     position: relative;
-    left: 430px;
-    top: 200px;
+    left: 270px;
+    top: 35px;
     width: 65px;
     height: 65px;
     z-index: 2;

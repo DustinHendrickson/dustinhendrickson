@@ -95,7 +95,7 @@ if (!isset($_SESSION['PVE_User_Pet_ID'])) {
 
 <div class='PetBattleScreen'>
     <div class='PetBattleAttacker'>
-        <img src='<?php echo $_SESSION['PVE_User_Pet_Image'] ?>'>
+        <img height='120px' width='120px' src='<?php echo $_SESSION['PVE_User_Pet_Image'] ?>'>
     </div>
     <div class='PetBattleDefender'>
         <img src='<?php echo $_SESSION['PVE_AI_Pet_Image'] ?>'>
@@ -139,12 +139,15 @@ if (!isset($_SESSION['PVE_User_Pet_ID'])) {
 
 <?php
 if ($Battle_Results) {
-    echo "<div class='LogGreen'>";
-    echo $Battle_Results['UserAction'];
-    echo "</div>";
-    echo "<br>";
-    echo "<div class='LogRed'>";
-    echo $Battle_Results['AIAction'];
+    echo "<b>Round Results</b>";
+    echo "<div class='BlackBox'>";
+        echo "<div class='LogGreen'>";
+            echo $Battle_Results['UserAction'];
+        echo "</div>";
+        echo "<br>";
+        echo "<div class='LogRed'>";
+            echo $Battle_Results['AIAction'];
+        echo "</div>";
     echo "</div>";
 }
 ?>
@@ -166,7 +169,7 @@ if ($Battle_Results) {
         <td>
             <center>
                 <input title="Raises your defense by 50% for the next round." type="submit" name="Action" value="Defend"  style="height:100px; width:20%" />
-                <input title="Trys to catch the pet, higher chance if the pet is under 45% life. If you don't catch it the battle ends." type="submit" name="Action" value="Catch"  style="height:100px; width:20%" />
+                <input title="Trys to catch the pet, higher chance the lower the pets life. If you don't catch it the battle ends." type="submit" name="Action" value="Catch"  style="height:100px; width:20%" />
                 <input title="Leaves the battle, no exp is gained." type="submit" name="Action" value="Retreat"  style="height:100px; width:20%" />
             </center>
         </td>

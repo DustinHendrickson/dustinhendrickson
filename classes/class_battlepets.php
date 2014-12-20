@@ -355,16 +355,16 @@ public function Create_Battle_Room_PVE()
     $_SESSION['PVE_AI_Pet_Current_AP'] = $AI_Pet->Pet_Current_AP;
     $_SESSION['PVE_AI_Pet_Max_AP'] = $AI_Pet->Pet_Max_AP;
 
-    $_SESSION['PVE_AI_Pet_Skill_1'] = $this->Pet_Skill_1;
-    $Pet_Skill = $this->Get_Pet_Skill_Array($this->Pet_Skill_1);
+    $_SESSION['PVE_AI_Pet_Skill_1'] = $AI_Pet->Pet_Skill_1;
+    $Pet_Skill = $this->Get_Pet_Skill_Array($AI_Pet->Pet_Skill_1);
     $_SESSION['PVE_AI_Pet_Skill_1_Type'] = $Pet_Skill['Ability_Damage_Type'];
 
-    $_SESSION['PVE_AI_Pet_Skill_2'] = $this->Pet_Skill_2;
-    $Pet_Skill = $this->Get_Pet_Skill_Array($this->Pet_Skill_2);
+    $_SESSION['PVE_AI_Pet_Skill_2'] = $AI_Pet->Pet_Skill_2;
+    $Pet_Skill = $this->Get_Pet_Skill_Array($AI_Pet->Pet_Skill_2);
     $_SESSION['PVE_AI_Pet_Skill_2_Type'] = $Pet_Skill['Ability_Damage_Type'];
 
-    $_SESSION['PVE_AI_Pet_Skill_3'] = $this->Pet_Skill_3;
-    $Pet_Skill = $this->Get_Pet_Skill_Array($this->Pet_Skill_3);
+    $_SESSION['PVE_AI_Pet_Skill_3'] = $AI_Pet->Pet_Skill_3;
+    $Pet_Skill = $this->Get_Pet_Skill_Array($AI_Pet->Pet_Skill_3);
     $_SESSION['PVE_AI_Pet_Skill_3_Type'] = $Pet_Skill['Ability_Damage_Type'];
 
     $_SESSION['PVE_AI_Pet_Bonus_Offense'] = $AI_Pet->Pet_Bonus_Offense;
@@ -437,7 +437,9 @@ public function LevelUp_Pet($Pet_ID)
 
         if ($Results){
             if ($this->User_ID != 0){
-                Toasts::addNewToast("Your pet just leveled up!<br>[{$Pet->Pet_Name}]<br>{$Pet->Pet_Level} -> {$New_Level}<br>+ {$RandomOffense} Offense<br>+ {$RandomDefense} Defense<br>+ {$RandomMaxHealth} Health<br>+ {$RandomMaxAP} AP", 'petbattle');
+                if ($New_Level == 7) {$NewSkill = "Learned " . $Pet->Pet_Skill_2. "!<br>";}
+                if ($New_Level == 15) {$NewSkill = "Learned " . $Pet->Pet_Skill_3 . "!<br>";}
+                Toasts::addNewToast("Your pet just leveled up!<br>[{$Pet->Pet_Name}]<br>{$Pet->Pet_Level} -> {$New_Level}<br>{$NewSkill}+ {$RandomOffense} Offense<br>+ {$RandomDefense} Defense<br>+ {$RandomMaxHealth} Health<br>+ {$RandomMaxAP} AP", 'petbattle');
             }
         }
     }
@@ -670,12 +672,12 @@ public function PVE_Catch_Pet()
     if ($Random <= 8) {
         // YOU CAUGHT IT!
         $this->Give_Caught_Pet();
-        Toasts::addNewToast("You just caught [{$_SESSION['PVE_AI_Pet_Name']}]", 'petbattle');
+        Toasts::addNewToast("You just caught [{$_SESSION['PVE_AI_Pet_Name']}] <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
         $this->Add_Pets_Caught();
         $this->Clear_Battle_Room_PVE();
     } else {
         // YOU MISSED! WTF!?
-        Toasts::addNewToast("Pet [{$_SESSION['PVE_AI_Pet_Name']}] got away!", 'petbattle');
+        Toasts::addNewToast("Pet [{$_SESSION['PVE_AI_Pet_Name']}] got away! <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
         $this->Clear_Battle_Room_PVE();
     }
 }
@@ -775,7 +777,7 @@ public function Get_Elemental_Modifier($Attacking_Type, $Defending_Type)
                     break;
             }
             break;
-        
+
         default:
             return $Normal_Modifier;
             break;
