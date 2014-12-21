@@ -58,6 +58,10 @@
     width: 300px;
     padding: 15px;
     margin: 15px; }
+  .growl.growl-xlarge {
+    width: 400px;
+    padding: 20px;
+    margin: 20px; }
   .growl.growl-default {
     color: #FFF;
     background: #7f8c8d; }
