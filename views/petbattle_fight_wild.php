@@ -90,8 +90,17 @@ if (!isset($_SESSION['PVE_User_Pet_ID'])) {
               echo "</tr>";
             echo "</table>";
         echo "</div>";
-        echo "<br>";
 ?>
+<?php 
+if (isset($_SESSION['PVE_AI_Pet_Buffs'])) {
+    echo "<b>AI Buffs |</b> ";
+    foreach($_SESSION['PVE_AI_Pet_Buffs'] as $Buff ) {
+        $Duration = $_SESSION['PVE_AI_Pet_Buffs_'.$Buff.'_Duration'];
+        echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
+    }
+}
+?>
+<br>
 
 <div class='PetBattleScreen'>
     <div class='PetBattleAttacker'>
@@ -101,6 +110,7 @@ if (!isset($_SESSION['PVE_User_Pet_ID'])) {
         <img src='<?php echo $_SESSION['PVE_AI_Pet_Image'] ?>'>
     </div>
 </div>
+
 
 <?php
         echo "<b>[ " . $_SESSION['PVE_User_Pet_Name'] . " ] ".$User->Username."</b>";
@@ -135,7 +145,17 @@ if (!isset($_SESSION['PVE_User_Pet_ID'])) {
         echo "</div>";
 ?>
 
-<br>
+<?php 
+if (isset($_SESSION['PVE_User_Pet_Buffs'])) {
+    echo "<b>User Buffs |</b> ";
+    foreach($_SESSION['PVE_User_Pet_Buffs'] as $Buff ) {
+        $Duration = $_SESSION['PVE_User_Pet_Buffs_'.$Buff.'_Duration'];
+        echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
+    }
+}
+?>
+
+<br><br>
 
 <?php
 if ($Battle_Results) {
@@ -159,9 +179,9 @@ if ($Battle_Results) {
     <tr>
         <td>
             <center>
-                <button  <?php if ($_SESSION['PVE_User_Pet_Skill_1_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'];} else { echo 'title="This will trigger your 1st skill."'; }?> type="submit" name="Action" value="Skill 1" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_1'] . " <br> " . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Type']; ?></button>
-                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 7) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 7."'; } else { if ($_SESSION['PVE_User_Pet_Skill_2_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'];} else { echo 'title="This will trigger your 2nd skill."'; }}?> type="submit" name="Action" value="Skill 2" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_2'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Type'];; ?></button>
-                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 15) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 15."'; } else { if ($_SESSION['PVE_User_Pet_Skill_3_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'];} else {  echo 'title="This will trigger your 3rd skill."'; }}?> type="submit" name="Action" value="Skill 3" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_3'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Type'];; ?></button>
+                <button  <?php if ($_SESSION['PVE_User_Pet_Skill_1_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'];} else { echo 'title="This will trigger your 1st skill."'; }?> type="submit" name="Action" value="Skill 1" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_1'] . " <br> " . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Effect']; ?></button>
+                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 7) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 7."'; } else { if ($_SESSION['PVE_User_Pet_Skill_2_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'];} else { echo 'title="This will trigger your 2nd skill."'; }}?> type="submit" name="Action" value="Skill 2" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_2'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Effect'];; ?></button>
+                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 15) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 15."'; } else { if ($_SESSION['PVE_User_Pet_Skill_3_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'];} else {  echo 'title="This will trigger your 3rd skill."'; }}?> type="submit" name="Action" value="Skill 3" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_3'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Effect'];; ?></button>
             </center>
         </td>
     </tr>
@@ -175,4 +195,170 @@ if ($Battle_Results) {
         </td>
     </tr>
 </table>
+
+<br>
+<b>Effects Legend</b>
+<a id="ToggleLegend" href="javascript:ToggleDiv('Legend','ToggleLegend');" >+ Show Contents</a>
+<div id="Legend" style='display: none;'>
+<div class='BlackBox'>
+    <table width='100%'>
+        <tr>
+            <td>
+                <b>Beneficial Buffs</b>
+            </td>
+            <td>
+                <b>Name</b>
+            </td>
+            <td>
+                <b>Duration</b>
+            </td>
+            <td>
+                <b>Description</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Focus.png'>
+            </td>
+            <td>
+                Focus
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                Increases your pet's chance to hit by 20%.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Heal.png'>
+            </td>
+            <td>
+                Heal
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                Heals your pet for 20% of it's max life per turn.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Frenzy.png'>
+            </td>
+            <td>
+                Frenzy
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                Increases your offense by 25%.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Armor.png'>
+            </td>
+            <td>
+                Armor
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                Increases defense by 20%.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Evasion.png'>
+            </td>
+            <td>
+                Evasion
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                Decreases your chance to be hit by 20%.
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <b>Harmful Buffs</b>
+            </td>
+            <td>
+                <b>Name</b>
+            </td>
+            <td>
+                <b>Duration</b>
+            </td>
+            <td>
+                <b>Description</b>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Wound.png'>
+            </td>
+            <td>
+                Wound
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                Your pet takes 35% more damage from attacks.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Blind.png'>
+            </td>
+            <td>
+                Blind
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                Your pet's chance to hit is decreased by 20%
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Poison.png'>
+            </td>
+            <td>
+                Poison
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                Your pet takes 10% of their Max Health as damage every turn.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src='petbattles/images/icons/Stun.png'>
+            </td>
+            <td>
+                Stun
+            </td>
+            <td>
+                1 turns
+            </td>
+            <td>
+                Your pet cannot perform any actions.
+            </td>
+        </tr>
+
+    </table>
+    </div>
+</div>
 <?php } ?>

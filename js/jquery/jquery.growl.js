@@ -46,7 +46,7 @@ Copyright 2013 Kevin Sylvestre
       close: "&#215;",
       location: "br",
       style: "default",
-      size: "xlarge"
+      size: "large"
     };
 
     Growl.growl = function(settings) {
