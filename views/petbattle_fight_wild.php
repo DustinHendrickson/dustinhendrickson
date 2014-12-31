@@ -9,35 +9,35 @@ $View = Functions::Get_View();
     {
         case 'StartBattle':
             if ($UserPet->Pet_Current_AP > 0) {
-                $UserPet->PVE_Save_AP($UserPet->Pet_Current_AP - 1);
-                $UserPet->Create_Battle_Room_PVE();
+                $UserPet->Save_AP($UserPet->Pet_Current_AP - 1, $UserPet->Pet_ID);
+                $UserPet->Create_Battle_Room('PVE');
             } else {
                 Toasts::addNewToast("You don't have enough AP to fight!", 'petbattle');
             }
             break;
 
         case 'Skill 1':
-            $Battle_Results = $UserPet->PVE_Attack($_SESSION['PVE_User_Pet_Skill_1']);
+            $Battle_Results = $UserPet->Attack($_SESSION['PVE_User_Pet_Skill_1'], 'PVE');
             break;
 
         case 'Skill 2':
             if ($_SESSION['PVE_User_Pet_Level'] >= 3) {
-                $Battle_Results = $UserPet->PVE_Attack($_SESSION['PVE_User_Pet_Skill_2']);
+                $Battle_Results = $UserPet->Attack($_SESSION['PVE_User_Pet_Skill_2'], 'PVE');
             }
             break;
 
         case 'Skill 3':
             if ($_SESSION['PVE_User_Pet_Level'] >= 10) {
-                $Battle_Results = $UserPet->PVE_Attack($_SESSION['PVE_User_Pet_Skill_3']);
+                $Battle_Results = $UserPet->Attack($_SESSION['PVE_User_Pet_Skill_3'], 'PVE');
             }
             break;
 
         case 'Retreat':
-            $UserPet->Clear_Battle_Room_PVE();
+            $UserPet->Clear_Battle_Room('PVE');
             break;
 
         case 'Defend':
-            $Battle_Results = $UserPet->PVE_Attack("Defend");
+            $Battle_Results = $UserPet->Attack("Defend", 'PVE');
             break;
 
         case 'Catch':

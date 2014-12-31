@@ -505,3 +505,30 @@ hr {
 .clear {
     clear:both;
 }
+
+.container {
+    position: relative;
+    width: 100%;
+}
+.container div {
+    height: 100%;
+}
+
+.column-left {
+    width: 33%;
+    left: 0;
+    background: #00F;
+    position: absolute;
+}
+.column-center {
+    width: 34%;
+    background: #933;
+    margin-left: 33%;
+    position: absolute;
+}
+.column-right {
+    width: 33%;
+    right: 0;
+    position: absolute;
+    background: #999;
+}

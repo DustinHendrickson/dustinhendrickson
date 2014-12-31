@@ -83,6 +83,15 @@ private function Get_Active_Pet_ID()
     return $Pet_Result["Pet_ID"];
 }
 
+public function Get_All_Enemy_Pets()
+{
+    $Pet_Array = array(':User_ID' => $this->User_ID);
+    $Pet_SQL = "SELECT * FROM pets WHERE User_ID != :User_ID AND Pet_Active=1 AND Pet_Current_AP > 0";
+    $Results = $this->Connection->Custom_Query($Pet_SQL, $Pet_Array, true);
+
+    return $Results;
+}
+
 // Returns an array of all pets owned by the user.
 public function Get_All_Pets()
 {
@@ -105,19 +114,19 @@ public function Get_All_Inactive_Pets()
     return $Pet_Result;
 }
 
-public function Add_Battles_Won()
+public function Add_Battles_Won($UserID)
 {
     $User_Array = array();
-    $User_Array[':User_ID']=$this->User_ID;
+    $User_Array[':User_ID']=$UserID;
 
     $User_SQL = "UPDATE users SET Pet_Battles_Won=Pet_Battles_Won+1 WHERE ID=:User_ID";
     $Results = $this->Connection->Custom_Execute($User_SQL, $User_Array);
 }
 
-public function Add_Battles_Lost()
+public function Add_Battles_Lost($UserID)
 {
     $User_Array = array();
-    $User_Array[':User_ID']=$this->User_ID;
+    $User_Array[':User_ID']=$UserID;
 
     $User_SQL = "UPDATE users SET Pet_Battles_Lost=Pet_Battles_Lost+1 WHERE ID=:User_ID";
     $Results = $this->Connection->Custom_Execute($User_SQL, $User_Array);
@@ -282,143 +291,150 @@ public function Create_Wild_Pet($Tier=1)
     return $New_Pet_ID;
 }
 
-public function Clear_Battle_Room_PVE()
+public function Clear_Battle_Room($Type)
 {
-    unset($_SESSION['PVE_User_Pet_ID']);
-    unset($_SESSION['PVE_User_Pet_Name']);
-    unset($_SESSION['PVE_User_Pet_Image']);
-    unset($_SESSION['PVE_User_Pet_Skill_1_Cooldown']);
-    unset($_SESSION['PVE_User_Pet_Skill_2_Cooldown']);
-    unset($_SESSION['PVE_User_Pet_Skill_3_Cooldown']);
+    unset($_SESSION[$Type.'_User_Pet_ID']);
+    unset($_SESSION[$Type.'_User_Pet_Name']);
+    unset($_SESSION[$Type.'_User_Pet_Image']);
+    unset($_SESSION[$Type.'_User_Pet_Skill_1_Cooldown']);
+    unset($_SESSION[$Type.'_User_Pet_Skill_2_Cooldown']);
+    unset($_SESSION[$Type.'_User_Pet_Skill_3_Cooldown']);
 
-    unset($_SESSION['PVE_AI_Pet_ID']);
-    unset($_SESSION['PVE_AI_Pet_Name']);
-    unset($_SESSION['PVE_AI_Pet_Image']);
+    unset($_SESSION[$Type.'_AI_Pet_ID']);
+    unset($_SESSION[$Type.'_AI_Pet_Name']);
+    unset($_SESSION[$Type.'_AI_Pet_Image']);
 
-    unset($_SESSION['PVE_User_Pet_Skill_1_Effect']);
-    unset($_SESSION['PVE_User_Pet_Skill_2_Effect']);
-    unset($_SESSION['PVE_User_Pet_Skill_3_Effect']);
+    unset($_SESSION[$Type.'_User_Pet_Skill_1_Effect']);
+    unset($_SESSION[$Type.'_User_Pet_Skill_2_Effect']);
+    unset($_SESSION[$Type.'_User_Pet_Skill_3_Effect']);
 
-    unset($_SESSION['PVE_AI_Pet_Skill_1_Effect']);
-    unset($_SESSION['PVE_AI_Pet_Skill_2_Effect']);
-    unset($_SESSION['PVE_AI_Pet_Skill_3_Effect']);
+    unset($_SESSION[$Type.'_AI_Pet_Skill_1_Effect']);
+    unset($_SESSION[$Type.'_AI_Pet_Skill_2_Effect']);
+    unset($_SESSION[$Type.'_AI_Pet_Skill_3_Effect']);
 
-    unset($_SESSION['PVE_AI_Pet_Buffs']);
-    unset($_SESSION['PVE_User_Pet_Buffs']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs']);
 
-    unset($_SESSION['PVE_User_Pet_Buffs_Armor_Duration']);
-    unset($_SESSION['PVE_User_Pet_Buffs_Blind_Duration']);
-    unset($_SESSION['PVE_User_Pet_Buffs_Wound_Duration']);
-    unset($_SESSION['PVE_User_Pet_Buffs_Focus_Duration']);
-    unset($_SESSION['PVE_User_Pet_Buffs_Evasion_Duration']);
-    unset($_SESSION['PVE_User_Pet_Buffs_Heal_Duration']);
-    unset($_SESSION['PVE_User_Pet_Buffs_Frenzy_Duration']);
-    unset($_SESSION['PVE_User_Pet_Buffs_Stun_Duration']);
-    unset($_SESSION['PVE_User_Pet_Buffs_Poison_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Armor_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Wound_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Focus_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Evasion_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Heal_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Frenzy_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Stun_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration']);
 
-    unset($_SESSION['PVE_AI_Pet_Buffs_Armor_Duration']);
-    unset($_SESSION['PVE_AI_Pet_Buffs_Blind_Duration']);
-    unset($_SESSION['PVE_AI_Pet_Buffs_Wound_Duration']);
-    unset($_SESSION['PVE_AI_Pet_Buffs_Focus_Duration']);
-    unset($_SESSION['PVE_AI_Pet_Buffs_Evasion_Duration']);
-    unset($_SESSION['PVE_AI_Pet_Buffs_Heal_Duration']);
-    unset($_SESSION['PVE_AI_Pet_Buffs_Frenzy_Duration']);
-    unset($_SESSION['PVE_AI_Pet_Buffs_Stun_Duration']);
-    unset($_SESSION['PVE_AI_Pet_Buffs_Poison_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Armor_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Blind_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Wound_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Focus_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Evasion_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Frenzy_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Stun_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration']);
 
 }
 
-public function Create_Battle_Room_PVE()
+public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
 {
     $PET_IMAGE_PATH = 'petbattles/images/';
     $I = 1;
 
+    $_SESSION[$Type.'_User_ID'] = $this->User_ID;
+    $_SESSION[$Type.'_User_Pet_ID'] = $this->Pet_ID;
+    $_SESSION[$Type.'_User_Pet_Name'] = $this->Pet_Name;
+    $_SESSION[$Type.'_User_Pet_Image'] = $PET_IMAGE_PATH . $this->Pet_Image;
+    $_SESSION[$Type.'_User_Pet_Offense'] = $this->Pet_Offense;
+    $_SESSION[$Type.'_User_Pet_Defense'] = $this->Pet_Defense;
+    $_SESSION[$Type.'_User_Pet_Current_Health'] = $this->Pet_Current_Health;
+    $_SESSION[$Type.'_User_Pet_Max_Health'] = $this->Pet_Max_Health;
+    $_SESSION[$Type.'_User_Pet_Current_AP'] = $this->Pet_Current_AP;
+    $_SESSION[$Type.'_User_Pet_Max_AP'] = $this->Pet_Max_AP;
 
-    $_SESSION['PVE_User_Pet_ID'] = $this->Pet_ID;
-    $_SESSION['PVE_User_Pet_Name'] = $this->Pet_Name;
-    $_SESSION['PVE_User_Pet_Image'] = $PET_IMAGE_PATH . $this->Pet_Image;
-    $_SESSION['PVE_User_Pet_Offense'] = $this->Pet_Offense;
-    $_SESSION['PVE_User_Pet_Defense'] = $this->Pet_Defense;
-    $_SESSION['PVE_User_Pet_Current_Health'] = $this->Pet_Current_Health;
-    $_SESSION['PVE_User_Pet_Max_Health'] = $this->Pet_Max_Health;
-    $_SESSION['PVE_User_Pet_Current_AP'] = $this->Pet_Current_AP;
-    $_SESSION['PVE_User_Pet_Max_AP'] = $this->Pet_Max_AP;
-
-    $_SESSION['PVE_User_Pet_Skill_1'] = $this->Pet_Skill_1;
+    $_SESSION[$Type.'_User_Pet_Skill_1'] = $this->Pet_Skill_1;
     $Pet_Skill = $this->Get_Pet_Skill_Array($this->Pet_Skill_1);
-    $_SESSION['PVE_User_Pet_Skill_1_Type'] = $Pet_Skill['Ability_Damage_Type'];
-    $_SESSION['PVE_User_Pet_Skill_1_Effect'] = $Pet_Skill['Ability_Effect'];
+    $_SESSION[$Type.'_User_Pet_Skill_1_Type'] = $Pet_Skill['Ability_Damage_Type'];
+    $_SESSION[$Type.'_User_Pet_Skill_1_Effect'] = $Pet_Skill['Ability_Effect'];
 
-    $_SESSION['PVE_User_Pet_Skill_2'] = $this->Pet_Skill_2;
+    $_SESSION[$Type.'_User_Pet_Skill_2'] = $this->Pet_Skill_2;
     $Pet_Skill = $this->Get_Pet_Skill_Array($this->Pet_Skill_2);
-    $_SESSION['PVE_User_Pet_Skill_2_Type'] = $Pet_Skill['Ability_Damage_Type'];
-    $_SESSION['PVE_User_Pet_Skill_2_Effect'] = $Pet_Skill['Ability_Effect'];
+    $_SESSION[$Type.'_User_Pet_Skill_2_Type'] = $Pet_Skill['Ability_Damage_Type'];
+    $_SESSION[$Type.'_User_Pet_Skill_2_Effect'] = $Pet_Skill['Ability_Effect'];
 
-    $_SESSION['PVE_User_Pet_Skill_3'] = $this->Pet_Skill_3;
+    $_SESSION[$Type.'_User_Pet_Skill_3'] = $this->Pet_Skill_3;
     $Pet_Skill = $this->Get_Pet_Skill_Array($this->Pet_Skill_3);
-    $_SESSION['PVE_User_Pet_Skill_3_Type'] = $Pet_Skill['Ability_Damage_Type'];
-    $_SESSION['PVE_User_Pet_Skill_3_Effect'] = $Pet_Skill['Ability_Effect'];
+    $_SESSION[$Type.'_User_Pet_Skill_3_Type'] = $Pet_Skill['Ability_Damage_Type'];
+    $_SESSION[$Type.'_User_Pet_Skill_3_Effect'] = $Pet_Skill['Ability_Effect'];
 
-    $_SESSION['PVE_User_Pet_Bonus_Offense'] = $this->Pet_Bonus_Offense;
-    $_SESSION['PVE_User_Pet_Bonus_Defense'] = $this->Pet_Bonus_Defense;
-    $_SESSION['PVE_User_Pet_Bonus_EXP'] = $this->Pet_Bonus_EXP;
-    $_SESSION['PVE_User_Pet_Exp'] = $this->Pet_Exp;
-    $_SESSION['PVE_User_Pet_Level'] = $this->Pet_Level;
-    $_SESSION['PVE_User_Pet_Type'] = $this->Pet_Type;
-    $_SESSION['PVE_User_Pet_Tier'] = $this->Pet_Tier;
+    $_SESSION[$Type.'_User_Pet_Bonus_Offense'] = $this->Pet_Bonus_Offense;
+    $_SESSION[$Type.'_User_Pet_Bonus_Defense'] = $this->Pet_Bonus_Defense;
+    $_SESSION[$Type.'_User_Pet_Bonus_EXP'] = $this->Pet_Bonus_EXP;
+    $_SESSION[$Type.'_User_Pet_Exp'] = $this->Pet_Exp;
+    $_SESSION[$Type.'_User_Pet_Level'] = $this->Pet_Level;
+    $_SESSION[$Type.'_User_Pet_Type'] = $this->Pet_Type;
+    $_SESSION[$Type.'_User_Pet_Tier'] = $this->Pet_Tier;
 
 
-    $AI_Pet_ID = $this->Create_Wild_Pet($this->Pet_Tier);
-    $AI_Pet = new BattlePet(0, $AI_Pet_ID);
+    if ($Type=='PVE') {
+        $AI_Pet_ID = $this->Create_Wild_Pet($this->Pet_Tier);
+        $AI_Pet = new BattlePet(0, $AI_Pet_ID);
 
-    $Level_Of_AI = rand($this->Pet_Level-1,$this->Pet_Level+1);
+        $Level_Of_AI = rand($this->Pet_Level-1,$this->Pet_Level+1);
 
-    while ($I < $Level_Of_AI) {
-        $AI_Pet->LevelUp_Pet($AI_Pet_ID);
-        $I++;
+        while ($I < $Level_Of_AI) {
+            $AI_Pet->LevelUp_Pet($AI_Pet_ID);
+            $I++;
+        }
+
+        $AI_Pet = new BattlePet(0, $AI_Pet_ID);
+        $_SESSION[$Type.'_AI_Username'] = "AI";
     }
 
-    $AI_Pet = new BattlePet(0, $AI_Pet_ID);
+    if ($Type=='PVP') {
+        $AI_Pet = new BattlePet($Defender_UserID, $Defender_PetID);
+        $AI_User = new User($Defender_UserID);
+        $_SESSION[$Type.'_AI_Username'] = $AI_User->Username;
+    }
 
-    $_SESSION['PVE_AI_Pet_ID'] = $AI_Pet->Pet_ID;
-    $_SESSION['PVE_AI_Pet_Name'] = $AI_Pet->Pet_Name;
-    $_SESSION['PVE_AI_Pet_Image'] = $PET_IMAGE_PATH . $AI_Pet->Pet_Image;
-    $_SESSION['PVE_AI_Pet_Offense'] = $AI_Pet->Pet_Offense;
-    $_SESSION['PVE_AI_Pet_Defense'] = $AI_Pet->Pet_Defense;
-    $_SESSION['PVE_AI_Pet_Current_Health'] = $AI_Pet->Pet_Current_Health;
-    $_SESSION['PVE_AI_Pet_Max_Health'] = $AI_Pet->Pet_Max_Health;
-    $_SESSION['PVE_AI_Pet_Current_AP'] = $AI_Pet->Pet_Current_AP;
-    $_SESSION['PVE_AI_Pet_Max_AP'] = $AI_Pet->Pet_Max_AP;
+    $_SESSION[$Type.'_AI_ID'] = $Defender_UserID;
+    $_SESSION[$Type.'_AI_Pet_ID'] = $AI_Pet->Pet_ID;
+    $_SESSION[$Type.'_AI_Pet_Name'] = $AI_Pet->Pet_Name;
+    $_SESSION[$Type.'_AI_Pet_Image'] = $PET_IMAGE_PATH . $AI_Pet->Pet_Image;
+    $_SESSION[$Type.'_AI_Pet_Offense'] = $AI_Pet->Pet_Offense;
+    $_SESSION[$Type.'_AI_Pet_Defense'] = $AI_Pet->Pet_Defense;
+    $_SESSION[$Type.'_AI_Pet_Current_Health'] = $AI_Pet->Pet_Current_Health;
+    $_SESSION[$Type.'_AI_Pet_Max_Health'] = $AI_Pet->Pet_Max_Health;
+    $_SESSION[$Type.'_AI_Pet_Current_AP'] = $AI_Pet->Pet_Current_AP;
+    $_SESSION[$Type.'_AI_Pet_Max_AP'] = $AI_Pet->Pet_Max_AP;
 
-    $_SESSION['PVE_AI_Pet_Skill_1'] = $AI_Pet->Pet_Skill_1;
+    $_SESSION[$Type.'_AI_Pet_Skill_1'] = $AI_Pet->Pet_Skill_1;
     $Pet_Skill = $this->Get_Pet_Skill_Array($AI_Pet->Pet_Skill_1);
-    $_SESSION['PVE_AI_Pet_Skill_1_Type'] = $Pet_Skill['Ability_Damage_Type'];
-    $_SESSION['PVE_AI_Pet_Skill_1_Effect'] = $Pet_Skill['Ability_Effect'];
+    $_SESSION[$Type.'_AI_Pet_Skill_1_Type'] = $Pet_Skill['Ability_Damage_Type'];
+    $_SESSION[$Type.'_AI_Pet_Skill_1_Effect'] = $Pet_Skill['Ability_Effect'];
 
-    $_SESSION['PVE_AI_Pet_Skill_2'] = $AI_Pet->Pet_Skill_2;
+    $_SESSION[$Type.'_AI_Pet_Skill_2'] = $AI_Pet->Pet_Skill_2;
     $Pet_Skill = $this->Get_Pet_Skill_Array($AI_Pet->Pet_Skill_2);
-    $_SESSION['PVE_AI_Pet_Skill_2_Type'] = $Pet_Skill['Ability_Damage_Type'];
-    $_SESSION['PVE_AI_Pet_Skill_2_Effect'] = $Pet_Skill['Ability_Effect'];
+    $_SESSION[$Type.'_AI_Pet_Skill_2_Type'] = $Pet_Skill['Ability_Damage_Type'];
+    $_SESSION[$Type.'_AI_Pet_Skill_2_Effect'] = $Pet_Skill['Ability_Effect'];
 
-    $_SESSION['PVE_AI_Pet_Skill_3'] = $AI_Pet->Pet_Skill_3;
+    $_SESSION[$Type.'_AI_Pet_Skill_3'] = $AI_Pet->Pet_Skill_3;
     $Pet_Skill = $this->Get_Pet_Skill_Array($AI_Pet->Pet_Skill_3);
-    $_SESSION['PVE_AI_Pet_Skill_3_Type'] = $Pet_Skill['Ability_Damage_Type'];
-    $_SESSION['PVE_AI_Pet_Skill_3_Effect'] = $Pet_Skill['Ability_Effect'];
+    $_SESSION[$Type.'_AI_Pet_Skill_3_Type'] = $Pet_Skill['Ability_Damage_Type'];
+    $_SESSION[$Type.'_AI_Pet_Skill_3_Effect'] = $Pet_Skill['Ability_Effect'];
 
-    $_SESSION['PVE_AI_Pet_Bonus_Offense'] = $AI_Pet->Pet_Bonus_Offense;
-    $_SESSION['PVE_AI_Pet_Bonus_Defense'] = $AI_Pet->Pet_Bonus_Defense;
-    $_SESSION['PVE_AI_Pet_Bonus_EXP'] = $AI_Pet->Pet_Bonus_EXP;
-    $_SESSION['PVE_AI_Pet_Exp'] = $AI_Pet->Pet_Exp;
-    $_SESSION['PVE_AI_Pet_Level'] = $AI_Pet->Pet_Level;
-    $_SESSION['PVE_AI_Pet_Type'] = $AI_Pet->Pet_Type;
-    $_SESSION['PVE_AI_Pet_Tier'] = $AI_Pet->Pet_Tier;
+    $_SESSION[$Type.'_AI_Pet_Bonus_Offense'] = $AI_Pet->Pet_Bonus_Offense;
+    $_SESSION[$Type.'_AI_Pet_Bonus_Defense'] = $AI_Pet->Pet_Bonus_Defense;
+    $_SESSION[$Type.'_AI_Pet_Bonus_EXP'] = $AI_Pet->Pet_Bonus_EXP;
+    $_SESSION[$Type.'_AI_Pet_Exp'] = $AI_Pet->Pet_Exp;
+    $_SESSION[$Type.'_AI_Pet_Level'] = $AI_Pet->Pet_Level;
+    $_SESSION[$Type.'_AI_Pet_Type'] = $AI_Pet->Pet_Type;
+    $_SESSION[$Type.'_AI_Pet_Tier'] = $AI_Pet->Pet_Tier;
 
-    $this->Remove_Wild_Pet($AI_Pet_ID);
-}
-
-public function Create_Battle_Room_PVP($Attacking_Pet_ID, $Defending_Pet_ID)
-{
-
+    if ($Type=='PVE') {
+        $this->Remove_Wild_Pet($AI_Pet_ID);
+    }
 }
 
 // This function gives a pet a set amount of exp, if it's more than the leveling threshold (100 exp) it will level the pet and apply the remaining exp.
@@ -556,6 +572,8 @@ public function Get_Total_Pet_Count()
     return $Results[0];
 }
 
+
+
 // Returns the total amount of alive pets the current user has.
 public function Get_Total_Alive_Pet_Count()
 {
@@ -589,12 +607,12 @@ public function Get_Pet_Skill_Array($Skill_Name)
 
 
 // This function will initiate a battle between the active pet and the PVE Wild Pet.
-public function PVE_Attack($Skill_Name)
+public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0)
 {
-    unset($_SESSION['PVE_User_Pet_Bonus_Offense']);
-    unset($_SESSION['PVE_User_Pet_Bonus_Defense']);
-    unset($_SESSION['PVE_AI_Pet_Bonus_Offense']);
-    unset($_SESSION['PVE_AI_Pet_Bonus_Defense']);
+    unset($_SESSION[$Type.'_User_Pet_Bonus_Offense']);
+    unset($_SESSION[$Type.'_User_Pet_Bonus_Defense']);
+    unset($_SESSION[$Type.'_AI_Pet_Bonus_Offense']);
+    unset($_SESSION[$Type.'_AI_Pet_Bonus_Defense']);
     $User_Chance_To_Hit = 75;
     $AI_Chance_To_Hit = 75;
     $User_Extra_Damage_Taken_Percent = 0;
@@ -615,110 +633,89 @@ public function PVE_Attack($Skill_Name)
 
 
 
-    // Here we make sure the user's pet is the right level.
-    $Pet_Random_Ability = rand(0,1);
-    if ($_SESSION['PVE_AI_Pet_Level'] >= 3) {
-        $Pet_Random_Ability = rand(0,2);
-    }
-    if ($_SESSION['PVE_AI_Pet_Level'] >= 10) {
-        $Pet_Random_Ability = rand(0,3);
-    }
-    switch ($Pet_Random_Ability) {
-        case '0':
-            $AI_Defend_Pet_Defense = $_SESSION['PVE_AI_Pet_Defense'];
-        case '1':
-            $AI_Pet_Ability = $this->Get_Pet_Skill_Array($_SESSION['PVE_AI_Pet_Skill_1']);
-            break;
-        case '2':
-            $AI_Pet_Ability = $this->Get_Pet_Skill_Array($_SESSION['PVE_AI_Pet_Skill_2']);
-            break;
-        case '3':
-            $AI_Pet_Ability = $this->Get_Pet_Skill_Array($_SESSION['PVE_AI_Pet_Skill_3']);
-            break;
-    }
 
     //EFFECTS - USER
-    if (!isset($_SESSION['PVE_User_Pet_Buffs'])) {$_SESSION['PVE_User_Pet_Buffs'] = array();}
-    foreach ($_SESSION['PVE_User_Pet_Buffs'] as $BuffKey => $Buff) {
+    if (!isset($_SESSION[$Type.'_User_Pet_Buffs'])) {$_SESSION[$Type.'_User_Pet_Buffs'] = array();}
+    foreach ($_SESSION[$Type.'_User_Pet_Buffs'] as $BuffKey => $Buff) {
         switch ($Buff) {
             case 'Blind':
                 //Decreases chance to hit 20% for 2 turns.
                 $User_Chance_To_Hit -= 20;
-                $_SESSION['PVE_User_Pet_Buffs_Blind_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Blind_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Wound':
                 //Pet takes 35% more damage for 2 turns.
                 $User_Extra_Damage_Taken_Percent += .35;
-                $_SESSION['PVE_User_Pet_Buffs_Wound_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Wound_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Wound_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Wound_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Poison':
                 //Pet takes 10% damage every turn for 2 turns. Not affected by armor.
                 $User_Poison_Damage_Taken_Percent += .10;
-                $_SESSION['PVE_User_Pet_Buffs_Poison_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Poison_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Stun':
                 //Makes pet un-command able for 2 turns.
                 $User_Is_Stunned = true;
-                $_SESSION['PVE_User_Pet_Buffs_Stun_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Stun_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Stun_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Stun_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Focus':
                 //Decreases chance to miss by 20% for 2 turns.
                 $User_Chance_To_Hit += 20;
-                $_SESSION['PVE_User_Pet_Buffs_Focus_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Focus_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Focus_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Focus_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Heal':
                 //Pet Heals 20% each turn for 2 turns.
                 $User_Is_Healing = true;
-                $_SESSION['PVE_User_Pet_Buffs_Heal_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Heal_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Heal_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Heal_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Armor':
                 //Increases pets defense by 20% for 2 turns.
                 $User_Extra_Defense_Percent += .20;
-                $_SESSION['PVE_User_Pet_Buffs_Armor_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Armor_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Armor_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Armor_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Frenzy':
                 //Increases pets offense by 25% for 2 turns
                 $User_Extra_Offense_Percent += .25;
-                $_SESSION['PVE_User_Pet_Buffs_Frenzy_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Frenzy_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Frenzy_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Frenzy_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Evasion':
                 //Increases chance to be missed by 20% for 2 turns.
                 $AI_Chance_To_Hit -= 20;
-                $_SESSION['PVE_User_Pet_Buffs_Evasion_Duration'] -= 1;
-                if ($_SESSION['PVE_User_Pet_Buffs_Evasion_Duration'] <= 0) {
-                    unset($_SESSION['PVE_User_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_User_Pet_Buffs_Evasion_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Evasion_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
@@ -728,88 +725,88 @@ public function PVE_Attack($Skill_Name)
         }
     }
 
-    if (!isset($_SESSION['PVE_AI_Pet_Buffs'])) {$_SESSION['PVE_AI_Pet_Buffs'] = array();}
+    if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'])) {$_SESSION[$Type.'_AI_Pet_Buffs'] = array();}
     //EFFECTS - AI
-    foreach ($_SESSION['PVE_AI_Pet_Buffs'] as $BuffKey => $Buff) {
+    foreach ($_SESSION[$Type.'_AI_Pet_Buffs'] as $BuffKey => $Buff) {
         switch ($Buff) {
             case 'Blind':
                 //Decreases chance to hit 20% for 2 turns.
                 $AI_Chance_To_Hit -= 20;
-                $_SESSION['PVE_AI_Pet_Buffs_Blind_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Blind_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Blind_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Blind_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Wound':
                 //Pet takes 35% more damage for 2 turns.
                 $AI_Extra_Damage_Taken_Percent += .35;
-                $_SESSION['PVE_AI_Pet_Buffs_Wound_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Wound_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Wound_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Wound_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Poison':
                 //Pet takes 10% damage every turn for 2 turns. Not affected by armor.
                 $AI_Poison_Damage_Taken_Percent += .10;
-                $_SESSION['PVE_AI_Pet_Buffs_Poison_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Poison_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Stun':
                 //Makes pet un-command able for 2 turns.
                 $AI_Is_Stunned = true;
-                $_SESSION['PVE_AI_Pet_Buffs_Stun_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Stun_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Stun_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Stun_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Focus':
                 //Decreases chance to miss by 20% for 2 turns.
                 $AI_Chance_To_Hit += 20;
-                $_SESSION['PVE_AI_Pet_Buffs_Focus_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Focus_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Focus_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Focus_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Heal':
                 //Pet Heals 20% each turn for 2 turns.
                 $AI_Is_Healing = true;
-                $_SESSION['PVE_AI_Pet_Buffs_Heal_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Heal_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Armor':
                 //Increases pets defense by 20% for 2 turns.
                 $AI_Extra_Defense_Percent += .20;
-                $_SESSION['PVE_AI_Pet_Buffs_Armor_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Armor_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Armor_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Armor_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Frenzy':
                 //Increases pets offense by 25% for 2 turns
                 $AI_Extra_Offense_Percent += .25;
-                $_SESSION['PVE_AI_Pet_Buffs_Frenzy_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Frenzy_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Frenzy_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Frenzy_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
             case 'Evasion':
                 //Increases chance to be missed by 20% for 2 turns.
                 $User_Chance_To_Hit -= 20;
-                $_SESSION['PVE_AI_Pet_Buffs_Evasion_Duration'] -= 1;
-                if ($_SESSION['PVE_AI_Pet_Buffs_Evasion_Duration'] <= 0) {
-                    unset($_SESSION['PVE_AI_Pet_Buffs'][$BuffKey]);
+                $_SESSION[$Type.'_AI_Pet_Buffs_Evasion_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Evasion_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
                 }
                 break;
 
@@ -818,6 +815,33 @@ public function PVE_Attack($Skill_Name)
                 break;
         }
     }
+
+    if ($AI_Is_Stunned == false) {
+        // Here we make sure the user's pet is the right level.
+        $Weighted_Defend = rand(1,20);
+        if ($Weighted_Defend <=5) {$Weighted_Defend = 0;} else {$Weighted_Defend = 1;}
+        $Pet_Random_Ability = rand($Weighted_Defend,1);
+        if ($_SESSION[$Type.'_AI_Pet_Level'] >= 3) {
+            $Pet_Random_Ability = rand($Weighted_Defend,2);
+        }
+        if ($_SESSION[$Type.'_AI_Pet_Level'] >= 10) {
+            $Pet_Random_Ability = rand($Weighted_Defend,3);
+        }
+        switch ($Pet_Random_Ability) {
+            case '0':
+                $AI_Defend_Pet_Defense = $_SESSION[$Type.'_AI_Pet_Defense'];
+            case '1':
+                $AI_Pet_Ability = $this->Get_Pet_Skill_Array($_SESSION[$Type.'_AI_Pet_Skill_1']);
+                break;
+            case '2':
+                $AI_Pet_Ability = $this->Get_Pet_Skill_Array($_SESSION[$Type.'_AI_Pet_Skill_2']);
+                break;
+            case '3':
+                $AI_Pet_Ability = $this->Get_Pet_Skill_Array($_SESSION[$Type.'_AI_Pet_Skill_3']);
+                break;
+        }
+    }
+
 
     if ($Skill_Name!="Defend") {
         // This sets up the ability reference array for the User.
@@ -829,19 +853,19 @@ public function PVE_Attack($Skill_Name)
         if ($User_Is_Stunned == false) {
             if ($User_Pet_Ability['Ability_Damage'] > 0) {
                 if ($Random <= $User_Chance_To_Hit) {
-                    $User_Pet_Offense_Modifier = $this->Get_Elemental_Modifier($User_Pet_Ability['Ability_Damage_Type'], $_SESSION['PVE_AI_Pet_Type']);
-                    $User_Offense_Elemental = ceil(($_SESSION['PVE_User_Pet_Offense'] * $User_Pet_Offense_Modifier));
+                    $User_Pet_Offense_Modifier = $this->Get_Elemental_Modifier($User_Pet_Ability['Ability_Damage_Type'], $_SESSION[$Type.'_AI_Pet_Type']);
+                    $User_Offense_Elemental = ceil(($_SESSION[$Type.'_User_Pet_Offense'] * $User_Pet_Offense_Modifier));
 
-                    $User_Offense = rand(1,$User_Pet_Ability['Ability_Damage']) + $_SESSION['PVE_User_Pet_Offense'] + $_SESSION['PVE_User_Pet_Bonus_Offense'] + $User_Offense_Elemental;
+                    $User_Offense = rand(1,$User_Pet_Ability['Ability_Damage']) + $_SESSION[$Type.'_User_Pet_Offense'] + $_SESSION[$Type.'_User_Pet_Bonus_Offense'] + $User_Offense_Elemental;
                     $User_Offense = $User_Offense + ceil($User_Offense * $User_Extra_Offense_Percent);
-                    $AI_Defense = ($_SESSION['PVE_AI_Pet_Defense'] + $_SESSION['PVE_AI_Pet_Bonus_Defense'] + $AI_Defend_Pet_Defense);
+                    $AI_Defense = ($_SESSION[$Type.'_AI_Pet_Defense'] + $_SESSION[$Type.'_AI_Pet_Bonus_Defense'] + $AI_Defend_Pet_Defense);
                     $AI_Defense = $AI_Defense + ($AI_Defense * $AI_Extra_Defense_Percent);
                     $AI_Percent_Blocked = ($AI_Defense * .01);
                     $AI_Damage_Blocked = ceil($User_Offense * $AI_Percent_Blocked);
                     $User_Damage_Done = ceil(($User_Offense + ($User_Offense * $AI_Extra_Damage_Taken_Percent)) - $AI_Damage_Blocked);
                     if ($User_Damage_Done < 0) {$User_Damage_Done = 0;}
 
-                    $_SESSION['PVE_AI_Pet_Current_Health'] = $_SESSION['PVE_AI_Pet_Current_Health'] - $User_Damage_Done;
+                    $_SESSION[$Type.'_AI_Pet_Current_Health'] = $_SESSION[$Type.'_AI_Pet_Current_Health'] - $User_Damage_Done;
 
                     if ($User_Pet_Ability['Ability_Effect'] != 'None') { $User_Ability_Triggered = "[".$User_Pet_Ability['Ability_Effect'] . "] was also triggered."; }
 
@@ -859,31 +883,31 @@ public function PVE_Attack($Skill_Name)
     }
 
     if ($Skill_Name=="Defend"){
-        $User_Defend_Pet_Defense = $_SESSION['PVE_User_Pet_Defense'];
+        $User_Defend_Pet_Defense = $_SESSION[$Type.'_User_Pet_Defense'];
         $Return_Array['UserAction'] = "YOU used ability " . $Skill_Name . " and raised your defense to [" . $User_Defend_Pet_Defense * 2 . "]";
     }
 
     if (!isset($AI_Defend_Pet_Defense)) {
         // Here we check to make sure the enemy pet didn't die before having him attack back.
-        if ($_SESSION['PVE_AI_Pet_Current_Health'] > 0) {
+        if ($_SESSION[$Type.'_AI_Pet_Current_Health'] > 0) {
             $Random = rand(1,100);
 
             if ($AI_Is_Stunned == false) {
                 if ($AI_Pet_Ability['Ability_Damage'] > 0) {
                     if ($Random <= $AI_Chance_To_Hit ) {
-                        $AI_Pet_Offense_Modifier = $this->Get_Elemental_Modifier($AI_Pet_Ability['Ability_Damage_Type'], $_SESSION['PVE_User_Pet_Type']);
-                        $AI_Offense_Elemental = ceil(($_SESSION['PVE_AI_Pet_Offense'] * $AI_Pet_Offense_Modifier));
+                        $AI_Pet_Offense_Modifier = $this->Get_Elemental_Modifier($AI_Pet_Ability['Ability_Damage_Type'], $_SESSION[$Type.'_User_Pet_Type']);
+                        $AI_Offense_Elemental = ceil(($_SESSION[$Type.'_AI_Pet_Offense'] * $AI_Pet_Offense_Modifier));
 
-                        $AI_Offense = rand(1,$AI_Pet_Ability['Ability_Damage']) + $_SESSION['PVE_AI_Pet_Offense'] + $_SESSION['PVE_AI_Pet_Bonus_Offense'];
+                        $AI_Offense = rand(1,$AI_Pet_Ability['Ability_Damage']) + $_SESSION[$Type.'_AI_Pet_Offense'] + $_SESSION[$Type.'_AI_Pet_Bonus_Offense'];
                         $AI_Offense = $AI_Offense + ceil($AI_Offense * $AI_Extra_Offense_Percent);
-                        $User_Defense = ($_SESSION['PVE_User_Pet_Defense'] + $_SESSION['PVE_User_Pet_Bonus_Defense']);
+                        $User_Defense = ($_SESSION[$Type.'_User_Pet_Defense'] + $_SESSION[$Type.'_User_Pet_Bonus_Defense']);
                         $User_Defense = $User_Defense + ceil($User_Defense * $User_Extra_Defense_Percent);
                         $User_Percent_Blocked = (($User_Defense + $User_Defend_Pet_Defense) * .01);
                         $User_Damage_Blocked = ceil($AI_Offense * $User_Percent_Blocked);
                         $AI_Damage_Done = ceil(($AI_Offense + ($AI_Offense * $User_Extra_Damage_Taken_Percent)) - ceil($User_Damage_Blocked));
                         if ($AI_Damage_Done < 0) {$AI_Damage_Done = 0;}
 
-                        $_SESSION['PVE_User_Pet_Current_Health'] = $_SESSION['PVE_User_Pet_Current_Health'] - $AI_Damage_Done;
+                        $_SESSION[$Type.'_User_Pet_Current_Health'] = $_SESSION[$Type.'_User_Pet_Current_Health'] - $AI_Damage_Done;
 
                         if ($AI_Pet_Ability['Ability_Effect'] != 'None') { $AI_Ability_Triggered = "[".$AI_Pet_Ability['Ability_Effect'] . "] was also triggered."; }
 
@@ -906,134 +930,146 @@ public function PVE_Attack($Skill_Name)
     }
 
     if ($User_Is_Healing == true) {
-        $_SESSION['PVE_User_Pet_Current_Health'] += ($_SESSION['PVE_User_Pet_Current_Health'] * .20);
+        $_SESSION[$Type.'_User_Pet_Current_Health'] += ($_SESSION[$Type.'_User_Pet_Current_Health'] * .20);
     }
     if ($AI_Is_Healing == true) {
-        $_SESSION['PVE_AI_Pet_Current_Health'] += ($_SESSION['PVE_AI_Pet_Current_Health'] * .20);
+        $_SESSION[$Type.'_AI_Pet_Current_Health'] += ($_SESSION[$Type.'_AI_Pet_Current_Health'] * .20);
     }
 
     if ($User_Poison_Damage_Taken_Percent > 0) {
-        $_SESSION['PVE_User_Pet_Current_Health'] -= ($_SESSION['PVE_User_Pet_Max_Health'] * $User_Poison_Damage_Taken_Percent);
+        $_SESSION[$Type.'_User_Pet_Current_Health'] -= ($_SESSION[$Type.'_User_Pet_Max_Health'] * $User_Poison_Damage_Taken_Percent);
     }
     if ($AI_Poison_Damage_Taken_Percent > 0) {
-        $_SESSION['PVE_AI_Pet_Current_Health'] -= ($_SESSION['PVE_AI_Pet_Max_Health'] * $AI_Poison_Damage_Taken_Percent);
+        $_SESSION[$Type.'_AI_Pet_Current_Health'] -= ($_SESSION[$Type.'_AI_Pet_Max_Health'] * $AI_Poison_Damage_Taken_Percent);
     }
 
     //Reduce the cooldowns on abilitys.
-    if ($_SESSION['PVE_User_Pet_Skill_1_Cooldown'] > 0) { $_SESSION['PVE_User_Pet_Skill_1_Cooldown'] = $_SESSION['PVE_User_Pet_Skill_1_Cooldown'] - 1;}
-    if ($_SESSION['PVE_User_Pet_Skill_2_Cooldown'] > 0) { $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] = $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] - 1;}
-    if ($_SESSION['PVE_User_Pet_Skill_3_Cooldown'] > 0) { $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] = $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] - 1;}
+    if ($_SESSION[$Type.'_User_Pet_Skill_1_Cooldown'] > 0) { $_SESSION[$Type.'_User_Pet_Skill_1_Cooldown'] = $_SESSION[$Type.'_User_Pet_Skill_1_Cooldown'] - 1;}
+    if ($_SESSION[$Type.'_User_Pet_Skill_2_Cooldown'] > 0) { $_SESSION[$Type.'_User_Pet_Skill_2_Cooldown'] = $_SESSION[$Type.'_User_Pet_Skill_2_Cooldown'] - 1;}
+    if ($_SESSION[$Type.'_User_Pet_Skill_3_Cooldown'] > 0) { $_SESSION[$Type.'_User_Pet_Skill_3_Cooldown'] = $_SESSION[$Type.'_User_Pet_Skill_3_Cooldown'] - 1;}
 
     // Here we set cooldowns
-    if ($Skill_Name == $_SESSION['PVE_User_Pet_Skill_1']) { $_SESSION['PVE_User_Pet_Skill_1_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
-    if ($Skill_Name == $_SESSION['PVE_User_Pet_Skill_2']) { $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
-    if ($Skill_Name == $_SESSION['PVE_User_Pet_Skill_3']) { $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
+    if ($Skill_Name == $_SESSION[$Type.'_User_Pet_Skill_1']) { $_SESSION[$Type.'_User_Pet_Skill_1_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
+    if ($Skill_Name == $_SESSION[$Type.'_User_Pet_Skill_2']) { $_SESSION[$Type.'_User_Pet_Skill_2_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
+    if ($Skill_Name == $_SESSION[$Type.'_User_Pet_Skill_3']) { $_SESSION[$Type.'_User_Pet_Skill_3_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
 
 
     // Here we apply weapon effects if the pet hit.
     if ($User_Missed == false) {
-        $this->PVE_Add_Buff_To_AI_From_User($User_Pet_Ability['Ability_Effect']);
+        $this->Add_Buff_To_AI_From_User($User_Pet_Ability['Ability_Effect'], $Type);
     }
     if ($AI_Missed == false) {
-        $this->PVE_Add_Buff_To_User_From_AI($AI_Pet_Ability['Ability_Effect']);
+        $this->Add_Buff_To_User_From_AI($AI_Pet_Ability['Ability_Effect'], $Type);
     }
 
     // Here we check to see if any side has won the battle.
-    if ($_SESSION['PVE_AI_Pet_Current_Health'] <= 0) {
-        $this->PVE_Win_Battle();
+    if ($Type=='PVE'){
+        if ($_SESSION[$Type.'_AI_Pet_Current_Health'] <= 0) {
+            $this->PVE_Win_Battle();
+        }
+
+        if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0) {
+            $this->PVE_Lose_Battle();
+        }
     }
 
-    if ($_SESSION['PVE_User_Pet_Current_Health'] <= 0) {
-        $this->PVE_Lose_Battle();
+    if ($Type=='PVP'){
+        if ($_SESSION[$Type.'_AI_Pet_Current_Health'] <= 0) {
+            $this->PVP_Win_Battle();
+        }
+
+        if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0) {
+            $this->PVP_Lose_Battle();
+        }
     }
 
     return $Return_Array;
 
 }
 
-public function PVE_Add_Buff_To_AI_From_User($Effect)
+public function Add_Buff_To_AI_From_User($Effect, $Type)
 {
     switch ($Effect) {
         case 'Blind':
             //Decreases chance to hit 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Blind');
-                $_SESSION['PVE_User_Pet_Buffs_Blind_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Blind');
+                $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Blind_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] += 2;
             break;
         case 'Wound':
             //Pet takes 35% more damage for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Wound');
-                $_SESSION['PVE_AI_Pet_Buffs_Wound_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Wound');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Wound_Duration'] = 0;
             }
-            $_SESSION['PVE_AI_Pet_Buffs_Wound_Duration'] += 2;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Wound_Duration'] += 2;
             break;
         case 'Poison':
             //Pet takes 10% damage every turn for 2 turns. Not affected by armor.
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Poison');
-                $_SESSION['PVE_AI_Pet_Buffs_Poison_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Poison');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration'] = 0;
             }
-            $_SESSION['PVE_AI_Pet_Buffs_Poison_Duration'] += 2;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration'] += 2;
             break;
         case 'Stun':
             //Makes pet un-command able for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Stun');
-                $_SESSION['PVE_AI_Pet_Buffs_Stun_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Stun');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Stun_Duration'] = 0;
             }
-            $_SESSION['PVE_AI_Pet_Buffs_Stun_Duration'] += 1;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Stun_Duration'] += 1;
             break;
         case 'Focus':
             //Decreases chance to be miss by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Focus');
-                $_SESSION['PVE_User_Pet_Buffs_Focus_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Focus');
+                $_SESSION[$Type.'_User_Pet_Buffs_Focus_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Focus_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Focus_Duration'] += 2;
             break;
         case 'Heal':
             //Pet Heals 20% each turn for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Heal');
-                $_SESSION['PVE_User_Pet_Buffs_Heal_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Heal');
+                $_SESSION[$Type.'_User_Pet_Buffs_Heal_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Heal_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Heal_Duration'] += 2;
             break;
         case 'Armor':
             //Increases pets defense by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Armor');
-                $_SESSION['PVE_User_Pet_Buffs_Armor_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Armor');
+                $_SESSION[$Type.'_User_Pet_Buffs_Armor_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Armor_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Armor_Duration'] += 2;
             break;
         case 'Frenzy':
             //Increases pets offense by 25% for 2 turns
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Frenzy');
-                $_SESSION['PVE_User_Pet_Buffs_Frenzy_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Frenzy');
+                $_SESSION[$Type.'_User_Pet_Buffs_Frenzy_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Frenzy_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Frenzy_Duration'] += 2;
             break;
         case 'Evasion':
             //Increases chance to be missed by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Evasion');
-                $_SESSION['PVE_User_Pet_Buffs_Evasion_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Evasion');
+                $_SESSION[$Type.'_User_Pet_Buffs_Evasion_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Evasion_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Evasion_Duration'] += 2;
             break;
 
         default:
@@ -1042,89 +1078,89 @@ public function PVE_Add_Buff_To_AI_From_User($Effect)
     }
 }
 
-public function PVE_Add_Buff_To_User_From_AI($Effect)
+public function Add_Buff_To_User_From_AI($Effect, $Type)
 {
     switch ($Effect) {
         case 'Blind':
             //Decreases chance to hit by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Blind');
-                $_SESSION['PVE_User_Pet_Buffs_Blind_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Blind');
+                $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Blind_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] += 2;
             break;
         case 'Wound':
             //Pet takes 35% more damage for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Wound');
-                $_SESSION['PVE_User_Pet_Buffs_Wound_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Wound');
+                $_SESSION[$Type.'_User_Pet_Buffs_Wound_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Wound_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Wound_Duration'] += 2;
             break;
         case 'Poison':
             //Pet takes 10% damage every turn for 2 turns. Not affected by armor.
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Poison');
-                $_SESSION['PVE_User_Pet_Buffs_Poison_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Poison');
+                $_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Poison_Duration'] += 2;
+            $_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration'] += 2;
             break;
         case 'Stun':
             //Makes pet un-command able for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_User_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_User_Pet_Buffs'],'Stun');
-                $_SESSION['PVE_User_Pet_Buffs_Stun_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Stun');
+                $_SESSION[$Type.'_User_Pet_Buffs_Stun_Duration'] = 0;
             }
-            $_SESSION['PVE_User_Pet_Buffs_Stun_Duration'] += 1;
+            $_SESSION[$Type.'_User_Pet_Buffs_Stun_Duration'] += 1;
             break;
         case 'Focus':
             //Decreases chance to miss by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Focus');
-                $_SESSION['PVE_AI_Pet_Buffs_Focus_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Focus');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Focus_Duration'] = 0;
             }
-            $_SESSION['PVE_AI_Pet_Buffs_Focus_Duration'] += 2;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Focus_Duration'] += 2;
             break;
         case 'Heal':
             //Pet Heals 20% each turn for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Heal');
-                $_SESSION['PVE_AI_Pet_Buffs_Heal_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Heal');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration'] = 0;
             }
-            $_SESSION['PVE_AI_Pet_Buffs_Heal_Duration'] += 2;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration'] += 2;
             break;
         case 'Armor':
             //Increases pets defense by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Armor');
-                $_SESSION['PVE_AI_Pet_Buffs_Armor_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Armor');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Armor_Duration'] = 0;
             }
-            $_SESSION['PVE_AI_Pet_Buffs_Armor_Duration'] += 2;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Armor_Duration'] += 2;
             break;
         case 'Frenzy':
             //Increases pets offense by 25% for 2 turns
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Frenzy');
-                $_SESSION['PVE_AI_Pet_Buffs_Frenzy_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Frenzy');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Frenzy_Duration'] = 0;
             }
-            $_SESSION['PVE_AI_Pet_Buffs_Frenzy_Duration'] += 2;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Frenzy_Duration'] += 2;
             break;
         case 'Evasion':
             //Increases chance to be missed by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION['PVE_AI_Pet_Buffs']);
-            if (!isset($_SESSION['PVE_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION['PVE_AI_Pet_Buffs'],'Evasion');
-                $_SESSION['PVE_AI_Pet_Buffs_Evasion_Duration'] = 0;
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Evasion');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Evasion_Duration'] = 0;
             }
-            $_SESSION['PVE_AI_Pet_Buffs_Evasion_Duration'] += 2;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Evasion_Duration'] += 2;
             break;
 
         default:
@@ -1137,16 +1173,52 @@ public function PVE_Win_Battle()
 {
     $EXP_Earned = rand(1,30 - $this->Pet_Level);
     $this->Give_Exp($this->Pet_ID, $EXP_Earned);
-    $this->Clear_Battle_Room_PVE();
-    $this->Add_Battles_Won();
-    Toasts::addNewToast("You just won a battle! +" . $EXP_Earned . " Exp", 'petbattle');
+    $this->Clear_Battle_Room('PVE');
+    $this->Add_Battles_Won($this->User_ID);
+    Toasts::addNewToast("You just won a battle!<br> + " . $EXP_Earned . " Exp", 'petbattle');
 }
 
 public function PVE_Lose_Battle()
 {
-    $this->Clear_Battle_Room_PVE();
-    $this->Add_Battles_Lost();
+    $this->Clear_Battle_Room('PVE');
+    $this->Add_Battles_Lost($this->User_ID);
     Toasts::addNewToast("You just lost a battle :(!", 'petbattle');
+}
+
+public function PVP_Win_Battle()
+{
+    $AI = new BattlePet($_SESSION['PVP_AI_User_ID'], $_SESSION['PVP_AI_Pet_ID']);
+    $User = new User($this->User_ID);
+
+    $LevelDifference = $this->Pet_Level - $AI->Pet_Level;
+    $EXP_Earned = rand(1,30 - $this->Pet_Level) - $LevelDifference;
+    $Random_Points = rand(1,3);
+    $User->Add_Points($Random_Points);
+    $this->Give_Exp($this->Pet_ID, $EXP_Earned);
+    $this->Add_Battles_Won($this->User_ID);
+
+    $AI->Add_Battles_Lost($_SESSION['PVP_AI_User_ID']);
+    $AI->Subtract_AP(1, $AI->Pet_ID);
+
+    $this->Clear_Battle_Room('PVP');
+    Toasts::addNewToast("You just won a PVP battle!<br> + " . $EXP_Earned . " Exp<br> + ". $Random_Points ." points!", 'petbattle');
+}
+
+public function PVP_Lose_Battle()
+{
+    $this->Add_Battles_Lost($this->User_ID);
+
+    $AI = new BattlePet($_SESSION['PVP_AI_User_ID'], $_SESSION['PVP_AI_Pet_ID']);
+    $LevelDifference = $AI->Pet_Level - $this->Pet_Level ;
+    
+    $AI->Subtract_AP(1, $AI->Pet_ID);
+    $AI->Add_Battles_Won($_SESSION['PVP_AI_User_ID']);
+
+    $EXP_Earned = rand(1,30 - $AI->Pet_Level) - $LevelDifference;
+    $AI->Give_Exp($AI->Pet_ID, $EXP_Earned);
+
+    $this->Clear_Battle_Room('PVP');
+    Toasts::addNewToast("You just lost a PVP battle :(!", 'petbattle');
 }
 
 // This function will try to catch a Wild pet you're fighting.
@@ -1161,21 +1233,26 @@ public function PVE_Catch_Pet()
         $this->Give_Caught_Pet();
         Toasts::addNewToast("You just caught [{$_SESSION['PVE_AI_Pet_Name']}] <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
         $this->Add_Pets_Caught();
-        $this->Clear_Battle_Room_PVE();
+        $this->Clear_Battle_Room('PVE');
     } else {
         // YOU MISSED! WTF!?
         Toasts::addNewToast("Pet [{$_SESSION['PVE_AI_Pet_Name']}] got away! <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
-        $this->Clear_Battle_Room_PVE();
+        $this->Clear_Battle_Room('PVE');
     }
 }
 
-public function PVE_Save_AP($NewAP)
+public function Subtract_AP($NewAP, $Pet_ID)
 {
-    $Pet_Array = array (':Pet_ID'=>$this->Pet_ID, ':Pet_Current_AP'=>$NewAP);
+    $Pet_Array = array (':Pet_ID'=>$Pet_ID, ':Pet_Current_AP'=>$NewAP);
+    $Pet_SQL = "UPDATE pets SET Pet_Current_AP = Pet_Current_AP - :Pet_Current_AP WHERE Pet_ID = :Pet_ID";
+    $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
+}
+
+public function Save_AP($NewAP, $Pet_ID)
+{
+    $Pet_Array = array (':Pet_ID'=>$Pet_ID, ':Pet_Current_AP'=>$NewAP);
     $Pet_SQL = "UPDATE pets SET Pet_Current_AP = :Pet_Current_AP WHERE Pet_ID = :Pet_ID";
     $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
-
-    $this->Pet_Current_AP = $NewAP;
 }
 
 public function Get_Elemental_Modifier($Attacking_Type, $Defending_Type)
