@@ -32,6 +32,10 @@ Write_Log('views',"Site has logged a page view.");
 
         <div id="BodyWrapper">
 
+<?PHP
+    $View = explode("_", $_GET['view']);
+    if ($View[0] != "petbattle") { ?>
+
         <div id="Header">
             <a href='/' class="Logo"></a>
         </div>
@@ -39,7 +43,7 @@ Write_Log('views',"Site has logged a page view.");
         <div id="Public-Navigation">
             <?php Navigation::write_Public(); ?>
         </div>
-
+<?PHP } ?>
         <div id="Content">
             <?php Functions::Display_View(Functions::Get_View()); ?>
         </div>

@@ -21,13 +21,13 @@ $View = Functions::Get_View();
             break;
 
         case 'Skill 2':
-            if ($_SESSION['PVE_User_Pet_Level'] >= 7) {
+            if ($_SESSION['PVE_User_Pet_Level'] >= 3) {
                 $Battle_Results = $UserPet->PVE_Attack($_SESSION['PVE_User_Pet_Skill_2']);
             }
             break;
 
         case 'Skill 3':
-            if ($_SESSION['PVE_User_Pet_Level'] >= 15) {
+            if ($_SESSION['PVE_User_Pet_Level'] >= 10) {
                 $Battle_Results = $UserPet->PVE_Attack($_SESSION['PVE_User_Pet_Skill_3']);
             }
             break;
@@ -45,115 +45,124 @@ $View = Functions::Get_View();
             break;
     }
 
-?>
-<div class='ContentHeader'>Fight a Wild Pet <a href='?view=petbattle_home'><img align='right' height='35' width='100' src='img/back.png'></a></div><br><hr><br>
-
-<?php
 if (!isset($_SESSION['PVE_User_Pet_ID'])) {
-
+    echo "<div class='ContentHeader'>Fight Wild Pet <a href='?view=petbattle_home'><img align='right' height='35' width='100' src='img/back.png'></a></div><br><hr><br>";
     echo '<form action="?view='. $View . '" method="post">';
     echo '<center><button title="This will start a new battle." type="submit" name="Action" value="StartBattle" style="height:100px; width:20%">Start Battle</button></center>';
     echo '</form>';
+    echo '</div>';
 
 } else {
 
 ?>
 
 <?php
-        echo "<b>[ " . $_SESSION['PVE_AI_Pet_Name'] . " ] AI</b>";
-        echo "<div class='BlackBox'>";
-            echo "<table width='100%'>";
-              echo "<tr>";
-                echo "<td>";
-                  echo "<img height='65' width='65' src='".$_SESSION['PVE_AI_Pet_Image'] ."'>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Level</b>: " . $_SESSION['PVE_AI_Pet_Level'] . "<br>";
-                  echo "<b>EXP</b>: " . $_SESSION['PVE_AI_Pet_Exp'] . "<br>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Offense</b>: " . $_SESSION['PVE_AI_Pet_Offense'] . "<br>";
-                  echo "<b>Defense</b>: " . $_SESSION['PVE_AI_Pet_Defense'] . "<br>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Health</b>: " . $_SESSION['PVE_AI_Pet_Current_Health'] . " / " . $_SESSION['PVE_AI_Pet_Max_Health']  . "<br>";
-                  echo "<b>Action Points</b>: " . $_SESSION['PVE_AI_Pet_Current_AP'] . " / " . $_SESSION['PVE_AI_Pet_Max_AP']  . "<br>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Skill</b> 1: " . $_SESSION['PVE_AI_Pet_Skill_1'] . "<br>";
-                  echo "<b>Skill</b> 2: " . $_SESSION['PVE_AI_Pet_Skill_2'] . "<br>";
-                  echo "<b>Skill</b> 3: " . $_SESSION['PVE_AI_Pet_Skill_3'] . "<br>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Type</b>: " . $_SESSION['PVE_AI_Pet_Type'] . "<br>";
-                echo "</td>";
-              echo "</tr>";
-            echo "</table>";
-        echo "</div>";
-?>
-<?php 
-if (isset($_SESSION['PVE_AI_Pet_Buffs'])) {
-    echo "<b>AI Buffs |</b> ";
-    foreach($_SESSION['PVE_AI_Pet_Buffs'] as $Buff ) {
-        $Duration = $_SESSION['PVE_AI_Pet_Buffs_'.$Buff.'_Duration'];
-        echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
-    }
-}
-?>
-<br>
+        echo "<table width='100%'>";
+        echo "<tr>";
+        echo "<td width='3px;' style='background-color: green;'> </td>";
+            echo "<td colspan='6'>";
+                echo "<b>[ " . $_SESSION['PVE_User_Pet_Name'] . " ] ".$User->Username."</b>";
+            echo "</td>";
+            echo "<td width='3px;' style='background-color: red;'> </td>";
+            echo "<td colspan='6'>";
+                echo "<b>[ " . $_SESSION['PVE_AI_Pet_Name'] . " ] AI</b>";
+            echo "</td>";
+        echo "</tr>";
 
-<div class='PetBattleScreen'>
+        echo "<tr>";
+        echo "<td width='3px;' style='background-color: green;'> </td>";
+            echo "<td>";
+                echo "<img height='65' width='65' src='".$_SESSION['PVE_User_Pet_Image'] ."'>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Level</b>: " . $_SESSION['PVE_User_Pet_Level'] . "<br>";
+                echo "<b>EXP</b>: " . $_SESSION['PVE_User_Pet_Exp'] . "<br>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Offense</b>: " . $_SESSION['PVE_User_Pet_Offense'] . "<br>";
+                echo "<b>Defense</b>: " . $_SESSION['PVE_User_Pet_Defense'] . "<br>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Health</b>: " . $_SESSION['PVE_User_Pet_Current_Health'] . " / " . $_SESSION['PVE_User_Pet_Max_Health']  . "<br>";
+                echo "<b>Action Points</b>: " . $_SESSION['PVE_User_Pet_Current_AP'] . " / " . $_SESSION['PVE_User_Pet_Max_AP']  . "<br>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Skill</b> 1: " . $_SESSION['PVE_User_Pet_Skill_1'] . "<br>";
+                echo "<b>Skill</b> 2: " . $_SESSION['PVE_User_Pet_Skill_2'] . "<br>";
+                echo "<b>Skill</b> 3: " . $_SESSION['PVE_User_Pet_Skill_3'] . "<br>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Type</b>: " . $_SESSION['PVE_User_Pet_Type'] . "<br>";
+            echo "</td>";
+
+echo "<td width='3px;' style='background-color: red;'> </td>";
+
+            echo "<td>";
+                echo "<img height='65' width='65' src='".$_SESSION['PVE_AI_Pet_Image'] ."'>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Level</b>: " . $_SESSION['PVE_AI_Pet_Level'] . "<br>";
+                echo "<b>EXP</b>: " . $_SESSION['PVE_AI_Pet_Exp'] . "<br>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Offense</b>: " . $_SESSION['PVE_AI_Pet_Offense'] . "<br>";
+                echo "<b>Defense</b>: " . $_SESSION['PVE_AI_Pet_Defense'] . "<br>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Health</b>: " . $_SESSION['PVE_AI_Pet_Current_Health'] . " / " . $_SESSION['PVE_AI_Pet_Max_Health']  . "<br>";
+                echo "<b>Action Points</b>: " . $_SESSION['PVE_AI_Pet_Current_AP'] . " / " . $_SESSION['PVE_AI_Pet_Max_AP']  . "<br>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Skill</b> 1: " . $_SESSION['PVE_AI_Pet_Skill_1'] . "<br>";
+                echo "<b>Skill</b> 2: " . $_SESSION['PVE_AI_Pet_Skill_2'] . "<br>";
+                echo "<b>Skill</b> 3: " . $_SESSION['PVE_AI_Pet_Skill_3'] . "<br>";
+            echo "</td>";
+            echo "<td>";
+                echo "<b>Type</b>: " . $_SESSION['PVE_AI_Pet_Type'] . "<br>";
+            echo "</td>";
+
+
+              echo "</tr>";
+              echo "<tr>";
+              echo "<td width='3px;' style='background-color: green;'> </td>";
+              echo "<td colspan='6'>";
+
+            if (isset($_SESSION['PVE_User_Pet_Buffs'])) {
+                echo "<b>User Buffs |</b> ";
+                foreach($_SESSION['PVE_User_Pet_Buffs'] as $Buff ) {
+                    $Duration = $_SESSION['PVE_User_Pet_Buffs_'.$Buff.'_Duration'];
+                    echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
+                }
+            }
+
+              echo "</td>";
+              echo "<td width='3px;' style='background-color: red;'> </td>";
+              echo "<td colspan='6'>";
+
+              if (isset($_SESSION['PVE_AI_Pet_Buffs'])) {
+                    echo "<b>AI Buffs |</b> ";
+                    foreach($_SESSION['PVE_AI_Pet_Buffs'] as $Buff ) {
+                        $Duration = $_SESSION['PVE_AI_Pet_Buffs_'.$Buff.'_Duration'];
+                        echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
+                    }
+              }
+
+                echo "</td>";
+                echo "</tr>";
+echo "</table>";
+?>
+
+
+<!-- <div class='PetBattleScreen'>
     <div class='PetBattleAttacker'>
         <img height='120px' width='120px' src='<?php echo $_SESSION['PVE_User_Pet_Image'] ?>'>
     </div>
     <div class='PetBattleDefender'>
         <img src='<?php echo $_SESSION['PVE_AI_Pet_Image'] ?>'>
     </div>
-</div>
+</div> -->
 
 
-<?php
-        echo "<b>[ " . $_SESSION['PVE_User_Pet_Name'] . " ] ".$User->Username."</b>";
-        echo "<div class='BlackBox'>";
-            echo "<table width='100%'>";
-              echo "<tr>";
-                echo "<td>";
-                  echo "<img height='65' width='65' src='".$_SESSION['PVE_User_Pet_Image'] ."'>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Level</b>: " . $_SESSION['PVE_User_Pet_Level'] . "<br>";
-                  echo "<b>EXP</b>: " . $_SESSION['PVE_User_Pet_Exp'] . "<br>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Offense</b>: " . $_SESSION['PVE_User_Pet_Offense'] . "<br>";
-                  echo "<b>Defense</b>: " . $_SESSION['PVE_User_Pet_Defense'] . "<br>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Health</b>: " . $_SESSION['PVE_User_Pet_Current_Health'] . " / " . $_SESSION['PVE_User_Pet_Max_Health']  . "<br>";
-                  echo "<b>Action Points</b>: " . $_SESSION['PVE_User_Pet_Current_AP'] . " / " . $_SESSION['PVE_User_Pet_Max_AP']  . "<br>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Skill</b> 1: " . $_SESSION['PVE_User_Pet_Skill_1'] . "<br>";
-                  echo "<b>Skill</b> 2: " . $_SESSION['PVE_User_Pet_Skill_2'] . "<br>";
-                  echo "<b>Skill</b> 3: " . $_SESSION['PVE_User_Pet_Skill_3'] . "<br>";
-                echo "</td>";
-                echo "<td>";
-                  echo "<b>Type</b>: " . $_SESSION['PVE_User_Pet_Type'] . "<br>";
-                echo "</td>";
-              echo "</tr>";
-            echo "</table>";
-        echo "</div>";
-?>
-
-<?php 
-if (isset($_SESSION['PVE_User_Pet_Buffs'])) {
-    echo "<b>User Buffs |</b> ";
-    foreach($_SESSION['PVE_User_Pet_Buffs'] as $Buff ) {
-        $Duration = $_SESSION['PVE_User_Pet_Buffs_'.$Buff.'_Duration'];
-        echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
-    }
-}
-?>
 
 <br><br>
 
@@ -180,8 +189,8 @@ if ($Battle_Results) {
         <td>
             <center>
                 <button  <?php if ($_SESSION['PVE_User_Pet_Skill_1_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'];} else { echo 'title="This will trigger your 1st skill."'; }?> type="submit" name="Action" value="Skill 1" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_1'] . " <br> " . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Effect']; ?></button>
-                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 7) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 7."'; } else { if ($_SESSION['PVE_User_Pet_Skill_2_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'];} else { echo 'title="This will trigger your 2nd skill."'; }}?> type="submit" name="Action" value="Skill 2" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_2'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Effect'];; ?></button>
-                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 15) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 15."'; } else { if ($_SESSION['PVE_User_Pet_Skill_3_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'];} else {  echo 'title="This will trigger your 3rd skill."'; }}?> type="submit" name="Action" value="Skill 3" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_3'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Effect'];; ?></button>
+                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 3) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 3."'; } else { if ($_SESSION['PVE_User_Pet_Skill_2_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'];} else { echo 'title="This will trigger your 2nd skill."'; }}?> type="submit" name="Action" value="Skill 2" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_2'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Effect'];; ?></button>
+                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 10) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 10"'; } else { if ($_SESSION['PVE_User_Pet_Skill_3_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'];} else {  echo 'title="This will trigger your 3rd skill."'; }}?> type="submit" name="Action" value="Skill 3" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_3'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Effect'];; ?></button>
             </center>
         </td>
     </tr>

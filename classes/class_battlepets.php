@@ -475,8 +475,8 @@ public function LevelUp_Pet($Pet_ID)
 
         if ($Results){
             if ($this->User_ID != 0){
-                if ($New_Level == 7) {$NewSkill = "Learned " . $Pet->Pet_Skill_2. "!<br>";}
-                if ($New_Level == 15) {$NewSkill = "Learned " . $Pet->Pet_Skill_3 . "!<br>";}
+                if ($New_Level == 3) {$NewSkill = "Learned " . $Pet->Pet_Skill_2. "!<br>";}
+                if ($New_Level == 10) {$NewSkill = "Learned " . $Pet->Pet_Skill_3 . "!<br>";}
                 Toasts::addNewToast("Your pet just leveled up!<br>[{$Pet->Pet_Name}]<br>{$Pet->Pet_Level} -> {$New_Level}<br>{$NewSkill}+ {$RandomOffense} Offense<br>+ {$RandomDefense} Defense<br>+ {$RandomMaxHealth} Health<br>+ {$RandomMaxAP} AP", 'petbattle');
             }
         }
@@ -617,10 +617,10 @@ public function PVE_Attack($Skill_Name)
 
     // Here we make sure the user's pet is the right level.
     $Pet_Random_Ability = rand(0,1);
-    if ($_SESSION['PVE_AI_Pet_Level'] >= 7) {
+    if ($_SESSION['PVE_AI_Pet_Level'] >= 3) {
         $Pet_Random_Ability = rand(0,2);
     }
-    if ($_SESSION['PVE_AI_Pet_Level'] >= 15) {
+    if ($_SESSION['PVE_AI_Pet_Level'] >= 10) {
         $Pet_Random_Ability = rand(0,3);
     }
     switch ($Pet_Random_Ability) {
@@ -835,10 +835,11 @@ public function PVE_Attack($Skill_Name)
                     $User_Offense = rand(1,$User_Pet_Ability['Ability_Damage']) + $_SESSION['PVE_User_Pet_Offense'] + $_SESSION['PVE_User_Pet_Bonus_Offense'] + $User_Offense_Elemental;
                     $User_Offense = $User_Offense + ceil($User_Offense * $User_Extra_Offense_Percent);
                     $AI_Defense = ($_SESSION['PVE_AI_Pet_Defense'] + $_SESSION['PVE_AI_Pet_Bonus_Defense'] + $AI_Defend_Pet_Defense);
-                    $AI_Defense = $AI_Defense + ($AI_Defense * $AI_Extra_Defence_Percent);
+                    $AI_Defense = $AI_Defense + ($AI_Defense * $AI_Extra_Defense_Percent);
                     $AI_Percent_Blocked = ($AI_Defense * .01);
                     $AI_Damage_Blocked = ceil($User_Offense * $AI_Percent_Blocked);
                     $User_Damage_Done = ceil(($User_Offense + ($User_Offense * $AI_Extra_Damage_Taken_Percent)) - $AI_Damage_Blocked);
+                    if ($User_Damage_Done < 0) {$User_Damage_Done = 0;}
 
                     $_SESSION['PVE_AI_Pet_Current_Health'] = $_SESSION['PVE_AI_Pet_Current_Health'] - $User_Damage_Done;
 
@@ -876,10 +877,11 @@ public function PVE_Attack($Skill_Name)
                         $AI_Offense = rand(1,$AI_Pet_Ability['Ability_Damage']) + $_SESSION['PVE_AI_Pet_Offense'] + $_SESSION['PVE_AI_Pet_Bonus_Offense'];
                         $AI_Offense = $AI_Offense + ceil($AI_Offense * $AI_Extra_Offense_Percent);
                         $User_Defense = ($_SESSION['PVE_User_Pet_Defense'] + $_SESSION['PVE_User_Pet_Bonus_Defense']);
-                        $User_Defense = $User_Defense + ($User_Defense * $User_Extra_Defence_Percent);
+                        $User_Defense = $User_Defense + ceil($User_Defense * $User_Extra_Defense_Percent);
                         $User_Percent_Blocked = (($User_Defense + $User_Defend_Pet_Defense) * .01);
                         $User_Damage_Blocked = ceil($AI_Offense * $User_Percent_Blocked);
                         $AI_Damage_Done = ceil(($AI_Offense + ($AI_Offense * $User_Extra_Damage_Taken_Percent)) - ceil($User_Damage_Blocked));
+                        if ($AI_Damage_Done < 0) {$AI_Damage_Done = 0;}
 
                         $_SESSION['PVE_User_Pet_Current_Health'] = $_SESSION['PVE_User_Pet_Current_Health'] - $AI_Damage_Done;
 
