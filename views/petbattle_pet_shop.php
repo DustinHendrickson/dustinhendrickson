@@ -19,6 +19,7 @@ $View = Functions::Get_View();
 ?>
 <div class='ContentHeader'>Purchase Pet Items <a href='?view=petbattle_home'><img align='right' height='35' width='100' src='img/back.png'></a></div><br><hr><br>
 <center>
+Points are earned by winning PVP battles and earning achievements from the site! You can also redeem free points twice a day <a href='?view=points'><b>here</b></a>. You can use items you have purchased in your <a href='?view=petbattle_collection'><b>Pet Collection</b></a><br><br><hr>
 <?php 
     $ItemList = Spyc::YAMLLoad('/var/www/petbattles/data/base_item_list.yml');
     $MaxItems = count($ItemList['items'][1]);
