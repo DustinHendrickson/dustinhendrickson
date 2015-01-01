@@ -29,6 +29,71 @@ switch ($_POST['Mode'])
             break;
     }
 
+switch ($_POST['UseItem'])
+    {
+        case 'Pet Food':
+            if ($_POST['Item_ID']) {
+              $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
+              $Pet_Using_Item->Add_AP(10, $_POST['Pet_ID']);
+              $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
+            }
+            break;
+        case 'Candy':
+            if ($_POST['Item_ID']) {
+              $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
+              $Pet_Using_Item->Add_AP(20, $_POST['Pet_ID']);
+              $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
+            }
+            break;
+        case 'Offense Training Book':
+            if ($_POST['Item_ID']) {
+              $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
+              $Pet_Using_Item->Add_Offense_To_Pet($_POST['Pet_ID'], 1);
+
+              $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
+            }
+            break;
+        case 'Defense Training Book':
+            if ($_POST['Item_ID']) {
+              $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
+              $Pet_Using_Item->Add_Defense_To_Pet($_POST['Pet_ID'], 1);
+
+              $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
+            }
+            break;
+        case 'Health Elixer':
+            if ($_POST['Item_ID']) {
+              $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
+              $Pet_Using_Item->Add_Max_Health_To_Pet($_POST['Pet_ID'], 5);
+
+              $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
+            }
+            break;
+        case 'Book of Experience':
+            if ($_POST['Item_ID']) {
+              $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
+              $Pet_Using_Item->Give_Exp($_POST['Pet_ID'], 25);
+
+              $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
+            }
+            break;
+        case 'Mystic Candy':
+            if ($_POST['Item_ID']) {
+              $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
+              $Pet_Using_Item->LevelUp_Pet($_POST['Pet_ID']);
+
+              $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
+            }
+            break;
+    }
+
 
 $Pets = $Loaded_Pet->Get_All_Pets();
 
@@ -79,9 +144,73 @@ foreach ($Pets as $Pet) {
               if ($_SESSION["ID"] == 1) {echo "<input type='submit' name='Mode' value='Exp 250'  style='height:30px; width:24.5%; color:purple;' /> ";}
             echo "</center>";
             echo "</td>";
+            echo "</form>";
+              
+              if($Loaded_Pet->Get_All_Item_Count() > 0) {
+                echo "<tr>";
+                echo "<td colspan='6' bgcolor='black'>";
+
+                if ($Loaded_Pet->Get_Item_Count("Pet Food") > 0) {
+                  echo "<form style='display:inline' action='?view=". $View . "' method='post'>";
+                  echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Pet Food')."' name='Item_ID' />";
+                  echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
+                  echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Pet Food")."' name='UseItem' value='Pet Food' title='[Pet Food] - ".$Loaded_Pet->Get_Item_Description("Pet Food")." - You have ".$Loaded_Pet->Get_Item_Count("Pet Food")." of this item.' />";
+                  echo "</form>";
+                }
+
+                if ($Loaded_Pet->Get_Item_Count("Candy") > 0) {
+                  echo "<form style='display:inline' action='?view=". $View . "' method='post'>";
+                  echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Candy')."' name='Item_ID' />";
+                  echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
+                  echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Candy")."' name='UseItem' value='Candy' title='[Candy] - ".$Loaded_Pet->Get_Item_Description("Candy")." - You have ".$Loaded_Pet->Get_Item_Count("Candy")." of this item.' />";
+                  echo "</form>";
+                }
+
+                if ($Loaded_Pet->Get_Item_Count("Offense Training Book") > 0) {
+                  echo "<form style='display:inline' action='?view=". $View . "' method='post'>";
+                  echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Offense Training Book')."' name='Item_ID' />";
+                  echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
+                  echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Offense Training Book")."' name='UseItem' value='Offense Training Book' title='[Offense Training Book] - ".$Loaded_Pet->Get_Item_Description("Offense Training Book")." - You have ".$Loaded_Pet->Get_Item_Count("Offense Training Book")." of this item.' />";
+                  echo "</form>";
+                }
+
+                if ($Loaded_Pet->Get_Item_Count("Defense Training Book") > 0) {
+                  echo "<form style='display:inline' action='?view=". $View . "' method='post'>";
+                  echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Defense Training Book')."' name='Item_ID' />";
+                  echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
+                  echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Defense Training Book")."' name='UseItem' value='Defense Training Book' title='[Defense Training Book] - ".$Loaded_Pet->Get_Item_Description("Defense Training Book")." - You have ".$Loaded_Pet->Get_Item_Count("Defense Training Book")." of this item.' />";
+                  echo "</form>";
+                }
+
+                if ($Loaded_Pet->Get_Item_Count("Health Elixer") > 0) {
+                  echo "<form style='display:inline' action='?view=". $View . "' method='post'>";
+                  echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Health Elixer')."' name='Item_ID' />";
+                  echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
+                  echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Health Elixer")."' name='UseItem' value='Health Elixer' title='[Health Elixer] - ".$Loaded_Pet->Get_Item_Description("Health Elixer")." - You have ".$Loaded_Pet->Get_Item_Count("Health Elixer")." of this item.' />";
+                  echo "</form>";
+                }
+
+                if ($Loaded_Pet->Get_Item_Count("Book of Experience") > 0) {
+                  echo "<form style='display:inline' action='?view=". $View . "' method='post'>";
+                  echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Book of Experience')."' name='Item_ID' />";
+                  echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
+                  echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Book of Experience")."' name='UseItem' value='Book of Experience' title='[Book of Experience] - ".$Loaded_Pet->Get_Item_Description("Book of Experience")." - You have ".$Loaded_Pet->Get_Item_Count("Book of Experience")." of this item.' />";
+                  echo "</form>";
+                }
+
+                if ($Loaded_Pet->Get_Item_Count("Mystic Candy") > 0) {
+                  echo "<form style='display:inline' action='?view=". $View . "' method='post'>";
+                  echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Mystic Candy')."' name='Item_ID' />";
+                  echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
+                  echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Mystic Candy")."' name='UseItem' value='Mystic Candy' title='[Mystic Candy] - ".$Loaded_Pet->Get_Item_Description("Mystic Candy")." - You have ".$Loaded_Pet->Get_Item_Count("Mystic Candy")." of this item.' />";
+                  echo "</form>";
+                }
+
+                echo "</td>";
+                echo "</tr>";
+              }
           echo "</tr>";
         echo "</table>";
-      echo "</form>";
     echo "</div>";
     echo "<br>";
 }

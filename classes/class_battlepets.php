@@ -141,6 +141,37 @@ public function Add_Pets_Caught()
     $Results = $this->Connection->Custom_Execute($User_SQL, $User_Array);
 }
 
+public function Add_Offense_To_Pet($Pet_ID, $Offense)
+{
+    $User_Array = array();
+    $User_Array[':Pet_ID']=$Pet_ID;
+    $User_Array[':Pet_Offense']=$Offense;
+
+    $User_SQL = "UPDATE pets SET Pet_Offense=Pet_Offense+:Pet_Offense WHERE Pet_ID=:Pet_ID";
+    $Results = $this->Connection->Custom_Execute($User_SQL, $User_Array);
+}
+
+public function Add_Defense_To_Pet($Pet_ID, $Defense)
+{
+    $User_Array = array();
+    $User_Array[':Pet_ID']=$Pet_ID;
+    $User_Array[':Pet_Defense']=$Defense;
+
+    $User_SQL = "UPDATE pets SET Pet_Defense=Pet_Defense+:Pet_Defense WHERE Pet_ID=:Pet_ID";
+    $Results = $this->Connection->Custom_Execute($User_SQL, $User_Array);
+}
+
+public function Add_Max_Health_To_Pet($Pet_ID, $Max_Health)
+{
+    $User_Array = array();
+    $User_Array[':Pet_ID']=$Pet_ID;
+    $User_Array[':Pet_Max_Health']=$Max_Health;
+
+    $User_SQL = "UPDATE pets SET Pet_Max_Health=Pet_Max_Health+:Pet_Max_Health, Pet_Current_Health=Pet_Max_Health WHERE Pet_ID=:Pet_ID";
+    $Results = $this->Connection->Custom_Execute($User_SQL, $User_Array);
+
+}
+
 // Set the current objects information for the active pet.
 public function Set_Pet_Info($Pet_ID)
 {
@@ -1248,6 +1279,13 @@ public function Subtract_AP($NewAP, $Pet_ID)
     $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
 }
 
+public function Add_AP($NewAP, $Pet_ID)
+{
+    $Pet_Array = array (':Pet_ID'=>$Pet_ID, ':Pet_Current_AP'=>$NewAP);
+    $Pet_SQL = "UPDATE pets SET Pet_Current_AP = Pet_Current_AP + :Pet_Current_AP WHERE Pet_ID = :Pet_ID";
+    $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
+}
+
 public function Save_AP($NewAP, $Pet_ID)
 {
     $Pet_Array = array (':Pet_ID'=>$Pet_ID, ':Pet_Current_AP'=>$NewAP);
@@ -1347,5 +1385,75 @@ public function Get_Elemental_Modifier($Attacking_Type, $Defending_Type)
             break;
     }
 }
+
+public function Purchase_Item($Item_Name, $Item_Cost, $Item_Description, $Item_Image)
+{
+    $Item_Array = array (':User_ID'=>$this->User_ID, ':Item_Name'=>$Item_Name, ':Item_Image'=>$Item_Image, ':Item_Description'=>$Item_Description);
+    $Item_SQL = "INSERT INTO inventory (User_ID, Item_Name, Item_Image, Item_Description) VALUES (:User_ID,:Item_Name,:Item_Image,:Item_Description)";
+    $Results = $this->Connection->Custom_Execute($Item_SQL, $Item_Array);
+
+
+    if ($Results) {
+        $User = new User($this->User_ID);
+        $User->Subtract_Points($Item_Cost);
+        Toasts::addNewToast("You bought a [" . $Item_Name . "]<br> - " . $Item_Cost . " Points", 'petbattle');
+    } else {
+        Toasts::addNewToast("There was a problem purchasing your item, please try again.", 'error');
+    }
+}
+
+public function Remove_Item($Item_ID)
+{
+    $Item_Array = array (':Item_ID'=>$Item_ID);
+    $Item_SQL = "DELETE FROM inventory WHERE Item_ID=:Item_ID";
+    $Results = $this->Connection->Custom_Execute($Item_SQL, $Item_Array);
+
+}
+
+public function Get_Item_Count($Item_Name)
+{
+    $Item_Array = array(':User_ID' => $this->User_ID, ':Item_Name'=>$Item_Name);
+    $Item_SQL = "SELECT COUNT(*) FROM inventory WHERE User_ID = :User_ID AND Item_Name=:Item_Name";
+    $Results = $this->Connection->Custom_Count_Query($Item_SQL, $Item_Array);
+
+    return $Results[0];
+}
+
+public function Get_Item_Image($Item_Name)
+{
+    $Item_Array = array(':User_ID' => $this->User_ID, ':Item_Name'=>$Item_Name);
+    $Item_SQL = "SELECT * FROM inventory WHERE User_ID = :User_ID AND Item_Name=:Item_Name";
+    $Results = $this->Connection->Custom_Query($Item_SQL, $Item_Array);
+
+    return $Results['Item_Image'];
+}
+
+public function Get_Item_Description($Item_Name)
+{
+    $Item_Array = array(':User_ID' => $this->User_ID, ':Item_Name'=>$Item_Name);
+    $Item_SQL = "SELECT * FROM inventory WHERE User_ID = :User_ID AND Item_Name=:Item_Name";
+    $Results = $this->Connection->Custom_Query($Item_SQL, $Item_Array);
+
+    return $Results['Item_Description'];
+}
+
+public function Get_Item_ID($Item_Name)
+{
+    $Item_Array = array(':User_ID' => $this->User_ID, ':Item_Name'=>$Item_Name);
+    $Item_SQL = "SELECT * FROM inventory WHERE User_ID = :User_ID AND Item_Name=:Item_Name";
+    $Results = $this->Connection->Custom_Query($Item_SQL, $Item_Array);
+
+    return $Results['Item_ID'];
+}
+
+public function Get_All_Item_Count()
+{
+    $Item_Array = array(':User_ID' => $this->User_ID);
+    $Item_SQL = "SELECT COUNT(*) FROM inventory WHERE User_ID = :User_ID";
+    $Results = $this->Connection->Custom_Count_Query($Item_SQL, $Item_Array);
+
+    return $Results[0];
+}
+
 
 } // END CLASS

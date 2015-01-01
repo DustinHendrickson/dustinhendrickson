@@ -1,0 +1,30 @@
+items:
+  1:
+    - name: 'Pet Food'
+      image: 'PetFood.png'
+      description: 'Restores 10 AP. This may grant AP higher than your max temporarily.'
+      cost: 10
+    - name: 'Candy'
+      image: 'Candy.png'
+      description: 'Restores 20 AP. This may grant AP higher than your max temporarily.'
+      cost: 25
+    - name: 'Offense Training Book'
+      image: 'OffenseTraining.png'
+      description: 'Gives pet + 1 offense.'
+      cost: 50
+    - name: 'Defense Training Book'
+      image: 'DefenseTraining.png'
+      description: 'Gives pet + 1 defense.'
+      cost: 50
+    - name: 'Health Elixer'
+      image: 'HealthElixer.png'
+      description: 'Gives pet + 5 max health.'
+      cost: 50
+    - name: 'Book of Experience'
+      image: 'ExperienceTraining.png'
+      description: 'Give your pet +25 exp.'
+      cost: 25
+    - name: 'Mystic Candy'
+      image: 'MysticCandy.png'
+      description: 'Give your pet +1 level.'
+      cost: 100
