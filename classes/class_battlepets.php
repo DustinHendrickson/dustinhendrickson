@@ -426,7 +426,8 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
     if ($Type=='PVP') {
         $AI_Pet = new BattlePet($Defender_UserID, $Defender_PetID);
         $AI_User = new User($Defender_UserID);
-        $_SESSION[$Type.'_AI_Username'] = $AI_User->Username;
+        $_SESSION[$Type .'_AI_Username'] = $AI_User->Username;
+        $_SESSION[$Type.'_AI_User_ID'] = $AI_User->ID;
     }
 
     $_SESSION[$Type.'_AI_ID'] = $Defender_UserID;
@@ -469,10 +470,10 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
 }
 
 // This function gives a pet a set amount of exp, if it's more than the leveling threshold (100 exp) it will level the pet and apply the remaining exp.
-public function Give_Exp($Pet_ID, $Exp)
+public function Give_Exp($User_ID, $Pet_ID, $Exp)
 {
     $i = 0;
-    $Pet = new BattlePet($this->User_ID, $Pet_ID);
+    $Pet = new BattlePet($User_ID, $Pet_ID);
     $NewExp = $Pet->Pet_Exp + $Exp;
 
     if ($NewExp >= 100) {
@@ -490,6 +491,7 @@ public function Give_Exp($Pet_ID, $Exp)
     $Pet_Array[':Pet_Exp']=$NewExp;
 
     $Pet_SQL = "UPDATE pets SET Pet_Exp=:Pet_Exp WHERE Pet_ID=:Pet_ID";
+    $Pet->Pet_EXP = $NewExp;
     $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
 }
 
@@ -637,7 +639,7 @@ public function Get_Pet_Skill_Array($Skill_Name)
 }
 
 
-// This function will initiate a battle between the active pet and the PVE Wild Pet.
+// This function will initiate a battle between the supplied pets.
 public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0)
 {
     unset($_SESSION[$Type.'_User_Pet_Bonus_Offense']);
@@ -660,8 +662,6 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     $AI_Extra_Offense_Percent = 0;
     $User_Missed = false;
     $AI_Missed = false;
-
-
 
 
 
@@ -890,7 +890,7 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
                     $User_Offense = rand(1,$User_Pet_Ability['Ability_Damage']) + $_SESSION[$Type.'_User_Pet_Offense'] + $_SESSION[$Type.'_User_Pet_Bonus_Offense'] + $User_Offense_Elemental;
                     $User_Offense = $User_Offense + ceil($User_Offense * $User_Extra_Offense_Percent);
                     $AI_Defense = ($_SESSION[$Type.'_AI_Pet_Defense'] + $_SESSION[$Type.'_AI_Pet_Bonus_Defense'] + $AI_Defend_Pet_Defense);
-                    $AI_Defense = $AI_Defense + ($AI_Defense * $AI_Extra_Defense_Percent);
+                    $AI_Defense = $AI_Defense + ceil($AI_Defense * $AI_Extra_Defense_Percent);
                     $AI_Percent_Blocked = ($AI_Defense * .01);
                     $AI_Damage_Blocked = ceil($User_Offense * $AI_Percent_Blocked);
                     $User_Damage_Done = ceil(($User_Offense + ($User_Offense * $AI_Extra_Damage_Taken_Percent)) - $AI_Damage_Blocked);
@@ -961,17 +961,35 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     }
 
     if ($User_Is_Healing == true) {
-        $_SESSION[$Type.'_User_Pet_Current_Health'] += ($_SESSION[$Type.'_User_Pet_Current_Health'] * .20);
+        $HP_Healed = ceil($_SESSION[$Type.'_User_Pet_Max_Health'] * .20);
+        $Difference = $_SESSION[$Type.'_User_Pet_Max_Health'] - $_SESSION[$Type.'_User_Pet_Current_Health'];
+        if ($HP_Healed > $Difference) {
+            $HP_Healed -= $HP_Healed - $Difference;
+        }
+        $_SESSION[$Type.'_User_Pet_Current_Health'] += $HP_Healed;
+        $Return_Array['UserAction'] .= "<br>[" . $HP_Healed . "] damage was also Healed.";
+        unset($HP_Healed);
     }
     if ($AI_Is_Healing == true) {
-        $_SESSION[$Type.'_AI_Pet_Current_Health'] += ($_SESSION[$Type.'_AI_Pet_Current_Health'] * .20);
+        $HP_Healed = ceil($_SESSION[$Type.'_AI_Pet_Max_Health'] * .20);
+        $Difference = $_SESSION[$Type.'_AI_Pet_Max_Health'] - $_SESSION[$Type.'_AI_Pet_Current_Health'];
+        if ($HP_Healed > $Difference) {
+            $HP_Healed -= $HP_Healed - $Difference;
+        }
+        $_SESSION[$Type.'_AI_Pet_Current_Health'] += $HP_Healed;
+        $Return_Array['AIAction'] .= "<br>[" . $HP_Healed . "] damage was also Healed.";
+        unset($HP_Healed);
     }
 
     if ($User_Poison_Damage_Taken_Percent > 0) {
-        $_SESSION[$Type.'_User_Pet_Current_Health'] -= ($_SESSION[$Type.'_User_Pet_Max_Health'] * $User_Poison_Damage_Taken_Percent);
+        $Poison_Damage = ceil($_SESSION[$Type.'_User_Pet_Max_Health'] * $User_Poison_Damage_Taken_Percent);
+        $_SESSION[$Type.'_User_Pet_Current_Health'] -= $Poison_Damage;
+        $Return_Array['UserAction'] .= "<br>[" . $Poison_Damage . "] Poison damage was also taken.";
     }
     if ($AI_Poison_Damage_Taken_Percent > 0) {
-        $_SESSION[$Type.'_AI_Pet_Current_Health'] -= ($_SESSION[$Type.'_AI_Pet_Max_Health'] * $AI_Poison_Damage_Taken_Percent);
+        $Poison_Damage = ceil($_SESSION[$Type.'_AI_Pet_Max_Health'] * $AI_Poison_Damage_Taken_Percent);
+        $_SESSION[$Type.'_AI_Pet_Current_Health'] -= $Poison_Damage;
+        $Return_Array['AIAction'] .= "<br>[" . $Poison_Damage . "] Poison damage was also taken.";
     }
 
     //Reduce the cooldowns on abilitys.
@@ -1203,7 +1221,7 @@ public function Add_Buff_To_User_From_AI($Effect, $Type)
 public function PVE_Win_Battle()
 {
     $EXP_Earned = rand(1,30 - $this->Pet_Level);
-    $this->Give_Exp($this->Pet_ID, $EXP_Earned);
+    $this->Give_Exp($this->User_ID, $this->Pet_ID, $EXP_Earned);
     $this->Clear_Battle_Room('PVE');
     $this->Add_Battles_Won($this->User_ID);
     Toasts::addNewToast("You just won a battle!<br> + " . $EXP_Earned . " Exp", 'petbattle');
@@ -1221,15 +1239,18 @@ public function PVP_Win_Battle()
     $AI = new BattlePet($_SESSION['PVP_AI_User_ID'], $_SESSION['PVP_AI_Pet_ID']);
     $User = new User($this->User_ID);
 
-    $LevelDifference = $this->Pet_Level - $AI->Pet_Level;
-    $EXP_Earned = rand(1,30 - $this->Pet_Level) - $LevelDifference;
+    $LevelDifference = $AI->Pet_Level - $this->Pet_Level;
+    if ($LevelDifference < 0) {
+        $EXP_Earned = rand(1,30 - $this->Pet_Level) - abs($LevelDifference);
+    } else {
+        $EXP_Earned = rand(1,30 - $this->Pet_Level) + $LevelDifference;
+    }
     $Random_Points = rand(1,3);
     $User->Add_Points($Random_Points);
-    $this->Give_Exp($this->Pet_ID, $EXP_Earned);
+    $this->Give_Exp($this->User_ID, $this->Pet_ID, $EXP_Earned);
     $this->Add_Battles_Won($this->User_ID);
 
     $AI->Add_Battles_Lost($_SESSION['PVP_AI_User_ID']);
-    $AI->Subtract_AP(1, $AI->Pet_ID);
 
     $this->Clear_Battle_Room('PVP');
     Toasts::addNewToast("You just won a PVP battle!<br> + " . $EXP_Earned . " Exp<br> + ". $Random_Points ." points!", 'petbattle');
@@ -1242,14 +1263,18 @@ public function PVP_Lose_Battle()
     $AI = new BattlePet($_SESSION['PVP_AI_User_ID'], $_SESSION['PVP_AI_Pet_ID']);
     $LevelDifference = $AI->Pet_Level - $this->Pet_Level ;
     
-    $AI->Subtract_AP(1, $AI->Pet_ID);
     $AI->Add_Battles_Won($_SESSION['PVP_AI_User_ID']);
 
-    $EXP_Earned = rand(1,30 - $AI->Pet_Level) - $LevelDifference;
-    $AI->Give_Exp($AI->Pet_ID, $EXP_Earned);
+    if ($LevelDifference < 0) {
+        $EXP_Earned = rand($AI->Pet_Level, 30 - $AI->Pet_Level) + abs($LevelDifference);
+    } else {
+        $EXP_Earned = rand($AI->Pet_Level, 30 - $AI->Pet_Level) - abs($LevelDifference);
+    }
+
+    $AI->Give_Exp($AI->User_ID, $AI->Pet_ID, $EXP_Earned);
 
     $this->Clear_Battle_Room('PVP');
-    Toasts::addNewToast("You just lost a PVP battle :(!", 'petbattle');
+    Toasts::addNewToast("You just lost a PVP battle :(!<br>Enemy pet earned " . $EXP_Earned . " EXP", 'petbattle');
 }
 
 // This function will try to catch a Wild pet you're fighting.

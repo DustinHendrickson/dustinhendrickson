@@ -83,8 +83,8 @@ if (!isset($_SESSION['PVE_User_Pet_ID'])) {
                 echo "<b>Defense</b>: " . $_SESSION['PVE_User_Pet_Defense'] . "<br>";
             echo "</td>";
             echo "<td>";
-                echo "<b>Health</b>: " . $_SESSION['PVE_User_Pet_Current_Health'] . " / " . $_SESSION['PVE_User_Pet_Max_Health']  . "<br>";
-                echo "<b>Action Points</b>: " . $_SESSION['PVE_User_Pet_Current_AP'] . " / " . $_SESSION['PVE_User_Pet_Max_AP']  . "<br>";
+                echo "<b>HP</b>: " . $_SESSION['PVE_User_Pet_Current_Health'] . "/" . $_SESSION['PVE_User_Pet_Max_Health']  . "<br>";
+                echo "<b>AP</b>: " . $_SESSION['PVE_User_Pet_Current_AP'] . "/" . $_SESSION['PVE_User_Pet_Max_AP']  . "<br>";
             echo "</td>";
             echo "<td>";
                 echo "<b>Skill</b> 1: " . $_SESSION['PVE_User_Pet_Skill_1'] . "<br>";
@@ -109,8 +109,8 @@ echo "<td width='3px;' style='background-color: red;'> </td>";
                 echo "<b>Defense</b>: " . $_SESSION['PVE_AI_Pet_Defense'] . "<br>";
             echo "</td>";
             echo "<td>";
-                echo "<b>Health</b>: " . $_SESSION['PVE_AI_Pet_Current_Health'] . " / " . $_SESSION['PVE_AI_Pet_Max_Health']  . "<br>";
-                echo "<b>Action Points</b>: " . $_SESSION['PVE_AI_Pet_Current_AP'] . " / " . $_SESSION['PVE_AI_Pet_Max_AP']  . "<br>";
+                echo "<b>HP</b>: " . $_SESSION['PVE_AI_Pet_Current_Health'] . "/" . $_SESSION['PVE_AI_Pet_Max_Health']  . "<br>";
+                echo "<b>AP</b>: " . $_SESSION['PVE_AI_Pet_Current_AP'] . "/" . $_SESSION['PVE_AI_Pet_Max_AP']  . "<br>";
             echo "</td>";
             echo "<td>";
                 echo "<b>Skill</b> 1: " . $_SESSION['PVE_AI_Pet_Skill_1'] . "<br>";
@@ -128,7 +128,7 @@ echo "<td width='3px;' style='background-color: red;'> </td>";
               echo "<td colspan='6'>";
 
             if (isset($_SESSION['PVE_User_Pet_Buffs'])) {
-                echo "<b>User Buffs |</b> ";
+                echo "<b>Buffs |</b> ";
                 foreach($_SESSION['PVE_User_Pet_Buffs'] as $Buff ) {
                     $Duration = $_SESSION['PVE_User_Pet_Buffs_'.$Buff.'_Duration'];
                     echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
@@ -140,7 +140,7 @@ echo "<td width='3px;' style='background-color: red;'> </td>";
               echo "<td colspan='6'>";
 
               if (isset($_SESSION['PVE_AI_Pet_Buffs'])) {
-                    echo "<b>AI Buffs |</b> ";
+                    echo "<b>Buffs |</b> ";
                     foreach($_SESSION['PVE_AI_Pet_Buffs'] as $Buff ) {
                         $Duration = $_SESSION['PVE_AI_Pet_Buffs_'.$Buff.'_Duration'];
                         echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";

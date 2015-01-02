@@ -7,7 +7,7 @@ pets:
       max_health: 25
       max_ap: 10
       skill_1: 'Clobber'
-      skill_2: 'Squirt'
+      skill_2: 'Shell Shock'
       skill_3: 'Water Cannon'
       type: 'Water'
 
@@ -43,6 +43,117 @@ pets:
       skill_2: 'Burrow Strike'
       skill_3: 'Shred'
       type: 'Earth'
+
+    - name: 'Grass Stalker'
+      image: 'grassstalker.png'
+      offense: 4
+      defense: 4
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Bite'
+      skill_2: 'Leaf Shield'
+      skill_3: 'Razor Lash'
+      type: 'Earth'
+
+    - name: 'Fire Starter'
+      image: 'firestarter.png'
+      offense: 4
+      defense: 2
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Scorch'
+      skill_2: 'Fly'
+      skill_3: 'Flamethrower'
+      type: 'Fire'
+
+    - name: 'Mr Krabs'
+      image: 'mrkrabs.png'
+      offense: 5
+      defense: 5
+      max_health: 18
+      max_ap: 10
+      skill_1: 'Pinch'
+      skill_2: 'Shell'
+      skill_3: 'Scuttle'
+      type: 'Water'
+
+    - name: 'Mini Mothra'
+      image: 'minimothra.png'
+      offense: 3
+      defense: 4
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Flap'
+      skill_2: 'Fly'
+      skill_3: 'Gust'
+      type: 'Wind'
+
+    - name: 'Mouse Rat'
+      image: 'mouserat.png'
+      offense: 4
+      defense: 3
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Bite'
+      skill_2: 'Quick Dash'
+      skill_3: 'Ravage'
+      type: 'Earth'
+
+    - name: 'The Blob'
+      image: 'theblob.png'
+      offense: 3
+      defense: 5
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Spike'
+      skill_2: 'Goo Ball'
+      skill_3: 'Sticky Cannon'
+      type: 'Water'
+
+    - name: 'Chomper'
+      image: 'chomper.png'
+      offense: 6
+      defense: 2
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Bite'
+      skill_2: 'Lock Jaw'
+      skill_3: 'Regen'
+      type: 'Earth'
+
+    - name: 'Slicer'
+      image: 'slicer.png'
+      offense: 7
+      defense: 1
+      max_health: 18
+      max_ap: 10
+      skill_1: 'Slash'
+      skill_2: 'Rend'
+      skill_3: 'Ravage'
+      type: 'Earth'
+
+    - name: 'Slither'
+      image: 'slither.png'
+      offense: 5
+      defense: 3
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Bite'
+      skill_2: 'Acid Spit'
+      skill_3: 'Regen'
+      type: 'Water'
+
+    - name: 'Heat Hound'
+      image: 'heathound.png'
+      offense: 4
+      defense: 6
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Claw'
+      skill_2: 'Searing Heat'
+      skill_3: 'Precision Strike'
+      type: 'Water'
+
   2:
     - name: 'Grizzly Bear'
       image: 'grizzlybear.png'
@@ -52,5 +163,5 @@ pets:
       max_ap: 10
       skill_1: 'Slash'
       skill_2: 'Overbear'
-      skill_3: 'Ravish'
+      skill_3: 'Ravage'
       type: 'Earth'
