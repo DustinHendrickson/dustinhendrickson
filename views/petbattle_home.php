@@ -41,7 +41,7 @@ switch ($_POST['Action'])
     $ActivePet = $Pet->Get_Active_Pet();
     if ($ActivePet) {
         echo "<b>[ " . $ActivePet["Pet_Name"] . " ]</b>";
-        echo "<div class='BlackBox'>";
+        echo "<div class='PetBlackBox'>";
             echo "<table width='100%'>";
               echo "<tr>";
                 echo "<td>";
@@ -66,6 +66,7 @@ switch ($_POST['Action'])
                 echo "</td>";
                 echo "<td>";
                   echo "<b>Type</b>: " . $ActivePet["Pet_Type"] . "<br>";
+                  echo "<b>Tier</b>: " . $ActivePet["Pet_Tier"] . "<br>";
                 echo "</td>";
               echo "</tr>";
             echo "</table>";

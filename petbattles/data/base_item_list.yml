@@ -28,3 +28,7 @@ items:
       image: 'MysticCandy.png'
       description: 'Give your pet +1 level.'
       cost: 100
+    - name: 'Evolution Stone'
+      image: 'EvolutionStone.png'
+      description: 'Once a Pet has hit level 30, use this for a 100% chance upgrade into a tier 2 pet.<br> Using this on lower level pets has significiant failure rates.<br> Be careful, your tier 2 pet will start at level 1.'
+      cost: 300

@@ -103,6 +103,17 @@ public function Get_All_Pets()
     return $Pet_Result;
 }
 
+// Returns the Tier of the pet.
+public function Get_Pet_Tier($Pet_ID)
+{
+    $Pet_Array = array (':Pet_ID'=>$Pet_ID);
+    $Pet_SQL = "SELECT Pet_Tier FROM pets WHERE Pet_ID = :Pet_ID";
+
+    $Pet_Result = $this->Connection->Custom_Query($Pet_SQL, $Pet_Array, true);
+
+    return $Pet_Result['Pet_Tier'];
+}
+
 // Returns an array of all inactive pets owned by the user.
 public function Get_All_Inactive_Pets()
 {
@@ -277,6 +288,11 @@ public function Give_Random_Pet($Tier=1)
     }
 }
 
+public function Evolve_Pet($NewTier, $Pet_ID)
+{
+    $this->Give_Random_Pet($NewTier);
+    $this->Release_Pet($Pet_ID, false);
+}
 
 public function Create_Wild_Pet($Tier=1)
 {
@@ -330,6 +346,10 @@ public function Clear_Battle_Room($Type)
     unset($_SESSION[$Type.'_User_Pet_Skill_1_Cooldown']);
     unset($_SESSION[$Type.'_User_Pet_Skill_2_Cooldown']);
     unset($_SESSION[$Type.'_User_Pet_Skill_3_Cooldown']);
+    unset($_SESSION[$Type.'_AI_Pet_Skill_1_Cooldown']);
+    unset($_SESSION[$Type.'_AI_Pet_Skill_2_Cooldown']);
+    unset($_SESSION[$Type.'_AI_Pet_Skill_3_Cooldown']);
+
 
     unset($_SESSION[$Type.'_AI_Pet_ID']);
     unset($_SESSION[$Type.'_AI_Pet_Name']);
@@ -355,6 +375,7 @@ public function Clear_Battle_Room($Type)
     unset($_SESSION[$Type.'_User_Pet_Buffs_Frenzy_Duration']);
     unset($_SESSION[$Type.'_User_Pet_Buffs_Stun_Duration']);
     unset($_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration']);
+    unset($_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration']);
 
     unset($_SESSION[$Type.'_AI_Pet_Buffs_Armor_Duration']);
     unset($_SESSION[$Type.'_AI_Pet_Buffs_Blind_Duration']);
@@ -365,6 +386,7 @@ public function Clear_Battle_Room($Type)
     unset($_SESSION[$Type.'_AI_Pet_Buffs_Frenzy_Duration']);
     unset($_SESSION[$Type.'_AI_Pet_Buffs_Stun_Duration']);
     unset($_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration']);
+    unset($_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration']);
 
 }
 
@@ -409,7 +431,7 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
 
 
     if ($Type=='PVE') {
-        $AI_Pet_ID = $this->Create_Wild_Pet($this->Pet_Tier);
+        $AI_Pet_ID = $this->Create_Wild_Pet(1);
         $AI_Pet = new BattlePet(0, $AI_Pet_ID);
 
         $Level_Of_AI = rand($this->Pet_Level-1,$this->Pet_Level+1);
@@ -502,8 +524,8 @@ public function LevelUp_Pet($Pet_ID)
 
     if ($Pet->Pet_Level < 30) {
         $RandomOffense = rand(1,3);
-        $RandomMaxHealth = rand(3,8);
-        $RandomDefense = rand(1,3);
+        $RandomMaxHealth = rand(20,25);
+        $RandomDefense = rand(1,2);
         $RandomMaxAP = rand(1,2);
 
         $New_Level = $Pet->Pet_Level+1;
@@ -544,14 +566,14 @@ public function Remove_Wild_Pet($Pet_ID)
 }
 
 // Deletes a pet from the database.
-public function Release_Pet($Pet_ID)
+public function Release_Pet($Pet_ID, $Display_Toast=true)
 {
     $Pet_Array[':Pet_ID'] = $Pet_ID;
     $Pet_SQL = "DELETE FROM pets WHERE Pet_ID=:Pet_ID";
 
     $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
 
-    if ($Results) {
+    if ($Results && $Display_Toast==true) {
         Toasts::addNewToast("You just released a pet back into the wild.", 'petbattle');
     }
 }
@@ -660,6 +682,8 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     $AI_Extra_Defense_Percent = 0;
     $User_Extra_Offense_Percent = 0;
     $AI_Extra_Offense_Percent = 0;
+    $User_Damage_Returned_Percent = 0;
+    $AI_Damage_Returned_Percent = 0;
     $User_Missed = false;
     $AI_Missed = false;
 
@@ -669,6 +693,15 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     if (!isset($_SESSION[$Type.'_User_Pet_Buffs'])) {$_SESSION[$Type.'_User_Pet_Buffs'] = array();}
     foreach ($_SESSION[$Type.'_User_Pet_Buffs'] as $BuffKey => $Buff) {
         switch ($Buff) {
+            case 'Thorns':
+                //Returns 10% damage back to attacker for 2 turns.
+                $User_Damage_Returned_Percent += .10;
+                $_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration'] -= 1;
+                if ($_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
+                }
+                break;
+
             case 'Blind':
                 //Decreases chance to hit 20% for 2 turns.
                 $User_Chance_To_Hit -= 20;
@@ -760,6 +793,15 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     //EFFECTS - AI
     foreach ($_SESSION[$Type.'_AI_Pet_Buffs'] as $BuffKey => $Buff) {
         switch ($Buff) {
+            case 'Thorns':
+                //Returns 10% damage back to attacker for 2 turns.
+                $AI_Damage_Returned_Percent += .10;
+                $_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration'] -= 1;
+                if ($_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration'] <= 0) {
+                    unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
+                }
+                break;
+
             case 'Blind':
                 //Decreases chance to hit 20% for 2 turns.
                 $AI_Chance_To_Hit -= 20;
@@ -806,7 +848,7 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
                 break;
 
             case 'Heal':
-                //Pet Heals 20% each turn for 2 turns.
+                //Pet Heals 15% each turn for 2 turns.
                 $AI_Is_Healing = true;
                 $_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration'] -= 1;
                 if ($_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration'] <= 0) {
@@ -852,10 +894,10 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
         $Weighted_Defend = rand(1,20);
         if ($Weighted_Defend <=5) {$Weighted_Defend = 0;} else {$Weighted_Defend = 1;}
         $Pet_Random_Ability = rand($Weighted_Defend,1);
-        if ($_SESSION[$Type.'_AI_Pet_Level'] >= 3) {
+        if ($_SESSION[$Type.'_AI_Pet_Level'] >= 3 && $_SESSION[$Type.'_AI_Pet_Skill_2_Cooldown'] <= 0) {
             $Pet_Random_Ability = rand($Weighted_Defend,2);
         }
-        if ($_SESSION[$Type.'_AI_Pet_Level'] >= 10) {
+        if ($_SESSION[$Type.'_AI_Pet_Level'] >= 10 && $_SESSION[$Type.'_AI_Pet_Skill_3_Cooldown'] <= 0) {
             $Pet_Random_Ability = rand($Weighted_Defend,3);
         }
         switch ($Pet_Random_Ability) {
@@ -960,27 +1002,20 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
         $Return_Array['AIAction'] = "ENEMY used ability Defend and raised it's defense to [" . ($AI_Defend_Pet_Defense * 2) . "]";
     }
 
-    if ($User_Is_Healing == true) {
-        $HP_Healed = ceil($_SESSION[$Type.'_User_Pet_Max_Health'] * .20);
-        $Difference = $_SESSION[$Type.'_User_Pet_Max_Health'] - $_SESSION[$Type.'_User_Pet_Current_Health'];
-        if ($HP_Healed > $Difference) {
-            $HP_Healed -= $HP_Healed - $Difference;
-        }
-        $_SESSION[$Type.'_User_Pet_Current_Health'] += $HP_Healed;
-        $Return_Array['UserAction'] .= "<br>[" . $HP_Healed . "] damage was also Healed.";
-        unset($HP_Healed);
-    }
-    if ($AI_Is_Healing == true) {
-        $HP_Healed = ceil($_SESSION[$Type.'_AI_Pet_Max_Health'] * .20);
-        $Difference = $_SESSION[$Type.'_AI_Pet_Max_Health'] - $_SESSION[$Type.'_AI_Pet_Current_Health'];
-        if ($HP_Healed > $Difference) {
-            $HP_Healed -= $HP_Healed - $Difference;
-        }
-        $_SESSION[$Type.'_AI_Pet_Current_Health'] += $HP_Healed;
-        $Return_Array['AIAction'] .= "<br>[" . $HP_Healed . "] damage was also Healed.";
-        unset($HP_Healed);
+    // Here we calculate thorns damage and apply it.
+    if ($User_Damage_Returned_Percent > 0 && $AI_Damage_Done > 0 && $AI_Missed == false) {
+        $Thorns_Damage_To_AI = ceil($AI_Damage_Done * $User_Damage_Returned_Percent);
+        $_SESSION[$Type.'_AI_Pet_Current_Health'] -= $Thorns_Damage_To_AI;
+        $Return_Array['AIAction'] .= "<br>[" . $Thorns_Damage_To_AI . "] Thorns damage was also taken.";
     }
 
+    if ($AI_Damage_Returned_Percent > 0 && $User_Damage_Done > 0 && $User_Missed == false) {
+        $Thorns_Damage_To_User = ceil($User_Damage_Done * $AI_Damage_Returned_Percent);
+        $_SESSION[$Type.'_User_Pet_Current_Health'] -= $Thorns_Damage_To_User;
+        $Return_Array['UserAction'] .= "<br>[" . $Thorns_Damage_To_User . "] Thorns damage was also taken.";
+    }
+
+    // Poison Buff
     if ($User_Poison_Damage_Taken_Percent > 0) {
         $Poison_Damage = ceil($_SESSION[$Type.'_User_Pet_Max_Health'] * $User_Poison_Damage_Taken_Percent);
         $_SESSION[$Type.'_User_Pet_Current_Health'] -= $Poison_Damage;
@@ -992,22 +1027,55 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
         $Return_Array['AIAction'] .= "<br>[" . $Poison_Damage . "] Poison damage was also taken.";
     }
 
+
+    // Healing Buff
+    if ($User_Is_Healing == true) {
+        $HP_Healed = ceil($_SESSION[$Type.'_User_Pet_Max_Health'] * .05);
+        $Difference = $_SESSION[$Type.'_User_Pet_Max_Health'] - $_SESSION[$Type.'_User_Pet_Current_Health'];
+        if ($HP_Healed > $Difference) {
+            $HP_Healed -= $HP_Healed - $Difference;
+        }
+        $_SESSION[$Type.'_User_Pet_Current_Health'] += $HP_Healed;
+        $Return_Array['UserAction'] .= "<br>[" . $HP_Healed . "] damage was also Healed.";
+        unset($HP_Healed);
+    }
+    if ($AI_Is_Healing == true) {
+        $HP_Healed = ceil($_SESSION[$Type.'_AI_Pet_Max_Health'] * .05);
+        $Difference = $_SESSION[$Type.'_AI_Pet_Max_Health'] - $_SESSION[$Type.'_AI_Pet_Current_Health'];
+        if ($HP_Healed > $Difference) {
+            $HP_Healed -= $HP_Healed - $Difference;
+        }
+        $_SESSION[$Type.'_AI_Pet_Current_Health'] += $HP_Healed;
+        $Return_Array['AIAction'] .= "<br>[" . $HP_Healed . "] damage was also Healed.";
+        unset($HP_Healed);
+    }
+
+
     //Reduce the cooldowns on abilitys.
     if ($_SESSION[$Type.'_User_Pet_Skill_1_Cooldown'] > 0) { $_SESSION[$Type.'_User_Pet_Skill_1_Cooldown'] = $_SESSION[$Type.'_User_Pet_Skill_1_Cooldown'] - 1;}
     if ($_SESSION[$Type.'_User_Pet_Skill_2_Cooldown'] > 0) { $_SESSION[$Type.'_User_Pet_Skill_2_Cooldown'] = $_SESSION[$Type.'_User_Pet_Skill_2_Cooldown'] - 1;}
     if ($_SESSION[$Type.'_User_Pet_Skill_3_Cooldown'] > 0) { $_SESSION[$Type.'_User_Pet_Skill_3_Cooldown'] = $_SESSION[$Type.'_User_Pet_Skill_3_Cooldown'] - 1;}
+
+    if ($_SESSION[$Type.'_AI_Pet_Skill_1_Cooldown'] > 0) { $_SESSION[$Type.'_AI_Pet_Skill_1_Cooldown'] = $_SESSION[$Type.'_AI_Pet_Skill_1_Cooldown'] - 1;}
+    if ($_SESSION[$Type.'_AI_Pet_Skill_2_Cooldown'] > 0) { $_SESSION[$Type.'_AI_Pet_Skill_2_Cooldown'] = $_SESSION[$Type.'_AI_Pet_Skill_2_Cooldown'] - 1;}
+    if ($_SESSION[$Type.'_AI_Pet_Skill_3_Cooldown'] > 0) { $_SESSION[$Type.'_AI_Pet_Skill_3_Cooldown'] = $_SESSION[$Type.'_AI_Pet_Skill_3_Cooldown'] - 1;}
+
 
     // Here we set cooldowns
     if ($Skill_Name == $_SESSION[$Type.'_User_Pet_Skill_1']) { $_SESSION[$Type.'_User_Pet_Skill_1_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
     if ($Skill_Name == $_SESSION[$Type.'_User_Pet_Skill_2']) { $_SESSION[$Type.'_User_Pet_Skill_2_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
     if ($Skill_Name == $_SESSION[$Type.'_User_Pet_Skill_3']) { $_SESSION[$Type.'_User_Pet_Skill_3_Cooldown'] = $User_Pet_Ability["Ability_Cooldown"];}
 
+    if ($AI_Pet_Ability["Ability_Name"] == $_SESSION[$Type.'_AI_Pet_Skill_1']) { $_SESSION[$Type.'_AI_Pet_Skill_1_Cooldown'] = $AI_Pet_Ability["Ability_Cooldown"];}
+    if ($AI_Pet_Ability["Ability_Name"] == $_SESSION[$Type.'_AI_Pet_Skill_2']) { $_SESSION[$Type.'_AI_Pet_Skill_2_Cooldown'] = $AI_Pet_Ability["Ability_Cooldown"];}
+    if ($AI_Pet_Ability["Ability_Name"] == $_SESSION[$Type.'_AI_Pet_Skill_3']) { $_SESSION[$Type.'_AI_Pet_Skill_3_Cooldown'] = $AI_Pet_Ability["Ability_Cooldown"];}
+
 
     // Here we apply weapon effects if the pet hit.
-    if ($User_Missed == false) {
+    if ($User_Missed == false && $User_Is_Stunned == false) {
         $this->Add_Buff_To_AI_From_User($User_Pet_Ability['Ability_Effect'], $Type);
     }
-    if ($AI_Missed == false) {
+    if ($AI_Missed == false && $AI_Is_Stunned == false) {
         $this->Add_Buff_To_User_From_AI($AI_Pet_Ability['Ability_Effect'], $Type);
     }
 
@@ -1039,14 +1107,23 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
 public function Add_Buff_To_AI_From_User($Effect, $Type)
 {
     switch ($Effect) {
+        case 'Thorns':
+            //Returns 10% damage back to attacker for 2 turns.
+            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Thorns');
+                $_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration'] = 0;
+            }
+            $_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration'] += 2;
+            break;
         case 'Blind':
             //Decreases chance to hit 20% for 2 turns.
             $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
             if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
                 array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Blind');
-                $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] = 0;
+                $_SESSION[$Type.'_AI_Pet_Buffs_Blind_Duration'] = 0;
             }
-            $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] += 2;
+            $_SESSION[$Type.'_AI_Pet_Buffs_Blind_Duration'] += 2;
             break;
         case 'Wound':
             //Pet takes 35% more damage for 2 turns.
@@ -1085,7 +1162,7 @@ public function Add_Buff_To_AI_From_User($Effect, $Type)
             $_SESSION[$Type.'_User_Pet_Buffs_Focus_Duration'] += 2;
             break;
         case 'Heal':
-            //Pet Heals 20% each turn for 2 turns.
+            //Pet Heals 15% each turn for 2 turns.
             $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
             if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
                 array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Heal');
@@ -1130,6 +1207,15 @@ public function Add_Buff_To_AI_From_User($Effect, $Type)
 public function Add_Buff_To_User_From_AI($Effect, $Type)
 {
     switch ($Effect) {
+        case 'Thorns':
+            //Returns 10% damage back to attacker for 2 turns.
+            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
+            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
+                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Thorns');
+                $_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration'] = 0;
+            }
+            $_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration'] += 2;
+            break;
         case 'Blind':
             //Decreases chance to hit by 20% for 2 turns.
             $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
@@ -1176,7 +1262,7 @@ public function Add_Buff_To_User_From_AI($Effect, $Type)
             $_SESSION[$Type.'_AI_Pet_Buffs_Focus_Duration'] += 2;
             break;
         case 'Heal':
-            //Pet Heals 20% each turn for 2 turns.
+            //Pet Heals 15% each turn for 2 turns.
             $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
             if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
                 array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Heal');
@@ -1262,7 +1348,7 @@ public function PVP_Lose_Battle()
 
     $AI = new BattlePet($_SESSION['PVP_AI_User_ID'], $_SESSION['PVP_AI_Pet_ID']);
     $LevelDifference = $AI->Pet_Level - $this->Pet_Level ;
-    
+
     $AI->Add_Battles_Won($_SESSION['PVP_AI_User_ID']);
 
     if ($LevelDifference < 0) {

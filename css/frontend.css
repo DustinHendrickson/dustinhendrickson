@@ -498,6 +498,14 @@ hr {
     border: 1px solid black;
 }
 
+.PetBlackBox {
+    color: black;
+    background-image: url("../img/SubtleGrey_Light.png");
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid black;
+}
+
 .PetBorderContainer {
     width: 700px;
     background: #fff;

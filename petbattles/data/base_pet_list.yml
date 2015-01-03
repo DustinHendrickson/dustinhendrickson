@@ -62,7 +62,7 @@ pets:
       max_health: 22
       max_ap: 10
       skill_1: 'Scorch'
-      skill_2: 'Fly'
+      skill_2: 'Fireshield'
       skill_3: 'Flamethrower'
       type: 'Fire'
 
@@ -152,16 +152,412 @@ pets:
       skill_1: 'Claw'
       skill_2: 'Searing Heat'
       skill_3: 'Precision Strike'
+      type: 'Fire'
+
+    - name: 'Bat Scorpion'
+      image: 'batscorpion.png'
+      offense: 6
+      defense: 3
+      max_health: 18
+      max_ap: 10
+      skill_1: 'Fangs'
+      skill_2: 'Tail Stab'
+      skill_3: 'Gust'
+      type: 'Wind'
+
+    - name: 'Boneasaur'
+      image: 'boneasaur.png'
+      offense: 3
+      defense: 7
+      max_health: 25
+      max_ap: 10
+      skill_1: 'Bite'
+      skill_2: 'Headbutt'
+      skill_3: 'Bone Ball'
+      type: 'Earth'
+
+    - name: 'Bone Head'
+      image: 'bonehead.png'
+      offense: 4
+      defense: 5
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Bash'
+      skill_2: 'Bone Shield'
+      skill_3: 'Bone Dust'
+      type: 'Earth'
+
+    - name: 'Butterdie'
+      image: 'butterdie.png'
+      offense: 3
+      defense: 4
+      max_health: 26
+      max_ap: 10
+      skill_1: 'Flap'
+      skill_2: 'Coughing Dust'
+      skill_3: 'Gust'
+      type: 'Earth'
+
+    - name: 'Eager Beaver'
+      image: 'eagerbeaver.png'
+      offense: 4
+      defense: 3
+      max_health: 23
+      max_ap: 10
+      skill_1: 'Bite'
+      skill_2: 'Tree Fall'
+      skill_3: 'Tail Strike'
       type: 'Water'
+
+    - name: 'Flooper'
+      image: 'flooper.png'
+      offense: 3
+      defense: 3
+      max_health: 25
+      max_ap: 10
+      skill_1: 'Slap'
+      skill_2: 'Shell'
+      skill_3: 'Spin Strike'
+      type: 'Water'
+
+    - name: 'Ghast'
+      image: 'ghast.png'
+      offense: 5
+      defense: 2
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Prod'
+      skill_2: 'Phase Shift'
+      skill_3: 'Inner Fear'
+      type: 'Wind'
+
+    - name: 'Ghoul'
+      image: 'ghoul.png'
+      offense: 4
+      defense: 3
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Prod'
+      skill_2: 'Haunt'
+      skill_3: 'Plane Shift'
+      type: 'Wind'
+
+    - name: 'Golem'
+      image: 'golem.png'
+      offense: 5
+      defense: 5
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Bash'
+      skill_2: 'Rock Smash'
+      skill_3: 'Spike Armor'
+      type: 'Earth'
+
+    - name: 'Herp Derp'
+      image: 'herpderp.png'
+      offense: 4
+      defense: 3
+      max_health: 26
+      max_ap: 10
+      skill_1: 'Herp'
+      skill_2: 'Derp'
+      skill_3: 'Herp Derp'
+      type: 'Water'
+
+    - name: 'Nautilus'
+      image: 'nautilus.png'
+      offense: 3
+      defense: 6
+      max_health: 24
+      max_ap: 10
+      skill_1: 'Slap'
+      skill_2: 'Spike Armor'
+      skill_3: 'Multi Slap'
+      type: 'Water'
+
+    - name: 'Pill Bug'
+      image: 'pillbug.png'
+      offense: 4
+      defense: 3
+      max_health: 26
+      max_ap: 10
+      skill_1: 'Scratch'
+      skill_2: 'Poison Bite'
+      skill_3: 'Defense Ball'
+      type: 'Earth'
+
+    - name: 'Pincher'
+      image: 'pincher.png'
+      offense: 6
+      defense: 4
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Pinch'
+      skill_2: 'Sever'
+      skill_3: 'Pincher Hold'
+      type: 'Earth'
+
+    - name: 'Ray Manta'
+      image: 'raymanta.png'
+      offense: 5
+      defense: 5
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Slap'
+      skill_2: 'Swim'
+      skill_3: 'Ocean Currents'
+      type: 'Water'
+
+    - name: 'Sexy Rhino'
+      image: 'sexyrhino.png'
+      offense: 6
+      defense: 4
+      max_health: 25
+      max_ap: 10
+      skill_1: 'Charge'
+      skill_2: 'Stomp'
+      skill_3: 'Seduce'
+      type: 'Earth'
+
+    - name: 'Siesta Duck'
+      image: 'siestaduck.png'
+      offense: 4
+      defense: 4
+      max_health: 28
+      max_ap: 10
+      skill_1: 'Hat Dance'
+      skill_2: 'Siesta'
+      skill_3: 'Tequila Shots'
+      type: 'Water'
+
+    - name: 'Star Crab'
+      image: 'starcrab.png'
+      offense: 6
+      defense: 5
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Pinch'
+      skill_2: 'Wish'
+      skill_3: 'Star Fall'
+      type: 'Water'
+
+    - name: 'Big Mouth'
+      image: 'bigmouth.png'
+      offense: 7
+      defense: 3
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Swallow'
+      skill_2: 'Gulp'
+      skill_3: 'Digest'
+      type: 'Wind'
+
+    - name: 'Biterling'
+      image: 'biterling.png'
+      offense: 8
+      defense: 2
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Bite'
+      skill_2: 'Roll'
+      skill_3: 'Ravage'
+      type: 'Earth'
+
+    - name: 'Burning Hedgehog'
+      image: 'burninghedgehog.png'
+      offense: 4
+      defense: 5
+      max_health: 24
+      max_ap: 10
+      skill_1: 'Slash'
+      skill_2: 'Roll'
+      skill_3: 'Ravage'
+      type: 'Fire'
+
+    - name: 'Dark Fox'
+      image: 'darkfox.png'
+      offense: 6
+      defense: 3
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Bite'
+      skill_2: 'Cloud of Darkness'
+      skill_3: 'Fear'
+      type: 'Water'
+
+    - name: 'Devil Duck'
+      image: 'devilduck.png'
+      offense: 6
+      defense: 2
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Singe'
+      skill_2: 'Sin'
+      skill_3: 'Whisper'
+      type: 'Fire'
+
+    - name: 'Elefun'
+      image: 'elefun.png'
+      offense: 3
+      defense: 5
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Charge'
+      skill_2: 'Spray'
+      skill_3: 'Water Gun'
+      type: 'Water'
+
+    - name: 'Flametail'
+      image: 'flametail.png'
+      offense: 6
+      defense: 3
+      max_health: 20
+      max_ap: 10
+      skill_1: 'Tail Whip'
+      skill_2: 'Fire Circle'
+      skill_3: 'Engulf'
+      type: 'Fire'
+
+    - name: 'Kicker'
+      image: 'kicker.png'
+      offense: 7
+      defense: 2
+      max_health: 22
+      max_ap: 10
+      skill_1: 'Kick'
+      skill_2: 'Roundhouse'
+      skill_3: 'Dragon Kick'
+      type: 'Earth'
+
+    - name: 'Poo Flinger'
+      image: 'pooflinger.png'
+      offense: 5
+      defense: 4
+      max_health: 24
+      max_ap: 10
+      skill_1: 'Slap'
+      skill_2: 'Throw Poo'
+      skill_3: 'Mischievous'
+      type: 'Earth'
+
+    - name: 'Smoke Bomb'
+      image: 'smokebomb.png'
+      offense: 4
+      defense: 5
+      max_health: 26
+      max_ap: 10
+      skill_1: 'Poof'
+      skill_2: 'Noxious Gas'
+      skill_3: 'Pollution'
+      type: 'Wind'
 
   2:
     - name: 'Grizzly Bear'
       image: 'grizzlybear.png'
-      offense: 7
-      defense: 6
-      max_health: 40
-      max_ap: 10
+      offense: 10
+      defense: 9
+      max_health: 60
+      max_ap: 15
       skill_1: 'Slash'
       skill_2: 'Overbear'
       skill_3: 'Ravage'
       type: 'Earth'
+
+    - name: 'Battle Champ'
+      image: 'battlechamp.png'
+      offense: 12
+      defense: 6
+      max_health: 65
+      max_ap: 15
+      skill_1: 'Pound'
+      skill_2: 'Pile Drive'
+      skill_3: 'Suplex'
+      type: 'Earth'
+
+    - name: 'Bush Back'
+      image: 'bushback.png'
+      offense: 10
+      defense: 10
+      max_health: 68
+      max_ap: 15
+      skill_1: 'Charge'
+      skill_2: 'Leaf Shield'
+      skill_3: 'Overgrowth'
+      type: 'Earth'
+
+    - name: 'Dragon'
+      image: 'dragon.png'
+      offense: 13
+      defense: 9
+      max_health: 70
+      max_ap: 15
+      skill_1: 'Fire Breath'
+      skill_2: 'Roar'
+      skill_3: 'Engulf'
+      type: 'Fire'
+
+    - name: 'Fireguard'
+      image: 'fireguard.png'
+      offense: 11
+      defense: 10
+      max_health: 76
+      max_ap: 15
+      skill_1: 'Singe'
+      skill_2: 'Overbear'
+      skill_3: 'Fire Heal'
+      type: 'Fire'
+
+    - name: 'Garden Terror'
+      image: 'gardenterror.png'
+      offense: 13
+      defense: 10
+      max_health: 78
+      max_ap: 15
+      skill_1: 'Chomp'
+      skill_2: 'Regrowth'
+      skill_3: 'Ivy'
+      type: 'Earth'
+
+    - name: 'Leviathon'
+      image: 'leviathon.png'
+      offense: 14
+      defense: 11
+      max_health: 70
+      max_ap: 15
+      skill_1: 'Moist Bite'
+      skill_2: 'Healing Fountain'
+      skill_3: 'Mouth Laser'
+      type: 'Water'
+
+    - name: 'Mammoth'
+      image: 'mammoth.png'
+      offense: 13
+      defense: 14
+      max_health: 78
+      max_ap: 15
+      skill_1: 'Charge'
+      skill_2: 'Stomp'
+      skill_3: 'Trunk Slam'
+      type: 'Earth'
+
+    - name: 'Shell Striker'
+      image: 'shellstriker.png'
+      offense: 11
+      defense: 17
+      max_health: 80
+      max_ap: 15
+      skill_1: 'Scratch'
+      skill_2: 'Spray'
+      skill_3: 'Spiked Shell'
+      type: 'Water'
+
+    - name: 'Dark Genie'
+      image: 'darkgenie.png'
+      offense: 14
+      defense: 13
+      max_health: 76
+      max_ap: 15
+      skill_1: 'Pound'
+      skill_2: 'Wish'
+      skill_3: 'Shroud'
+      type: 'Water'

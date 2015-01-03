@@ -92,6 +92,35 @@ switch ($_POST['UseItem'])
               Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
             }
             break;
+        case 'Evolution Stone':
+            if ($_POST['Item_ID']) {
+              $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
+              $Pet_Tier = $Pet_Using_Item->Pet_Tier;
+              $Pet_Level = $Pet_Using_Item->Pet_Level;
+
+              if ($Pet_Tier == 1) {
+                if ($Pet_Level >= 30) {
+                  $Chance = 100;
+                } else {
+                  $Chance = $Pet_Level;
+                }
+
+                $Random = rand(1,100);
+
+                if ($Random <= $Chance) {
+                  $Pet_Using_Item->Evolve_Pet($Pet_Tier+1,$_POST['Pet_ID']);
+                  Toasts::addNewToast("The Stone was a success!" , 'petbattle');
+                } else {
+                  Toasts::addNewToast("The Stone Failed!" , 'petbattle');
+                }
+
+                $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+                Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
+              } else {
+                Toasts::addNewToast("You can only use this item on Tier 1 pets." , 'petbattle');
+              }
+            }
+            break;
     }
 
 
@@ -104,7 +133,7 @@ $Pets = $Loaded_Pet->Get_All_Pets();
 
 foreach ($Pets as $Pet) {
     echo "<b>" . $Pet["Pet_Name"] . "</b>";
-    echo "<div class='BlackBox'>";
+    echo "<div class='PetBlackBox'>";
       echo "<form action='?view=". $View . "' method='post'>";
         echo "<table width='100%'>";
           echo "<tr>";
@@ -145,7 +174,7 @@ foreach ($Pets as $Pet) {
             echo "</center>";
             echo "</td>";
             echo "</form>";
-              
+
               if($Loaded_Pet->Get_All_Item_Count() > 0) {
                 echo "<tr>";
                 echo "<td colspan='6' bgcolor='black'>";
@@ -203,6 +232,14 @@ foreach ($Pets as $Pet) {
                   echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Mystic Candy')."' name='Item_ID' />";
                   echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
                   echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Mystic Candy")."' name='UseItem' value='Mystic Candy' title='[Mystic Candy] - ".$Loaded_Pet->Get_Item_Description("Mystic Candy")." - You have ".$Loaded_Pet->Get_Item_Count("Mystic Candy")." of this item.' />";
+                  echo "</form>";
+                }
+
+                if ($Loaded_Pet->Get_Item_Count("Evolution Stone") > 0) {
+                  echo "<form style='display:inline' action='?view=". $View . "' method='post'>";
+                  echo "<input type='hidden' value='".$Loaded_Pet->Get_Item_ID('Evolution Stone')."' name='Item_ID' />";
+                  echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
+                  echo "<input width='35px' height='35px' type='image' src='petbattles/images/items/".$Loaded_Pet->Get_Item_Image("Evolution Stone")."' name='UseItem' value='Evolution Stone' title='[Evolution Stone] - ".$Loaded_Pet->Get_Item_Description("Evolution Stone")." - You have ".$Loaded_Pet->Get_Item_Count("Evolution Stone")." of this item.' />";
                   echo "</form>";
                 }
 

@@ -18,7 +18,7 @@ $Pets = $Loaded_Pet->Get_All_Inactive_Pets();
 <?php
 foreach ($Pets as $Pet) {
     echo "<b>" . $Pet["Pet_Name"] . "</b>";
-    echo "<div class='BlackBox'>";
+    echo "<div class='PetBlackBox'>";
       echo "<form action='?view=". $View . "' method='post'>";
         echo "<table width='100%'>";
           echo "<tr>";

@@ -57,7 +57,7 @@ if (!isset($_SESSION['PVE_User_Pet_ID'])) {
 ?>
 
 <?php
-        echo "<table width='100%'>";
+        echo "<table background='img/SubtleGrey_Light.png' width='100%'>";
         echo "<tr>";
         echo "<td width='3px;' style='background-color: green;'> </td>";
             echo "<td colspan='6'>";
@@ -227,6 +227,20 @@ if ($Battle_Results) {
         </tr>
         <tr>
             <td>
+                <img src='petbattles/images/icons/Thorns.png'>
+            </td>
+            <td>
+                Thorns
+            </td>
+            <td>
+                2 turns
+            </td>
+            <td>
+                You return 10% of damage taken. Ignores armor.
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <img src='petbattles/images/icons/Focus.png'>
             </td>
             <td>
@@ -250,7 +264,7 @@ if ($Battle_Results) {
                 2 turns
             </td>
             <td>
-                Heals your pet for 20% of it's max life per turn.
+                Heals your pet for 5% of it's max life per turn.
             </td>
         </tr>
         <tr>
