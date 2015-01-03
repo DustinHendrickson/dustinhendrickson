@@ -10,7 +10,7 @@ Write_Log('views',"Site has logged a page view.");
         <script src="js/jquery/jquery.growl.js" type="text/javascript"></script>
         <link href="css/jquery.growl.css" rel="stylesheet" type="text/css" />
 
-        <?php Functions::RefreshDivs(); Functions::RefreshDivs('showtime'); ?>
+        <?php Functions::RefreshDivs(); Functions::RefreshDivs('showtime'); Functions::RefreshDivs('pointrefresh'); ?>
         <link href="css/frontend.css" rel="stylesheet" type="text/css">
         <?php $User = new User($_SESSION['ID']); $User->Display_Theme(); ?>
         <TITLE>

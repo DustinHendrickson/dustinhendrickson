@@ -33,6 +33,8 @@ $View = Functions::Get_View();
             break;
 
         case 'Retreat':
+            $UserPet->Save_AP($UserPet->Pet_Current_AP - 1, $UserPet->Pet_ID);
+            Toasts::addNewToast("You just ran away!<br>-1 AP", 'petbattle');
             $UserPet->Clear_Battle_Room('PVE');
             break;
 
@@ -199,7 +201,7 @@ if ($Battle_Results) {
             <center>
                 <input title="Raises your defense by 50% for the next round." type="submit" name="Action" value="Defend"  style="height:100px; width:20%" />
                 <input title="Trys to catch the pet, higher chance the lower the pets life. If you don't catch it the battle ends." type="submit" name="Action" value="Catch"  style="height:100px; width:20%" />
-                <input title="Leaves the battle, no exp is gained." type="submit" name="Action" value="Retreat"  style="height:100px; width:20%" />
+                <input title="Leaves the battle, no exp is gained and you lose 1 AP." type="submit" name="Action" value="Retreat"  style="height:100px; width:20%" />
             </center>
         </td>
     </tr>

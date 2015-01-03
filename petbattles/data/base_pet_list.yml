@@ -561,3 +561,48 @@ pets:
       skill_2: 'Wish'
       skill_3: 'Shroud'
       type: 'Water'
+
+  5:
+    - name: 'Fire Boss'
+      image: 'fireboss.png'
+      offense: 1
+      defense: 1
+      max_health: 500
+      max_ap: 100
+      skill_1: 'Fire Jaws'
+      skill_2: 'Fire Breath'
+      skill_3: 'Fire Consume'
+      type: 'Fire'
+
+    - name: 'Water Boss'
+      image: 'waterboss.png'
+      offense: 1
+      defense: 1
+      max_health: 500
+      max_ap: 100
+      skill_1: 'Water Jaws'
+      skill_2: 'Water Breath'
+      skill_3: 'Water Consume'
+      type: 'Water'
+
+    - name: 'Earth Boss'
+      image: 'earthboss.png'
+      offense: 1
+      defense: 1
+      max_health: 500
+      max_ap: 100
+      skill_1: 'Earth Jaws'
+      skill_2: 'Earth Breath'
+      skill_3: 'Earth Consume'
+      type: 'Earth'
+
+    - name: 'Wind Boss'
+      image: 'windboss.png'
+      offense: 1
+      defense: 1
+      max_health: 500
+      max_ap: 100
+      skill_1: 'Wind Jaws'
+      skill_2: 'Wind Breath'
+      skill_3: 'Wind Consume'
+      type: 'Wind'

@@ -432,7 +432,7 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
     $_SESSION[$Type.'_User_Pet_Tier'] = $this->Pet_Tier;
 
 
-    if ($Type=='PVE') {
+    if ($Type == 'PVE') {
         $AI_Pet_ID = $this->Create_Wild_Pet(1);
         $AI_Pet = new BattlePet(0, $AI_Pet_ID);
 
@@ -452,6 +452,21 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
         $AI_User = new User($Defender_UserID);
         $_SESSION[$Type .'_AI_Username'] = $AI_User->Username;
         $_SESSION[$Type.'_AI_User_ID'] = $AI_User->ID;
+    }
+
+    if ($Type == 'BOSS') {
+        $AI_Pet_ID = $this->Create_Wild_Pet(5);
+        $AI_Pet = new BattlePet(0, $AI_Pet_ID);
+
+        $Level_Of_AI = 30;
+
+        while ($I < $Level_Of_AI) {
+            $AI_Pet->LevelUp_Pet($AI_Pet_ID);
+            $I++;
+        }
+
+        $AI_Pet = new BattlePet(0, $AI_Pet_ID);
+        $_SESSION[$Type.'_AI_Username'] = "BOSS";
     }
 
     $_SESSION[$Type.'_AI_ID'] = $Defender_UserID;
@@ -491,7 +506,7 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
     $_SESSION[$Type.'_AI_Pet_Buffs'] = array();
     $_SESSION[$Type.'_User_Pet_Buffs'] = array();
 
-    if ($Type=='PVE') {
+    if ($Type=='PVE' OR $Type=='BOSS') {
         $this->Remove_Wild_Pet($AI_Pet_ID);
     }
 }
@@ -1110,6 +1125,17 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
         }
     }
 
+    if ($Type=='BOSS'){
+        if ($_SESSION[$Type.'_AI_Pet_Current_Health'] <= 0) {
+            $User_Won = true;
+            $this->BOSS_Win_Battle();
+        }
+
+        if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0 && $User_Won == false) {
+            $this->BOSS_Lose_Battle();
+        }
+    }
+
     return $Return_Array;
 
 }
@@ -1352,6 +1378,22 @@ public function PVP_Lose_Battle()
 
     $this->Clear_Battle_Room('PVP');
     Toasts::addNewToast("You just lost a PVP battle :(!<br>Enemy pet earned " . $EXP_Earned . " EXP", 'petbattle');
+}
+
+public function BOSS_Win_Battle()
+{
+    $this->Clear_Battle_Room('BOSS');
+    $this->Add_Battles_Won($this->User_ID);
+    $User = new User($this->User_ID);
+    $User->Add_Points(300);
+    Toasts::addNewToast("You just beat the boss!<br>You received 300 Points!", 'petbattle');
+}
+
+public function BOSS_Lose_Battle()
+{
+    $this->Clear_Battle_Room('BOSS');
+    $this->Add_Battles_Lost($this->User_ID);
+    Toasts::addNewToast("You just lost against the boss!<br>Try training your pet with items to help beat him.", 'petbattle');
 }
 
 // This function will try to catch a Wild pet you're fighting.

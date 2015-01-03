@@ -170,7 +170,7 @@ class Functions {
         ";
     }
 
-    // This function calls custom divs to refresh their PHP content from js/views/ this can be pass variables through GET or POST
+    // This function calls custom divs to refresh their PHP content from js/views/ this can pass variables through GET or POST
     // Each page called from .load must include "include('../../headerincludes.php');" so that the page can reference librarys.
     // If the variable $SpecificDivToRefresh is set the included file and div need to be named the same.
     public static function RefreshDivs($SpecificDivToRefresh="")
@@ -230,6 +230,7 @@ class Functions {
             echo '});';
             echo '</script>';
         }
+
 
     }
 

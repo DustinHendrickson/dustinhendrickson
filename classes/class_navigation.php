@@ -55,7 +55,7 @@ class Navigation {
     {
             if(Functions::Check_User_Permissions('User')) {
                 $User = new User($_SESSION['ID']);
-                echo "[ <b><a href='?view=points'>{$User->Get_Points()}</a></b> ] <a href='?view=my_account'>" . $_SESSION['Name'] . "</a> | <a href='?view=logout'>Logout</a>";
+                echo "<div id='pointrefresh'><img height='20px' width='20px' src='../img/ajax-loader.gif'> <b>Loading User...</b></div>";
             } else {
                 echo "
                     <form action='/' method='post'>

@@ -11,6 +11,9 @@ switch ($_POST['Action'])
         case 'Fight Wild Pet':
             header('Location: ?view=petbattle_fight_wild');
             break;
+        case 'Fight Boss':
+            header('Location: ?view=petbattle_fight_boss');
+            break;
         case 'Fight User Pet':
             header('Location: ?view=petbattle_fight_user');
             break;

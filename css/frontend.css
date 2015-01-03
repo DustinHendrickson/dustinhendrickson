@@ -446,6 +446,10 @@ hr {
     color: grey;
 }
 
+.pointrefresh {
+
+}
+
 .PetBattleScreen {
     background-image: url(../petbattles/images/bg/forestbg.png);
     border-style: solid;
