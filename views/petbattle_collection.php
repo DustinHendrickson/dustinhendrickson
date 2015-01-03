@@ -19,12 +19,12 @@ switch ($_POST['Mode'])
             break;
         case 'Exp 50':
             if ($_POST['Pet_ID']) {
-                $Loaded_Pet->Give_Exp($_POST['Pet_ID'], 50);
+                $Loaded_Pet->Give_Exp($Loaded_Pet->User_ID, $_POST['Pet_ID'], 50);
             }
             break;
         case 'Exp 250':
             if ($_POST['Pet_ID']) {
-                $Loaded_Pet->Give_Exp($_POST['Pet_ID'], 250);
+                $Loaded_Pet->Give_Exp($Loaded_Pet->User_ID, $_POST['Pet_ID'], 250);
             }
             break;
     }

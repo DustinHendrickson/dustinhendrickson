@@ -567,7 +567,7 @@ pets:
       image: 'fireboss.png'
       offense: 1
       defense: 1
-      max_health: 500
+      max_health: 1000
       max_ap: 100
       skill_1: 'Fire Jaws'
       skill_2: 'Fire Breath'
@@ -578,7 +578,7 @@ pets:
       image: 'waterboss.png'
       offense: 1
       defense: 1
-      max_health: 500
+      max_health: 1000
       max_ap: 100
       skill_1: 'Water Jaws'
       skill_2: 'Water Breath'
@@ -589,7 +589,7 @@ pets:
       image: 'earthboss.png'
       offense: 1
       defense: 1
-      max_health: 500
+      max_health: 1000
       max_ap: 100
       skill_1: 'Earth Jaws'
       skill_2: 'Earth Breath'
@@ -600,7 +600,7 @@ pets:
       image: 'windboss.png'
       offense: 1
       defense: 1
-      max_health: 500
+      max_health: 1000
       max_ap: 100
       skill_1: 'Wind Jaws'
       skill_2: 'Wind Breath'
