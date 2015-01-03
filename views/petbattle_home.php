@@ -107,6 +107,11 @@ switch ($_POST['Action'])
                 echo '<input type="submit" name="Action" value="Give New Pet"  style="height:50px; width:150px; color:red; " />';
             }
             ?>
+            <?php
+            if ($Pet->Pet_Level == 30) {
+                echo '<input type="submit" name="Action" value="Fight Boss"  style="height:50px; width:150px; color:red; " />';
+            }
+            ?>
             </center>
         </td>
     </tr>

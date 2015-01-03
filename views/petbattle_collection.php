@@ -167,7 +167,7 @@ foreach ($Pets as $Pet) {
             echo "<td colspan='6' bgcolor='black'>";
             echo "<center>";
               echo "<input type='hidden' value='".$Pet["Pet_ID"]."' name='Pet_ID' />";
-              echo "<input type='submit' name='Mode' value='Release'  style='height:30px; width:24.5%; color:red;' /> ";
+              if ($Loaded_Pet->Get_Total_Pet_Count() > 1 ) { echo "<input type='submit' name='Mode' value='Release'  style='height:30px; width:24.5%; color:red;' /> "; }
               if ($_SESSION["ID"] == 1) {echo "<input type='submit' name='Mode' value='Level Up'  style='height:30px; width:24.5%; color:blue;' /> ";}
               if ($_SESSION["ID"] == 1) {echo "<input type='submit' name='Mode' value='Exp 50'  style='height:30px; width:24.5%; color:purple;' /> ";}
               if ($_SESSION["ID"] == 1) {echo "<input type='submit' name='Mode' value='Exp 250'  style='height:30px; width:24.5%; color:purple;' /> ";}

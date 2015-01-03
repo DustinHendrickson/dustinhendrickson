@@ -67,7 +67,9 @@ function __construct($User_ID,$Pet_ID=0)
     } else {
         // Otherwise we check and create a new pet as long as the user ID isn't a wild pet.
         if ($this->Get_Total_Pet_Count() < 1 && $this->User_ID != 0) {
-            Toasts::addNewToast("It looks like you don't have any pets :( <br>Here is a free one to get started!", 'success');
+            Toasts::addNewToast("It looks like you don't have any pets :( <br>Here is a free one to get started!<br> I also threw in 300 points for the pet shop!", 'success');
+            $User = new User($User_ID);
+            $User->Add_Points(300);
             $this->Give_Random_Pet();
         }
     }
@@ -86,7 +88,7 @@ private function Get_Active_Pet_ID()
 public function Get_All_Enemy_Pets()
 {
     $Pet_Array = array(':User_ID' => $this->User_ID);
-    $Pet_SQL = "SELECT * FROM pets WHERE User_ID != :User_ID AND Pet_Active=1 AND Pet_Current_AP > 0";
+    $Pet_SQL = "SELECT * FROM pets WHERE User_ID != :User_ID AND Pet_Active=1";
     $Results = $this->Connection->Custom_Query($Pet_SQL, $Pet_Array, true);
 
     return $Results;
@@ -1085,22 +1087,25 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     }
 
     // Here we check to see if any side has won the battle.
+    $User_Won = false;
     if ($Type=='PVE'){
         if ($_SESSION[$Type.'_AI_Pet_Current_Health'] <= 0) {
+            $User_Won = true;
             $this->PVE_Win_Battle();
         }
 
-        if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0) {
+        if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0 && $User_Won == false) {
             $this->PVE_Lose_Battle();
         }
     }
 
     if ($Type=='PVP'){
         if ($_SESSION[$Type.'_AI_Pet_Current_Health'] <= 0) {
+            $User_Won = true;
             $this->PVP_Win_Battle();
         }
 
-        if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0) {
+        if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0 && $User_Won == false) {
             $this->PVP_Lose_Battle();
         }
     }
