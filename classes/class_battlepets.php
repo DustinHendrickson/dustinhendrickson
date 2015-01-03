@@ -486,6 +486,9 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
     $_SESSION[$Type.'_AI_Pet_Type'] = $AI_Pet->Pet_Type;
     $_SESSION[$Type.'_AI_Pet_Tier'] = $AI_Pet->Pet_Tier;
 
+    $_SESSION[$Type.'_AI_Pet_Buffs'] = array();
+    $_SESSION[$Type.'_User_Pet_Buffs'] = array();
+
     if ($Type=='PVE') {
         $this->Remove_Wild_Pet($AI_Pet_ID);
     }
@@ -950,12 +953,14 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
             } else {
                 $Return_Array['UserAction'] = "YOU used ability " . $User_Pet_Ability['Ability_Name'] . " which has the effect of [" . $User_Pet_Ability['Ability_Effect'] . "].";
             }
-        } else {
-            $Return_Array['UserAction'] = "YOUR Pet is Stunned and cannot fight.";
         }
     }
 
-    if ($Skill_Name=="Defend"){
+    if ($User_Is_Stunned == true) {
+        $Return_Array['UserAction'] = "YOUR Pet is Stunned and cannot fight.";
+    }
+
+    if ($Skill_Name=="Defend" && $User_Is_Stunned == false){
         $User_Defend_Pet_Defense = $_SESSION[$Type.'_User_Pet_Defense'];
         $Return_Array['UserAction'] = "YOU used ability " . $Skill_Name . " and raised your defense to [" . $User_Defend_Pet_Defense * 2 . "]";
     }
@@ -998,7 +1003,7 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
         }
     }
 
-    if (isset($AI_Defend_Pet_Defense)) {
+    if (isset($AI_Defend_Pet_Defense) && $AI_Is_Stunned == false) {
         $Return_Array['AIAction'] = "ENEMY used ability Defend and raised it's defense to [" . ($AI_Defend_Pet_Defense * 2) . "]";
     }
 
@@ -1072,10 +1077,10 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
 
 
     // Here we apply weapon effects if the pet hit.
-    if ($User_Missed == false && $User_Is_Stunned == false) {
+    if ($User_Missed == false && $User_Is_Stunned == false && $User_Pet_Ability['Ability_Effect'] != "None") {
         $this->Add_Buff_To_AI_From_User($User_Pet_Ability['Ability_Effect'], $Type);
     }
-    if ($AI_Missed == false && $AI_Is_Stunned == false) {
+    if ($AI_Missed == false && $AI_Is_Stunned == false && $AI_Pet_Ability['Ability_Effect'] != "None") {
         $this->Add_Buff_To_User_From_AI($AI_Pet_Ability['Ability_Effect'], $Type);
     }
 
@@ -1106,100 +1111,91 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
 
 public function Add_Buff_To_AI_From_User($Effect, $Type)
 {
+
     switch ($Effect) {
-        case 'Thorns':
-            //Returns 10% damage back to attacker for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Thorns');
-                $_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration'] = 0;
-            }
-            $_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration'] += 2;
-            break;
         case 'Blind':
             //Decreases chance to hit 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Blind');
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Blind';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Blind_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Blind_Duration'] += 2;
             break;
         case 'Wound':
             //Pet takes 35% more damage for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Wound');
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Wound';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Wound_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Wound_Duration'] += 2;
             break;
         case 'Poison':
             //Pet takes 10% damage every turn for 2 turns. Not affected by armor.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Poison');
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Poison';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration'] += 2;
             break;
         case 'Stun':
-            //Makes pet un-command able for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Stun');
+            //Makes pet un-command able for 1 turns.
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Stun';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Stun_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Stun_Duration'] += 1;
             break;
+        case 'Thorns':
+            //Returns 10% damage back to attacker for 2 turns.
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Thorns';
+                $_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration'] = 0;
+            }
+            $_SESSION[$Type.'_User_Pet_Buffs_Thorns_Duration'] += 2;
+            break;
         case 'Focus':
             //Decreases chance to be miss by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Focus');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Focus';
                 $_SESSION[$Type.'_User_Pet_Buffs_Focus_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Focus_Duration'] += 2;
             break;
         case 'Heal':
             //Pet Heals 15% each turn for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Heal');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Heal';
                 $_SESSION[$Type.'_User_Pet_Buffs_Heal_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Heal_Duration'] += 2;
             break;
         case 'Armor':
             //Increases pets defense by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Armor');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Armor';
                 $_SESSION[$Type.'_User_Pet_Buffs_Armor_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Armor_Duration'] += 2;
             break;
         case 'Frenzy':
             //Increases pets offense by 25% for 2 turns
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Frenzy');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Frenzy';
                 $_SESSION[$Type.'_User_Pet_Buffs_Frenzy_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Frenzy_Duration'] += 2;
             break;
         case 'Evasion':
             //Increases chance to be missed by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Evasion');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Evasion';
                 $_SESSION[$Type.'_User_Pet_Buffs_Evasion_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Evasion_Duration'] += 2;
             break;
 
         default:
-            # code...
+
             break;
     }
 }
@@ -1207,92 +1203,82 @@ public function Add_Buff_To_AI_From_User($Effect, $Type)
 public function Add_Buff_To_User_From_AI($Effect, $Type)
 {
     switch ($Effect) {
-        case 'Thorns':
-            //Returns 10% damage back to attacker for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Thorns');
-                $_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration'] = 0;
-            }
-            $_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration'] += 2;
-            break;
         case 'Blind':
             //Decreases chance to hit by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Blind');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Blind';
                 $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Blind_Duration'] += 2;
             break;
         case 'Wound':
             //Pet takes 35% more damage for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Wound');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Wound';
                 $_SESSION[$Type.'_User_Pet_Buffs_Wound_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Wound_Duration'] += 2;
             break;
         case 'Poison':
             //Pet takes 10% damage every turn for 2 turns. Not affected by armor.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Poison');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Poison';
                 $_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration'] += 2;
             break;
         case 'Stun':
             //Makes pet un-command able for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_User_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_User_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_User_Pet_Buffs'],'Stun');
+            if (!in_array($Effect, $_SESSION[$Type.'_User_Pet_Buffs'])) {
+                $_SESSION[$Type.'_User_Pet_Buffs'][] = 'Stun';
                 $_SESSION[$Type.'_User_Pet_Buffs_Stun_Duration'] = 0;
             }
             $_SESSION[$Type.'_User_Pet_Buffs_Stun_Duration'] += 1;
             break;
+        case 'Thorns':
+            //Returns 10% damage back to attacker for 2 turns.
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Thorns';
+                $_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration'] = 0;
+            }
+            $_SESSION[$Type.'_AI_Pet_Buffs_Thorns_Duration'] += 2;
+            break;
         case 'Focus':
             //Decreases chance to miss by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Focus');
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Focus';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Focus_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Focus_Duration'] += 2;
             break;
         case 'Heal':
             //Pet Heals 15% each turn for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Heal');
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Heal';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Heal_Duration'] += 2;
             break;
         case 'Armor':
             //Increases pets defense by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Armor');
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Armor';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Armor_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Armor_Duration'] += 2;
             break;
         case 'Frenzy':
             //Increases pets offense by 25% for 2 turns
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Frenzy');
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Frenzy';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Frenzy_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Frenzy_Duration'] += 2;
             break;
         case 'Evasion':
             //Increases chance to be missed by 20% for 2 turns.
-            $Key = array_search($Effect, $_SESSION[$Type.'_AI_Pet_Buffs']);
-            if (!isset($_SESSION[$Type.'_AI_Pet_Buffs'][$Key])) {
-                array_push($_SESSION[$Type.'_AI_Pet_Buffs'],'Evasion');
+            if (!in_array($Effect, $_SESSION[$Type.'_AI_Pet_Buffs'])) {
+                $_SESSION[$Type.'_AI_Pet_Buffs'][] = 'Evasion';
                 $_SESSION[$Type.'_AI_Pet_Buffs_Evasion_Duration'] = 0;
             }
             $_SESSION[$Type.'_AI_Pet_Buffs_Evasion_Duration'] += 2;
