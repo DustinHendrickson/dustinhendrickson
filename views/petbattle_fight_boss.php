@@ -9,11 +9,11 @@ $View = Functions::Get_View();
     {
         case 'StartBattle':
             if ($UserPet->Pet_Current_AP > 0) {
-                if ($UserPet->Pet_Level == 30) {
+                if ($UserPet->Pet_Level == 20) {
                 $UserPet->Save_AP($UserPet->Pet_Current_AP - 1, $UserPet->Pet_ID);
                 $UserPet->Create_Battle_Room('BOSS');
                 } else {
-                    Toasts::addNewToast("Only level 30 pets can face the Boss!", 'petbattle');
+                    Toasts::addNewToast("Only level 20 pets can face the Boss!", 'petbattle');
                 }
             } else {
                 Toasts::addNewToast("You don't have enough AP to fight!", 'petbattle');
@@ -366,7 +366,7 @@ if ($Battle_Results) {
                 2 turns
             </td>
             <td>
-                Your pet takes 10% of their Max Health as damage every turn.
+                Your pet takes 15% of their Current Health as damage every turn.
             </td>
         </tr>
         <tr>

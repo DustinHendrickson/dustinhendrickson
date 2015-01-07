@@ -518,8 +518,8 @@ pets:
       skill_3: 'Ivy'
       type: 'Earth'
 
-    - name: 'Leviathon'
-      image: 'leviathon.png'
+    - name: 'Leviathan'
+      image: 'leviathan.png'
       offense: 14
       defense: 11
       max_health: 70

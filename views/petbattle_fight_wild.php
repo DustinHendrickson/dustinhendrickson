@@ -365,7 +365,7 @@ if ($Battle_Results) {
                 2 turns
             </td>
             <td>
-                Your pet takes 10% of their Max Health as damage every turn.
+                Your pet takes 15% of their Current Health as damage every turn.
             </td>
         </tr>
         <tr>

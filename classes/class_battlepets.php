@@ -458,7 +458,7 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
         $AI_Pet_ID = $this->Create_Wild_Pet(5);
         $AI_Pet = new BattlePet(0, $AI_Pet_ID);
 
-        $Level_Of_AI = 30;
+        $Level_Of_AI = 20;
 
         while ($I < $Level_Of_AI) {
             $AI_Pet->LevelUp_Pet($AI_Pet_ID);
@@ -542,7 +542,7 @@ public function LevelUp_Pet($Pet_ID)
 {
     $Pet = new BattlePet($this->User_ID, $Pet_ID);
 
-    if ($Pet->Pet_Level < 30) {
+    if ($Pet->Pet_Level < 20) {
         $RandomOffense = rand(1,3);
         $RandomMaxHealth = rand(20,25);
         $RandomDefense = rand(1,2);
@@ -742,7 +742,7 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
 
             case 'Poison':
                 //Pet takes 10% damage every turn for 2 turns. Not affected by armor.
-                $User_Poison_Damage_Taken_Percent += .10;
+                $User_Poison_Damage_Taken_Percent += .15;
                 $_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration'] -= 1;
                 if ($_SESSION[$Type.'_User_Pet_Buffs_Poison_Duration'] <= 0) {
                     unset($_SESSION[$Type.'_User_Pet_Buffs'][$BuffKey]);
@@ -842,7 +842,7 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
 
             case 'Poison':
                 //Pet takes 10% damage every turn for 2 turns. Not affected by armor.
-                $AI_Poison_Damage_Taken_Percent += .10;
+                $AI_Poison_Damage_Taken_Percent += .15;
                 $_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration'] -= 1;
                 if ($_SESSION[$Type.'_AI_Pet_Buffs_Poison_Duration'] <= 0) {
                     unset($_SESSION[$Type.'_AI_Pet_Buffs'][$BuffKey]);
@@ -1039,12 +1039,12 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
 
     // Poison Buff
     if ($User_Poison_Damage_Taken_Percent > 0) {
-        $Poison_Damage = ceil($_SESSION[$Type.'_User_Pet_Max_Health'] * $User_Poison_Damage_Taken_Percent);
+        $Poison_Damage = ceil($_SESSION[$Type.'_User_Pet_Current_Health'] * $User_Poison_Damage_Taken_Percent);
         $_SESSION[$Type.'_User_Pet_Current_Health'] -= $Poison_Damage;
         $Return_Array['UserAction'] .= "<br>[" . $Poison_Damage . "] Poison damage was also taken.";
     }
     if ($AI_Poison_Damage_Taken_Percent > 0) {
-        $Poison_Damage = ceil($_SESSION[$Type.'_AI_Pet_Max_Health'] * $AI_Poison_Damage_Taken_Percent);
+        $Poison_Damage = ceil($_SESSION[$Type.'_AI_Pet_Current_Health'] * $AI_Poison_Damage_Taken_Percent);
         $_SESSION[$Type.'_AI_Pet_Current_Health'] -= $Poison_Damage;
         $Return_Array['AIAction'] .= "<br>[" . $Poison_Damage . "] Poison damage was also taken.";
     }
@@ -1323,7 +1323,7 @@ public function Add_Buff_To_User_From_AI($Effect, $Type)
 
 public function PVE_Win_Battle()
 {
-    $EXP_Earned = rand(1,30 - $this->Pet_Level);
+    $EXP_Earned = rand(1,20 - $this->Pet_Level);
     $this->Give_Exp($this->User_ID, $this->Pet_ID, $EXP_Earned);
     $this->Clear_Battle_Room('PVE');
     $this->Add_Battles_Won($this->User_ID);
@@ -1344,9 +1344,9 @@ public function PVP_Win_Battle()
 
     $LevelDifference = $AI->Pet_Level - $this->Pet_Level;
     if ($LevelDifference < 0) {
-        $EXP_Earned = rand(1,30 - $this->Pet_Level) - abs($LevelDifference);
+        $EXP_Earned = rand(1,20 - $this->Pet_Level) - abs($LevelDifference);
     } else {
-        $EXP_Earned = rand(1,30 - $this->Pet_Level) + $LevelDifference;
+        $EXP_Earned = rand(1,20 - $this->Pet_Level) + $LevelDifference;
     }
     $Random_Points = rand(1,3);
     $User->Add_Points($Random_Points);
@@ -1369,9 +1369,9 @@ public function PVP_Lose_Battle()
     $AI->Add_Battles_Won($_SESSION['PVP_AI_User_ID']);
 
     if ($LevelDifference < 0) {
-        $EXP_Earned = rand($AI->Pet_Level, 30 - $AI->Pet_Level) + abs($LevelDifference);
+        $EXP_Earned = rand($AI->Pet_Level, 20 - $AI->Pet_Level) + abs($LevelDifference);
     } else {
-        $EXP_Earned = rand($AI->Pet_Level, 30 - $AI->Pet_Level) - abs($LevelDifference);
+        $EXP_Earned = rand($AI->Pet_Level, 20 - $AI->Pet_Level) - abs($LevelDifference);
     }
 
     $AI->Give_Exp($AI->User_ID, $AI->Pet_ID, $EXP_Earned);

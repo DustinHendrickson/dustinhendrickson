@@ -99,7 +99,7 @@ switch ($_POST['UseItem'])
               $Pet_Level = $Pet_Using_Item->Pet_Level;
 
               if ($Pet_Tier == 1) {
-                if ($Pet_Level >= 30) {
+                if ($Pet_Level >= 20) {
                   $Chance = 100;
                 } else {
                   $Chance = $Pet_Level;

@@ -83,7 +83,7 @@ CREATE TABLE `inventory` (
   `Item_Description` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Item_ID`),
   UNIQUE KEY `Item_ID` (`Item_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +101,7 @@ CREATE TABLE `pet_abilitys` (
   `Ability_Effect` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `Ability_Cooldown` int(11) NOT NULL,
   PRIMARY KEY (`Ability_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +136,7 @@ CREATE TABLE `pets` (
   `Pet_Active` tinyint(1) NOT NULL DEFAULT '0',
   `Pet_Tier` int(11) NOT NULL,
   PRIMARY KEY (`Pet_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1221 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,4 +195,4 @@ CREATE TABLE `users_settings` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-01-03  7:54:30
+-- Dump completed on 2015-01-06  7:53:42
