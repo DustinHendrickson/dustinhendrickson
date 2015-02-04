@@ -312,7 +312,7 @@ class Functions {
       // if the timeout succeeds, we know that server is down. Otherwise it's up.
       $socket = @fsockopen($RemoteSite, $PortNumber, $errorNumber, $errorString, 1);
       if ($socket){
-        socket_set_timeout(1);
+        socket_set_timeout($socket, 1);
         fclose($socket);
         return "Up";
       } else {

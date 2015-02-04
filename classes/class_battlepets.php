@@ -568,6 +568,7 @@ public function LevelUp_Pet($Pet_ID)
             if ($this->User_ID != 0){
                 if ($New_Level == 3) {$NewSkill = "Learned " . $Pet->Pet_Skill_2. "!<br>";}
                 if ($New_Level == 10) {$NewSkill = "Learned " . $Pet->Pet_Skill_3 . "!<br>";}
+                $this->Update_Daily_Quest(7,1);
                 Toasts::addNewToast("Your pet just leveled up!<br>[{$Pet->Pet_Name}]<br>{$Pet->Pet_Level} -> {$New_Level}<br>{$NewSkill}+ {$RandomOffense} Offense<br>+ {$RandomDefense} Defense<br>+ {$RandomMaxHealth} Health<br>+ {$RandomMaxAP} AP", 'petbattle');
             }
         }
@@ -1101,6 +1102,11 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
         $this->Add_Buff_To_User_From_AI($AI_Pet_Ability['Ability_Effect'], $Type);
     }
 
+    // Here we update the Daily Quests.
+    if ($User_Damage_Done > 0) {
+        $this->Update_Daily_Quest(6,$User_Damage_Done);
+    }
+
     // Here we check to see if any side has won the battle.
     $User_Won = false;
     if ($Type=='PVE'){
@@ -1327,6 +1333,7 @@ public function PVE_Win_Battle()
     $this->Give_Exp($this->User_ID, $this->Pet_ID, $EXP_Earned);
     $this->Clear_Battle_Room('PVE');
     $this->Add_Battles_Won($this->User_ID);
+    $this->Update_Daily_Quest(3,1);
     Toasts::addNewToast("You just won a battle!<br> + " . $EXP_Earned . " Exp", 'petbattle');
 }
 
@@ -1352,6 +1359,7 @@ public function PVP_Win_Battle()
     $User->Add_Points($Random_Points);
     $this->Give_Exp($this->User_ID, $this->Pet_ID, $EXP_Earned);
     $this->Add_Battles_Won($this->User_ID);
+    $this->Update_Daily_Quest(4,1);
 
     $AI->Add_Battles_Lost($_SESSION['PVP_AI_User_ID']);
 
@@ -1408,6 +1416,8 @@ public function PVE_Catch_Pet()
         $this->Give_Caught_Pet();
         Toasts::addNewToast("You just caught [{$_SESSION['PVE_AI_Pet_Name']}] <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
         $this->Add_Pets_Caught();
+        $this->Update_Daily_Quest(1,1);
+        $this->Update_Daily_Quest(2,1);
         $this->Clear_Battle_Room('PVE');
     } else {
         // YOU MISSED! WTF!?
@@ -1416,6 +1426,7 @@ public function PVE_Catch_Pet()
     }
 }
 
+// Subtract from the current users AP.
 public function Subtract_AP($NewAP, $Pet_ID)
 {
     $Pet_Array = array (':Pet_ID'=>$Pet_ID, ':Pet_Current_AP'=>$NewAP);
@@ -1423,6 +1434,7 @@ public function Subtract_AP($NewAP, $Pet_ID)
     $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
 }
 
+// Add to the users current AP.
 public function Add_AP($NewAP, $Pet_ID)
 {
     $Pet_Array = array (':Pet_ID'=>$Pet_ID, ':Pet_Current_AP'=>$NewAP);
@@ -1430,6 +1442,7 @@ public function Add_AP($NewAP, $Pet_ID)
     $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
 }
 
+// Saves a direct amount of AP for the user.
 public function Save_AP($NewAP, $Pet_ID)
 {
     $Pet_Array = array (':Pet_ID'=>$Pet_ID, ':Pet_Current_AP'=>$NewAP);
@@ -1437,6 +1450,7 @@ public function Save_AP($NewAP, $Pet_ID)
     $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
 }
 
+// Returns an INT value used to add or negate modifiers based on Attack/Defense pet Type.
 public function Get_Elemental_Modifier($Attacking_Type, $Defending_Type)
 {
     $Strong_Against_Modifier = .2;
@@ -1530,6 +1544,7 @@ public function Get_Elemental_Modifier($Attacking_Type, $Defending_Type)
     }
 }
 
+// Purchases a new item from the shop for a user.
 public function Purchase_Item($Item_Name, $Item_Cost, $Item_Description, $Item_Image)
 {
     $Item_Array = array (':User_ID'=>$this->User_ID, ':Item_Name'=>$Item_Name, ':Item_Image'=>$Item_Image, ':Item_Description'=>$Item_Description);
@@ -1546,6 +1561,7 @@ public function Purchase_Item($Item_Name, $Item_Cost, $Item_Description, $Item_I
     }
 }
 
+// Remove an item from a users inventory.
 public function Remove_Item($Item_ID)
 {
     $Item_Array = array (':Item_ID'=>$Item_ID);
@@ -1554,6 +1570,7 @@ public function Remove_Item($Item_ID)
 
 }
 
+// Returns the number of items the user has.
 public function Get_Item_Count($Item_Name)
 {
     $Item_Array = array(':User_ID' => $this->User_ID, ':Item_Name'=>$Item_Name);
@@ -1563,6 +1580,7 @@ public function Get_Item_Count($Item_Name)
     return $Results[0];
 }
 
+// Returns the items image string from the DB.
 public function Get_Item_Image($Item_Name)
 {
     $Item_Array = array(':User_ID' => $this->User_ID, ':Item_Name'=>$Item_Name);
@@ -1572,6 +1590,13 @@ public function Get_Item_Image($Item_Name)
     return $Results['Item_Image'];
 }
 
+// This Functions triggers every time an item is used.
+public function Event_Item_Used()
+{
+    $this->Update_Daily_Quest(5,1);
+}
+
+// Returns the specified item's description.
 public function Get_Item_Description($Item_Name)
 {
     $Item_Array = array(':User_ID' => $this->User_ID, ':Item_Name'=>$Item_Name);
@@ -1581,6 +1606,7 @@ public function Get_Item_Description($Item_Name)
     return $Results['Item_Description'];
 }
 
+// Returns the Item ID based on Item Name
 public function Get_Item_ID($Item_Name)
 {
     $Item_Array = array(':User_ID' => $this->User_ID, ':Item_Name'=>$Item_Name);
@@ -1590,6 +1616,7 @@ public function Get_Item_ID($Item_Name)
     return $Results['Item_ID'];
 }
 
+// Returns the total item count for the user.
 public function Get_All_Item_Count()
 {
     $Item_Array = array(':User_ID' => $this->User_ID);
@@ -1597,6 +1624,151 @@ public function Get_All_Item_Count()
     $Results = $this->Connection->Custom_Count_Query($Item_SQL, $Item_Array);
 
     return $Results[0];
+}
+
+// DAILY QUESTS
+
+
+// Returns an array containing 1 base daily quest's info based on the ID.
+public function Get_Base_Daily_Quest_Info($ID)
+{
+    $Quest_Array = array(':ID' => $ID);
+    $Quest_SQL = "SELECT * FROM base_daily_quests WHERE ID = :ID";
+    $Results = $this->Connection->Custom_Query($Quest_SQL, $Quest_Array);
+
+    return $Results;
+} 
+
+// Returns an array of ALL daily quests owned by a user.
+public function Get_All_Daily_Quests()
+{
+    $Quest_Array = array(':UserID' => $this->User_ID);
+    $Quest_SQL = "SELECT * FROM daily_quests WHERE UserID = :UserID";
+    $Results = $this->Connection->Custom_Query($Quest_SQL, $Quest_Array, true);
+
+    return $Results;
+}
+
+// Returns an array of 1 random base daily quest.
+private function Get_Random_Daily_Quest()
+{
+    $Item_Array = array();
+    $Item_SQL = "SELECT * FROM base_daily_quests";
+    $Random_Results = $this->Connection->Custom_Query($Item_SQL, $Item_Array, true);
+
+    shuffle($Random_Results);
+
+    $Results = array_pop($Random_Results);
+
+    return $Results;
+}
+
+// Gives a random daily quest if they have not gotten a new one in 24 hours.
+public function Give_Daily_Quest()
+{
+
+    $User = new User($_SESSION['ID']);
+    $Seconds_Difference = time() - strtotime($User->Last_Daily_Quest_Recieved);
+
+    if ($this->Get_Total_Daily_Quests() < 3 && $Seconds_Difference > 86400) {
+
+        $Random_Quest = $this->Get_Random_Daily_Quest();
+        
+        while ($this->User_Has_Daily_Quest($Random_Quest['ID'])==true) {
+            $Random_Quest = $this->Get_Random_Daily_Quest();
+        }
+
+        $Quest_Array = array(':QuestID' => $Random_Quest['ID'], ':UserID' => $this->User_ID, ':NeededObjective' => $Random_Quest['NeededObjective'], ':CurrentObjective' => 0, ':Points' => $Random_Quest['Points'] );
+        $Quest_SQL = "INSERT INTO daily_quests (QuestID, UserID, CurrentObjective, NeededObjective, Points) VALUES (:QuestID, :UserID, :CurrentObjective, :NeededObjective, :Points)";
+        $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
+        $New_Quest_ID = $this->Connection->PDO_Connection->lastInsertId();
+
+        $Quest_Array = array();
+        $Quest_Array[':UserID']=$this->User_ID;
+        $Quest_Array[':Last_Daily_Quest_Recieved']=date("Y-m-d H:i:s");
+
+
+        $Quest_SQL = "UPDATE users SET Last_Daily_Quest_Recieved=:Last_Daily_Quest_Recieved WHERE ID=:UserID";
+        $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
+
+        Toasts::addNewToast("You just got a new Daily Quest!<br> [ <b>{$Random_Quest['Name']}</b> ] - {$Random_Quest['Points']} Points <br> {$Random_Quest['Description']}", 'success');
+
+    }
+
+}
+
+// Returns the amount of daily quests the user has.
+public function Get_Total_Daily_Quests()
+{
+    $Quest_Array = array(':UserID' => $this->User_ID);
+    $Quest_SQL = "SELECT COUNT(*) FROM daily_quests WHERE UserID = :UserID";
+    $Results = $this->Connection->Custom_Count_Query($Quest_SQL, $Quest_Array);
+
+    return $Results[0];
+}
+
+// Returns an array of a SPECIFIC daily quest.
+public function Get_One_Daily_Quest($QuestID)
+{
+    $Quest_Array = array(':UserID' => $this->User_ID, ':QuestID' => $QuestID);
+    $Quest_SQL = "SELECT * FROM daily_quests WHERE UserID = :UserID AND QuestID = :QuestID";
+    $Results = $this->Connection->Custom_Query($Quest_SQL, $Quest_Array);
+
+    return $Results;
+}
+
+// Removes a daily quest from a users log.
+public function Remove_Daily_Quest($QuestID)
+{
+    $Quest_Array = array(':UserID' => $this->User_ID, ':QuestID' => $QuestID);
+    $Quest_SQL = "DELETE FROM daily_quests WHERE UserID = :UserID AND QuestID = :QuestID";
+    $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
+}
+
+// Main function to check if a user has completed a daily quest or not.
+public function Check_If_Daily_Quest_Completed()
+{
+    //This will be called at the load of every page, we check against the DB and see if we have completed any of the quests.
+    $Current_Dailys = $this->Get_All_Daily_Quests();
+
+    foreach ($Current_Dailys as $Daily) {
+        if ($Daily['CurrentObjective'] >= $Daily['NeededObjective']) {
+
+            $User = new User($this->User_ID);
+            $User->Add_Points($Daily['Points']);
+            $this->Remove_Daily_Quest($Daily['QuestID']);
+            Toasts::addNewToast("You just completed a Daily Quest!<br> + {$Daily['Points']} Points", 'success');
+
+        }
+    }
+}
+
+// Returns true or false depending on if the user has the specified daily quest.
+public function User_Has_Daily_Quest($QuestID)
+{
+    $Quest_Array = array(':UserID' => $this->User_ID, ':QuestID' => $QuestID);
+    $Quest_SQL = "SELECT COUNT(*) FROM daily_quests WHERE UserID = :UserID AND QuestID = :QuestID";
+    $Results = $this->Connection->Custom_Count_Query($Quest_SQL, $Quest_Array);
+
+    if ($Results[0] >= 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Updates a daily quest's progress if the user has it.
+public function Update_Daily_Quest($QuestID, $QuestObjective)
+{
+    if ($this->User_Has_Daily_Quest($QuestID)==true) {
+        $Quest_Array = array();
+        $Quest_Array[':UserID']=$this->User_ID;
+        $Quest_Array[':QuestObjective']=$QuestObjective;
+        $Quest_Array[':QuestID']=$QuestID;
+
+        $Quest_SQL = "UPDATE daily_quests SET CurrentObjective=CurrentObjective+:QuestObjective WHERE UserID=:UserID AND QuestID=:QuestID";
+        $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
+    }
 }
 
 

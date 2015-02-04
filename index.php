@@ -107,6 +107,10 @@ Write_Log('views',"Site has logged a page view.");
     </BODY>
 </HTML>
 <?php
+//Daily Quests Completion
+$Pet = new BattlePet($_SESSION['ID']);
+$Pet->Check_If_Daily_Quest_Completed();
+
 //Toasts::displayAllToasts();
 if (!empty($User->Config_Settings["Show_Toasts"])) {
     if ($User->Config_Settings["Show_Toasts"] == 1) {

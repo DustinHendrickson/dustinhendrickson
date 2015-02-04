@@ -7,12 +7,29 @@ $View = Functions::Get_View();
 <div style="text-align:center;"><i>EXTERNAL MACHINE SERVERS</i></div>
 <br>
 <div class="BorderBox">
-<b>Starbound</b> | Host: starbound.dustinhendrickson.com Pass: none
-<?php
-$ServerStatus=Functions::getRemoteSeverStatusFromPort("starbound.dustinhendrickson.com", 21025);
-Functions::displayServerStatus($ServerStatus);
-?>
-<br>
+
+    <div class="BlackBox">
+        <b>Starbound</b> | Host: 23.229.98.58:23625
+        <?php
+        $ServerStatus=Functions::getRemoteSeverStatusFromPort("23.229.98.58", 23625);
+        Functions::displayServerStatus($ServerStatus);
+        ?>
+        <br>
+        <center><a href="http://clanforge.multiplay.co.uk/servers/2411959/view" target="_blank"><img src="http://cache.multiplayuk.com/b/1-2411959-560x95-13273-FF5519-FFFFFF.png" alt="Server Banner" style="border:0;width:560px;height:95px" /></a></center>
+    </div>
+
+    <br>
+
+    <div class="BlackBox">
+        <b>Mumble</b> | Host: 76.74.238.52:2262
+        <?php
+        $ServerStatus=Functions::getRemoteSeverStatusFromPort("76.74.238.52", 2262);
+        Functions::displayServerStatus($ServerStatus);
+        ?>
+        <br>
+        <center><a href="http://clanforge.multiplay.co.uk/servers/655395/view" target="_blank"><img src="http://cache.multiplayuk.com/b/1-655395-560x95-5231-FF5519-FFFFFF.png" alt="Server Banner" style="border:0;width:560px;height:95px" /></a></center>
+    </div>
+
 </div>
 
 <br>

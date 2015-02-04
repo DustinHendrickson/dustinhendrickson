@@ -36,6 +36,7 @@ switch ($_POST['UseItem'])
               $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
               $Pet_Using_Item->Add_AP(10, $_POST['Pet_ID']);
               $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);
               Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
             }
             break;
@@ -44,6 +45,7 @@ switch ($_POST['UseItem'])
               $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
               $Pet_Using_Item->Add_AP(20, $_POST['Pet_ID']);
               $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);
               Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
             }
             break;
@@ -53,6 +55,7 @@ switch ($_POST['UseItem'])
               $Pet_Using_Item->Add_Offense_To_Pet($_POST['Pet_ID'], 1);
 
               $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);
               Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
             }
             break;
@@ -62,6 +65,7 @@ switch ($_POST['UseItem'])
               $Pet_Using_Item->Add_Defense_To_Pet($_POST['Pet_ID'], 1);
 
               $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);
               Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
             }
             break;
@@ -71,6 +75,7 @@ switch ($_POST['UseItem'])
               $Pet_Using_Item->Add_Max_Health_To_Pet($_POST['Pet_ID'], 5);
 
               $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);
               Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
             }
             break;
@@ -80,6 +85,7 @@ switch ($_POST['UseItem'])
               $Pet_Using_Item->Give_Exp($_POST['Pet_ID'], 25);
 
               $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);
               Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
             }
             break;
@@ -89,6 +95,7 @@ switch ($_POST['UseItem'])
               $Pet_Using_Item->LevelUp_Pet($_POST['Pet_ID']);
 
               $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+              $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);
               Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
             }
             break;
@@ -115,6 +122,8 @@ switch ($_POST['UseItem'])
                 }
 
                 $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
+                $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);
+
                 Toasts::addNewToast("You used an item [".$_POST['UseItem']."] on pet [" .$Pet_Using_Item->Pet_Name . "]" , 'petbattle');
               } else {
                 Toasts::addNewToast("You can only use this item on Tier 1 pets." , 'petbattle');

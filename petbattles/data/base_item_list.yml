@@ -2,11 +2,11 @@ items:
   1:
     - name: 'Pet Food'
       image: 'PetFood.png'
-      description: 'Restores 10 AP. This may grant AP higher than your max temporarily.'
+      description: 'Restores 10 AP. <br>This may grant AP higher than your max temporarily.'
       cost: 10
     - name: 'Candy'
       image: 'Candy.png'
-      description: 'Restores 20 AP. This may grant AP higher than your max temporarily.'
+      description: 'Restores 20 AP. <br>This may grant AP higher than your max temporarily.'
       cost: 25
     - name: 'Offense Training Book'
       image: 'OffenseTraining.png'
@@ -30,5 +30,5 @@ items:
       cost: 100
     - name: 'Evolution Stone'
       image: 'EvolutionStone.png'
-      description: 'Once a Pet has hit level 30, use this for a 100% chance upgrade into a tier 2 pet.<br> Using this on lower level pets has significiant failure rates.<br> Be careful, your tier 2 pet will start at level 1.'
+      description: 'Once a Pet has hit level 20, use this for a 100% chance upgrade into a tier 2 pet.<br> Using this on lower level pets has significiant failure rates.<br> Be careful, your tier 2 pet will start at level 1.'
       cost: 300

@@ -124,35 +124,55 @@ echo "<td width='3px;' style='background-color: red;'> </td>";
                 echo "<b>Type</b>: " . $_SESSION['BOSS_AI_Pet_Type'] . "<br>";
             echo "</td>";
 
+        // HERE WE SHOW THE HEALTHBARS
+        $UserPetHealthBarSize = ($_SESSION['BOSS_User_Pet_Current_Health'] / $_SESSION['BOSS_User_Pet_Max_Health']) * 100;
+        $AIPetHealthBarSize = ($_SESSION['BOSS_AI_Pet_Current_Health'] / $_SESSION['BOSS_AI_Pet_Max_Health']) * 100;
+        $UserPetHealthBarSize = number_format($UserPetHealthBarSize);
+        $AIPetHealthBarSize = number_format($AIPetHealthBarSize);
 
-              echo "</tr>";
-              echo "<tr>";
-              echo "<td width='3px;' style='background-color: green;'> </td>";
-              echo "<td colspan='6'>";
+        echo "<tr>";
+            echo "<td width='3px;' style='background-color: green;'> </td>";
+            echo "<td align='right'> <b>{$UserPetHealthBarSize}%</b> </td>";
+            echo "<td colspan='5' bgcolor='#000000'>";
+            echo "<img height='15' width='{$UserPetHealthBarSize}%' src='../img/greensquare.png'>";
+            echo "</td>";
+
+            echo "<td width='3px;' style='background-color: red;'> </td>";
+            echo "<td align='right'> <b>{$AIPetHealthBarSize}%</b>  </td>";
+            echo "<td colspan='5' bgcolor='#000000'>";
+            echo "<img height='15' width='{$AIPetHealthBarSize}%' src='../img/redsquare.png'>";
+            echo "</td>";
+        echo "</tr>";
+
+        echo "<tr height='35px'>";
+          echo "<td width='3px;' style='background-color: green;'> </td>";
 
             if (isset($_SESSION['BOSS_User_Pet_Buffs'])) {
-                echo "<b>Buffs |</b> ";
+                echo "<td><b>Buffs |</b></td>";
+                echo "<td colspan='5'>";
                 foreach($_SESSION['BOSS_User_Pet_Buffs'] as $Buff ) {
                     $Duration = $_SESSION['BOSS_User_Pet_Buffs_'.$Buff.'_Duration'];
                     echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
                 }
+                echo "</td>";
             }
 
               echo "</td>";
               echo "<td width='3px;' style='background-color: red;'> </td>";
-              echo "<td colspan='6'>";
 
               if (isset($_SESSION['BOSS_AI_Pet_Buffs'])) {
-                    echo "<b>Buffs |</b> ";
+                    echo "<td><b>Buffs |</b></td>";
+                    echo "<td colspan='5'>";
                     foreach($_SESSION['BOSS_AI_Pet_Buffs'] as $Buff ) {
                         $Duration = $_SESSION['BOSS_AI_Pet_Buffs_'.$Buff.'_Duration'];
                         echo  "<img height='25px' width='25px' alt='{$Buff} has {$Duration} turns left.' src='petbattles/images/icons/" . $Buff . ".png'>{$Duration}</img>";
                     }
+                    echo "</td>";
               }
 
                 echo "</td>";
                 echo "</tr>";
-echo "</table>";
+        echo "</table>";
 ?>
 
 

@@ -6,6 +6,9 @@ $Pet = new BattlePet($_SESSION['ID']);
 
 $View = Functions::Get_View();
 
+$Pet->Give_Daily_Quest();
+
+
 switch ($_POST['Action'])
     {
         case 'Fight Wild Pet':
@@ -28,6 +31,9 @@ switch ($_POST['Action'])
             break;
         case 'Leaderboards':
             header('Location: ?view=petbattle_leaderboards');
+            break;
+        case 'Daily Quests':
+            header('Location: ?view=petbattle_dailyquests');
             break;
         case 'Give New Pet':
             $Pet->Give_Random_Pet();
@@ -72,6 +78,29 @@ switch ($_POST['Action'])
                   echo "<b>Tier</b>: " . $ActivePet["Pet_Tier"] . "<br>";
                 echo "</td>";
               echo "</tr>";
+
+                $UserPetAPBarSize = ($ActivePet["Pet_Current_AP"] / $ActivePet["Pet_Max_AP"]) * 100;
+                $UserPetAPBarSize = number_format($UserPetAPBarSize);
+                if ($UserPetAPBarSize > 100) { $UserPetAPBarSize = 100; }
+
+                $UserPetExpBarSize = ($ActivePet["Pet_Exp"] / 100) * 100;
+                $UserPetExpBarSize = number_format($UserPetExpBarSize);
+
+            echo "<tr>";
+                echo "<td><b>AP</b></td>";
+                echo "<td colspan='5' bgcolor='#003300'>";
+                echo "<img height='15' width='{$UserPetAPBarSize}%' src='../img/orangesquare.png'>";
+                echo "</td>";
+            echo "</tr>";
+
+            echo "<tr>";
+                echo "<td><b>EXP</b></td>";
+                echo "<td colspan='5' bgcolor='#003300'>";
+                echo "<img height='15' width='{$UserPetExpBarSize}%' src='../img/purplesquare.png'>";
+                echo "</td>";
+            echo "</tr>";
+
+
             echo "</table>";
         echo "</div>";
     } else {
@@ -87,18 +116,25 @@ switch ($_POST['Action'])
     <tr>
         <td>
             <center>
-                <input <?php if (!$ActivePet) {echo "disabled";} ?> type="submit" name="Action" value="Fight Wild Pet"  style="height:200px; width:30%" />
-                <input <?php if (!$ActivePet) {echo "disabled";} ?> type="submit" name="Action" value="Fight User Pet"  style="height:200px; width:30%" />
-                <input type="submit" name="Action" value="Set Active Pet"  style="height:200px; width:30%" />
+                <input <?php if (!$ActivePet) {echo "disabled";} ?> type="submit" name="Action" value="Fight Wild Pet"  style="height:100px; width:30%" />
+                <input <?php if (!$ActivePet) {echo "disabled";} ?> type="submit" name="Action" value="Fight User Pet"  style="height:100px; width:30%" />
+                <input type="submit" name="Action" value="Set Active Pet"  style="height:100px; width:30%" />
             </center>
         </td>
     </tr>
     <tr>
         <td>
             <center>
-                <input type="submit" name="Action" value="Pet Shop"  style="height:200px; width:30%" />
-                <input type="submit" name="Action" value="Pet Collection"  style="height:200px; width:30%" />
-                <input type="submit" name="Action" value="Leaderboards"  style="height:200px; width:30%" />
+                <input type="submit" name="Action" value="Pet Shop"  style="height:100px; width:30%" />
+                <input type="submit" name="Action" value="Pet Collection"  style="height:100px; width:30%" />
+                <input type="submit" name="Action" value="Leaderboards"  style="height:100px; width:30%" />
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center>
+                <input type="submit" name="Action" value="Daily Quests"  style="height:100px; width:91%" />
             </center>
         </td>
     </tr>
@@ -108,6 +144,7 @@ switch ($_POST['Action'])
             <?php
             if ($_SESSION["ID"] == 1) {
                 echo '<input type="submit" name="Action" value="Give New Pet"  style="height:50px; width:150px; color:red; " />';
+                //echo '<input type="submit" name="Action" value="Give New Daily"  style="height:50px; width:150px; color:red; " />';
             }
             ?>
             <?php

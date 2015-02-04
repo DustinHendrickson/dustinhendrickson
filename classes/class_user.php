@@ -31,6 +31,7 @@ class User {
     public $Achievements_Unlocked;
     public $Points;
     public $Points_Last_Recieved;
+    public $Last_Daily_Quest_Recieved;
     public $Config_Settings = array();
     public $SECONDS_INTERVAL = 43200;     // Interval in seconds that point redemption refreshes.
     public $TODAYS_DATE;
@@ -46,23 +47,24 @@ class User {
         $User_Array = array (':ID'=>$this->ID);
         $User_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE ID = :ID LIMIT 1", $User_Array);
 
-        $this->Username                 = $User_Result["Username"];
-        $this->First_Name               = $User_Result["First_Name"];
-        $this->Last_Name                = $User_Result["Last_Name"];
-        $this->FightBot_Name            = $User_Result["FightBot_Name"];
-        $this->Password                 = $User_Result["Password"];
-        $this->Permissions              = $User_Result["Permissions"];
-        $this->EMail                    = $User_Result["EMail"];
-        $this->Account_Last_Login       = date('F jS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
-        $this->Account_Created          = date('F jS Y h:ia', strtotime($User_Result["Account_Created"]));
-        $this->Account_Locked           = $User_Result["Account_Locked"];
-        $this->Achievements_Unlocked    = $User_Result["Achievements_Unlocked"];
-        $this->Points                   = $User_Result["Points"];
-        $this->Points_Last_Recieved     = date('F jS Y h:ia', strtotime($User_Result["Points_Last_Recieved"]));
+        $this->Username                         = $User_Result["Username"];
+        $this->First_Name                       = $User_Result["First_Name"];
+        $this->Last_Name                        = $User_Result["Last_Name"];
+        $this->FightBot_Name                    = $User_Result["FightBot_Name"];
+        $this->Password                         = $User_Result["Password"];
+        $this->Permissions                      = $User_Result["Permissions"];
+        $this->EMail                            = $User_Result["EMail"];
+        $this->Account_Last_Login               = date('F jS Y h:ia', strtotime($User_Result["Account_Last_Login"]));
+        $this->Account_Created                  = date('F jS Y h:ia', strtotime($User_Result["Account_Created"]));
+        $this->Account_Locked                   = $User_Result["Account_Locked"];
+        $this->Achievements_Unlocked            = $User_Result["Achievements_Unlocked"];
+        $this->Points                           = $User_Result["Points"];
+        $this->Points_Last_Recieved             = date('F jS Y h:ia', strtotime($User_Result["Points_Last_Recieved"]));
+        $this->Last_Daily_Quest_Recieved        = date('F jS Y h:ia', strtotime($User_Result["Last_Daily_Quest_Recieved"]));
 
-        $this->Pet_Battles_Won          = $User_Result["Pet_Battles_Won"];
-        $this->Pet_Battles_Lost         = $User_Result["Pet_Battles_Lost"];
-        $this->Pets_Caught              = $User_Result["Pets_Caught"];
+        $this->Pet_Battles_Won                  = $User_Result["Pet_Battles_Won"];
+        $this->Pet_Battles_Lost                 = $User_Result["Pet_Battles_Lost"];
+        $this->Pets_Caught                      = $User_Result["Pets_Caught"];
     }
 
     private function Set_Config_Info()
