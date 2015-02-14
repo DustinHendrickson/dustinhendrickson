@@ -7,15 +7,23 @@ Functions::Check_User_Permissions_Redirect('Admin');
 $log = $_GET['log'];
 
 //Populate an array of files in the logs folder.
-$logFiles = scandir($GLOBALS['Path'] . '/logs/');
+$logFileList = $GLOBALS['Path'] . 'logs/*.log';
+foreach(glob($logFileList) as $file) {
+    $logFiles[] = $file;
+}
 
 //We loop through each file and echo it's link.
+$Max_Logs = count($logFiles);
+$i = 0;
 foreach($logFiles as $file) {
-    if ($file != '.' && $file != '..' && $file != '.htaccess') {
-        echo "<a href='?view=logs&log={$file}'>";
-        echo $file;
-        echo "</a> | ";
-    }
+    $fileNameArray = explode('/',$file);
+        echo "<a href='?view=logs&log={$fileNameArray[4]}'>";
+        echo $fileNameArray[4];
+        echo "</a>";
+        $i++;
+        if ($i != $Max_Logs) {
+            echo " | ";
+        }
 }
 
 echo '<hr>';
