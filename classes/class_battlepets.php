@@ -1669,30 +1669,40 @@ public function Give_Daily_Quest()
 
     $User = new User($_SESSION['ID']);
     $Seconds_Difference = time() - strtotime($User->Last_Daily_Quest_Recieved);
+    $Number_Of_Quests_To_Give = 0;
 
-    if ($this->Get_Total_Daily_Quests() < 3 && $Seconds_Difference > 86400) {
+    // We are calculating out how many days they have been gone, they can only get up to 3 max daily quests as that's the limit.
+    if ($Seconds_Difference > 86400 && $Seconds_Difference < 172800)  { $Number_Of_Quests_To_Give = 1; }
+    if ($Seconds_Difference > 172800 && $Seconds_Difference < 259200) { $Number_Of_Quests_To_Give = 2; }
+    if ($Seconds_Difference > 259200) { $Number_Of_Quests_To_Give = 3;}
 
-        $Random_Quest = $this->Get_Random_Daily_Quest();
-        
-        while ($this->User_Has_Daily_Quest($Random_Quest['ID'])==true) {
+    // Depending on how many quests they are getting we add one per.
+    while( $Number_Of_Quests_To_Give >= 1) {
+        if ($this->Get_Total_Daily_Quests() < 3) {
+
             $Random_Quest = $this->Get_Random_Daily_Quest();
+            
+            while ($this->User_Has_Daily_Quest($Random_Quest['ID'])==true) {
+                $Random_Quest = $this->Get_Random_Daily_Quest();
+            }
+
+            // Here we build up and save the quest into the DB.
+            $Quest_Array = array(':QuestID' => $Random_Quest['ID'], ':UserID' => $this->User_ID, ':NeededObjective' => $Random_Quest['NeededObjective'], ':CurrentObjective' => 0, ':Points' => $Random_Quest['Points'] );
+            $Quest_SQL = "INSERT INTO daily_quests (QuestID, UserID, CurrentObjective, NeededObjective, Points) VALUES (:QuestID, :UserID, :CurrentObjective, :NeededObjective, :Points)";
+            $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
+            $New_Quest_ID = $this->Connection->PDO_Connection->lastInsertId();
+
+            $Quest_Array = array();
+            $Quest_Array[':UserID']=$this->User_ID;
+            $Quest_Array[':Last_Daily_Quest_Recieved']=date("Y-m-d H:i:s");
+
+
+            $Quest_SQL = "UPDATE users SET Last_Daily_Quest_Recieved=:Last_Daily_Quest_Recieved WHERE ID=:UserID";
+            $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
+
+            Toasts::addNewToast("You just got a new Daily Quest!<br> [ <b>{$Random_Quest['Name']}</b> ] - {$Random_Quest['Points']} Points <br> {$Random_Quest['Description']}", 'success');
+            $Number_Of_Quests_To_Give--;
         }
-
-        $Quest_Array = array(':QuestID' => $Random_Quest['ID'], ':UserID' => $this->User_ID, ':NeededObjective' => $Random_Quest['NeededObjective'], ':CurrentObjective' => 0, ':Points' => $Random_Quest['Points'] );
-        $Quest_SQL = "INSERT INTO daily_quests (QuestID, UserID, CurrentObjective, NeededObjective, Points) VALUES (:QuestID, :UserID, :CurrentObjective, :NeededObjective, :Points)";
-        $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
-        $New_Quest_ID = $this->Connection->PDO_Connection->lastInsertId();
-
-        $Quest_Array = array();
-        $Quest_Array[':UserID']=$this->User_ID;
-        $Quest_Array[':Last_Daily_Quest_Recieved']=date("Y-m-d H:i:s");
-
-
-        $Quest_SQL = "UPDATE users SET Last_Daily_Quest_Recieved=:Last_Daily_Quest_Recieved WHERE ID=:UserID";
-        $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
-
-        Toasts::addNewToast("You just got a new Daily Quest!<br> [ <b>{$Random_Quest['Name']}</b> ] - {$Random_Quest['Points']} Points <br> {$Random_Quest['Description']}", 'success');
-
     }
 
 }
