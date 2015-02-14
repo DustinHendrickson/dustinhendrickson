@@ -36,7 +36,7 @@ function Login($User,$Pass)
                         //Update the DB for the date of the login.
                         $Last_Login_Array = array(':Account_Last_Login'=>date(self::DATE_FORMAT),':ID'=>$_SESSION['ID']);
                         $this->Connection->Custom_Execute("UPDATE users SET Account_Last_Login=:Account_Last_Login WHERE ID=:ID",$Last_Login_Array);
-                        Write_Log("php", "ACCOUNT: Successfull login attempt for account [$Username] and password [$Password]");
+                        Write_Log("users", "ACCOUNT: Successfull login attempt for account [$Username] and password [$Password]");
 
                         // Display success toast.
                         Toasts::addNewToast("You have logged in as " . $_SESSION['Name'], "success");
@@ -48,15 +48,15 @@ function Login($User,$Pass)
                         exit();
                     } else {
                         Toasts::addNewToast("This account is locked and may not log in.", "error");
-                        Write_Log("php", "ACCOUNT: Locked login attempt for account [$Username] and password [$Password]");
+                        Write_Log("users", "ACCOUNT: Locked login attempt for account [$Username] and password [$Password]");
                     }
             } else {
                 Toasts::addNewToast("Username and Password combination is incorrect.", "error");
-                Write_Log("php", "ACCOUNT: Failed login attempt for account [$Username] and password [$Password]");
+                Write_Log("users", "ACCOUNT: Failed login attempt for account [$Username] and password [$Password]");
             }
     } else {
         Toasts::addNewToast("Please fill out all required fields.", "error");
-        Write_Log("php", "ACCOUNT: Not all login fields given.");
+        Write_Log("users", "ACCOUNT: Not all login fields given.");
     }
 }
 
@@ -105,33 +105,33 @@ function Register($User,$Pass,$Mail,$Permissions='4')
                         if($this->Connection->PDO_Connection->lastInsertId()!='') {
 
                             // Success
-                            Write_Log("php", "ACCOUNT: Successfull register attempt for account [$Username] and email [$EMail]");
+                            Write_Log("users", "ACCOUNT: Successfull register attempt for account [$Username] and email [$EMail]");
                             // Login the user sending the unencrypted password since login re-encrypts it.
                             self::Login($Username,$Password);
 
                         } else {
                             Toasts::addNewToast("There was a problem creating this account. Please try again.", "error");
-                            Write_Log("php", "ACCOUNT: Unknown error, couldn't register user to database.");
+                            Write_Log("users", "ACCOUNT: Unknown error, couldn't register user to database.");
                         }
                      } else {
                         Toasts::addNewToast("That email has been taken. Please select a new one.", "error");
-                        Write_Log("php", "ACCOUNT: Failed register attempt for account [$Username], email [$EMail] already exists.");
+                        Write_Log("users", "ACCOUNT: Failed register attempt for account [$Username], email [$EMail] already exists.");
                     }
                 } else {
                     Toasts::addNewToast("That username has been taken. Please select a new one.", "error");
-                    Write_Log("php", "ACCOUNT: Failed register attempt for account [$Username] username already exists.");
+                    Write_Log("users", "ACCOUNT: Failed register attempt for account [$Username] username already exists.");
                 }
             } else {
                 Toasts::addNewToast("Please select a valid email.", "error");
-                Write_Log("php", "ACCOUNT: Non valid email given.");
+                Write_Log("users", "ACCOUNT: Non valid email given.");
             }
         } else {
             Toasts::addNewToast("Please select a valid alphanumeric username.", "error");
-            Write_Log("php", "ACCOUNT: Non alphanumeric username given.");
+            Write_Log("users", "ACCOUNT: Non alphanumeric username given.");
         }
     } else {
         Toasts::addNewToast("Please fill out all required fields.", "error");
-        Write_Log("php", "ACCOUNT: Not all register fields given.");
+        Write_Log("users", "ACCOUNT: Not all register fields given.");
     }
 }
 

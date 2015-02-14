@@ -88,14 +88,14 @@ switch ($_POST['Action'])
 
             echo "<tr>";
                 echo "<td><b>AP</b></td>";
-                echo "<td colspan='5' bgcolor='#003300'>";
+                echo "<td colspan='5' bgcolor='#000000'>";
                 echo "<img height='15' width='{$UserPetAPBarSize}%' src='../img/orangesquare.png'>";
                 echo "</td>";
             echo "</tr>";
 
             echo "<tr>";
                 echo "<td><b>EXP</b></td>";
-                echo "<td colspan='5' bgcolor='#003300'>";
+                echo "<td colspan='5' bgcolor='#000000'>";
                 echo "<img height='15' width='{$UserPetExpBarSize}%' src='../img/purplesquare.png'>";
                 echo "</td>";
             echo "</tr>";
