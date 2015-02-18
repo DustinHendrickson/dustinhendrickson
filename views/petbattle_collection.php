@@ -82,7 +82,7 @@ switch ($_POST['UseItem'])
         case 'Book of Experience':
             if ($_POST['Item_ID']) {
               $Pet_Using_Item = new BattlePet($_SESSION['ID'], $_POST['Pet_ID']);
-              $Pet_Using_Item->Give_Exp($_POST['Pet_ID'], 25);
+              $Pet_Using_Item->Give_Exp($Loaded_Pet->User_ID, $_POST['Pet_ID'], 25);
 
               $Pet_Using_Item->Remove_Item($_POST['Item_ID']);
               $Pet_Using_Item->Event_Item_Used($_POST['Item_ID']);

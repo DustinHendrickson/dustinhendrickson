@@ -1667,7 +1667,7 @@ private function Get_Random_Daily_Quest()
 public function Give_Daily_Quest()
 {
 
-    $User = new User($_SESSION['ID']);
+    $User = new User($this->User_ID);
     $Seconds_Difference = time() - strtotime($User->Last_Daily_Quest_Recieved);
     $Number_Of_Quests_To_Give = 0;
 
@@ -1702,6 +1702,8 @@ public function Give_Daily_Quest()
 
             Toasts::addNewToast("You just got a new Daily Quest!<br> [ <b>{$Random_Quest['Name']}</b> ] - {$Random_Quest['Points']} Points <br> {$Random_Quest['Description']}", 'success');
             $Number_Of_Quests_To_Give--;
+        } else {
+            break;
         }
     }
 
