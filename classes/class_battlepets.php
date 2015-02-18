@@ -565,7 +565,7 @@ public function LevelUp_Pet($Pet_ID)
         $Results = $this->Connection->Custom_Execute($Pet_SQL, $Pet_Array);
 
         if ($Results){
-            if ($this->User_ID != 0){
+            if ($this->User_ID != 0 && $this->User_ID == $_SESSION['ID']){
                 if ($New_Level == 3) {$NewSkill = "Learned " . $Pet->Pet_Skill_2. "!<br>";}
                 if ($New_Level == 10) {$NewSkill = "Learned " . $Pet->Pet_Skill_3 . "!<br>";}
                 $this->Update_Daily_Quest(7,1);
