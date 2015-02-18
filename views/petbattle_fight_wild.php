@@ -135,13 +135,13 @@ echo "<td width='3px;' style='background-color: red;'> </td>";
             echo "<td width='3px;' style='background-color: green;'> </td>";
             echo "<td align='right'> <b>{$UserPetHealthBarSize}%</b> </td>";
             echo "<td colspan='5' bgcolor='#000000'>";
-            echo "<img height='15' width='{$UserPetHealthBarSize}%' src='../img/greensquare.png'>";
+            echo "<img height='16' width='{$UserPetHealthBarSize}%' src='../img/greensquare.png'>";
             echo "</td>";
 
             echo "<td width='3px;' style='background-color: red;'> </td>";
             echo "<td align='right'> <b>{$AIPetHealthBarSize}%</b>  </td>";
             echo "<td colspan='5' bgcolor='#000000'>";
-            echo "<img height='15' width='{$AIPetHealthBarSize}%' src='../img/redsquare.png'>";
+            echo "<img height='16' width='{$AIPetHealthBarSize}%' src='../img/redsquare.png'>";
             echo "</td>";
         echo "</tr>";
 
