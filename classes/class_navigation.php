@@ -45,6 +45,7 @@ class Navigation {
             echo "<li><a href='?view=achievements'>Achievements</a></li>";
             echo "<li><a href='?view=emulator'>Web Emulator</a></li>";
             echo "<li><a href='?view=petbattle_home'>Pet Battles</a></li>";
+            echo "<li><a href='?view=snake'>Snake</a></li>";
             echo "</ul></li>";
 
             echo "</ul></nav>";

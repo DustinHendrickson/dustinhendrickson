@@ -518,6 +518,7 @@ public function Give_Exp($User_ID, $Pet_ID, $Exp)
     $Pet = new BattlePet($User_ID, $Pet_ID);
     $NewExp = $Pet->Pet_Exp + $Exp;
 
+    // Apply any Level ups needed.
     if ($NewExp >= 100) {
         $LevelsGained = floor($NewExp / 100);
 
@@ -526,6 +527,11 @@ public function Give_Exp($User_ID, $Pet_ID, $Exp)
             $NewExp = $NewExp - 100;
             $i++;
         }
+    }
+
+    // Here we make sure we don't go negative.
+    if ($NewExp < 0) {
+        $NewExp = 0;
     }
 
     $Pet_Array = array();
