@@ -2,6 +2,7 @@
 
 Functions::Check_User_Permissions_Redirect('Staff');
 $View = Functions::Get_View();
+$Connection = new Connection();
 
 switch ($_POST['Mode'])
     {
@@ -37,11 +38,19 @@ switch ($_POST['Mode'])
             $User_Array = array (':Last_Name'=>$_POST['SearchLastName']);
             $User_Results = $Connection->Custom_Query("SELECT * from users WHERE Last_Name=:Last_Name", $User_Array);
             break;
+        case 'Edit Selected':
+            $Connection = new Connection();
+            $User_Array = array (':Username'=>$_POST['SearchList']);
+            $User_Results = $Connection->Custom_Query("SELECT * from users WHERE Username=:Username", $User_Array);
+            break;
     }
 
 echo "<div class='ContentHeader'>Edit Users</div>";
 echo "<hr>";
 
+echo "<table width='100%' cellpadding='10'>";
+echo "<tr>";
+echo "<td width='60%'>";
 echo "<div class='ContentHeader'>Search by Username</div><hr>";
 echo "
 <form action='?view={$View}' method='post'>
@@ -88,6 +97,26 @@ echo "
             </tr>
         </table>
     </form>
+";
+
+echo "
+<td width='40%'>
+
+<form method='post' action='?view={$View}'>
+    <select name='SearchList' style='width: 100%;' size='15' required='required'>
+";
+        $List_Array = array();
+        $List_Results = $Connection->Custom_Query("SELECT * FROM users", $List_Array, true);
+        foreach ($List_Results as $Row) {
+            echo "<option value='" . $Row['Username'] . "'>" . $Row['Username']. "</option>";
+        }
+echo "  </select><br><br>
+    <input type='submit' value='Edit Selected' name='Mode'>
+</form>
+
+</td>
+</tr>
+</table>
 ";
 
 
