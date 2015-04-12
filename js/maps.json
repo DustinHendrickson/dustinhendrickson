@@ -1,0 +1,48 @@
+{
+    "Grass": [
+        {
+            "GrassX": "1",
+            "GrassY": "4"
+        },
+        {
+            "GrassX": "12",
+            "GrassY": "5"
+        },
+        {
+            "GrassX": "13",
+            "GrassY": "5"
+        },
+        {
+            "GrassX": "2",
+            "GrassY": "10"
+        },
+        {
+            "GrassX": "2",
+            "GrassY": "3"
+        },
+        {
+            "GrassX": "9",
+            "GrassY": "4"
+        },
+        {
+            "GrassX": "2",
+            "GrassY": "6"
+        },
+        {
+            "GrassX": "2",
+            "GrassY": "4"
+        },
+        {
+            "GrassX": "8",
+            "GrassY": "10"
+        },
+        {
+            "GrassX": "14",
+            "GrassY": "3"
+        },
+        {
+            "GrassX": "12",
+            "GrassY": "10"
+        }
+    ]
+}

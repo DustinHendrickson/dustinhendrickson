@@ -5,6 +5,11 @@ $User = new User($_SESSION['ID']);
 $UserPet = new BattlePet($_SESSION['ID']);
 $View = Functions::Get_View();
 
+    if ($_GET['Story_Mode'] == "True") {
+        $_SESSION['Story_Mode'] = "True";
+        $UserPet->Create_Battle_Room('PVE');
+    }
+
     switch ($_POST['Action'])
     {
         case 'StartBattle':
@@ -33,6 +38,7 @@ $View = Functions::Get_View();
             break;
 
         case 'Retreat':
+            $UserPet->Redirect_To_Story_Screen();
             $UserPet->Save_AP($UserPet->Pet_Current_AP - 1, $UserPet->Pet_ID);
             Toasts::addNewToast("You just ran away!<br>-1 AP", 'petbattle');
             $UserPet->Clear_Battle_Room('PVE');

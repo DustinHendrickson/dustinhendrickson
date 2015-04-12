@@ -1341,6 +1341,7 @@ public function PVE_Win_Battle()
     $this->Add_Battles_Won($this->User_ID);
     $this->Update_Daily_Quest(3,1);
     Toasts::addNewToast("You just won a battle!<br> + " . $EXP_Earned . " Exp", 'petbattle');
+    $this->Redirect_To_Story_Screen();
 }
 
 public function PVE_Lose_Battle()
@@ -1348,6 +1349,7 @@ public function PVE_Lose_Battle()
     $this->Clear_Battle_Room('PVE');
     $this->Add_Battles_Lost($this->User_ID);
     Toasts::addNewToast("You just lost a battle :(!", 'petbattle');
+    $this->Redirect_To_Story_Screen();
 }
 
 public function PVP_Win_Battle()
@@ -1430,6 +1432,7 @@ public function PVE_Catch_Pet()
         Toasts::addNewToast("Pet [{$_SESSION['PVE_AI_Pet_Name']}] got away! <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
         $this->Clear_Battle_Room('PVE');
     }
+    $this->Redirect_To_Story_Screen();
 }
 
 // Subtract from the current users AP.
@@ -1786,6 +1789,16 @@ public function Update_Daily_Quest($QuestID, $QuestObjective)
 
         $Quest_SQL = "UPDATE daily_quests SET CurrentObjective=CurrentObjective+:QuestObjective WHERE UserID=:UserID AND QuestID=:QuestID";
         $Results = $this->Connection->Custom_Execute($Quest_SQL, $Quest_Array);
+    }
+}
+
+// STORY MODE
+
+public function Redirect_To_Story_Screen() 
+{
+    if ($_SESSION['Story_Mode']=="True") { 
+        unset($_SESSION['Story_Mode']); 
+        header("Location: https://dustinhendrickson.com/?view=html5petbattles"); 
     }
 }
 

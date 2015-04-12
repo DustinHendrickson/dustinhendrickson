@@ -9,46 +9,57 @@ $(document).ready(function(){
     var cw = 50;
     var player_direction;
     var food;
+    var grass = new Array();
     var score;
     var moving = false;
     var keyisdown = {a:false, s:false, d:false, w:false};
+    var isTransitioning = 'False';
+    //GRID IS 16x10
     
     var player_position = {x:0, y:0};
-    
+
+    function read_json() {
+            $.getJSON("js/maps.json", function(OpenJson) {
+                $.each(OpenJson["Grass"], function(Index,Value) {
+                    grass[Index] = {x: Value.GrassX,y: Value.GrassY};
+                    //alert("GrassX: " + grass[Index].x + " GrassY: " + grass[Index].y);
+                });
+            });
+    }
+
+function saveGameState(nx, ny) {
+    localStorage["PlayerX"] = nx;
+    localStorage["PlayerY"] = ny;
+}
+
+function resumeGame() {
+    player_position.x = parseInt(localStorage["PlayerX"]);
+    player_position.y = parseInt(localStorage["PlayerY"]);
+}
+
     function init()
     {
-        create_player();
-        create_food(); //Now we can see the food particle
-        //finally lets display the score
-        score = 0;
+
+        resumeGame();
+
+        if (player_position.x == 0) player_position.x =1;
+        if (player_position.y == 0) player_position.y =1;
 
         //Lets move the snake now using a timer which will trigger the paint function
         //every 60ms
         if(typeof game_loop != "undefined") clearInterval(game_loop);
-        game_loop = setInterval(update, 120);
+        game_loop = setInterval(update, 60);
+
     }
+
+    read_json();
     init();
-    
-    function create_player()
-    {
-        player_position.x = 2;
-        player_position.y = 2;
-    }
-    
-    //Lets create the food now
-    function create_food()
-    {
-        food = {
-            x: Math.round(Math.random()*(w-cw)/cw), 
-            y: Math.round(Math.random()*(h-cw)/cw), 
-        };
-        //This will create a cell with x/y between 0-44
-        //Because there are 45(450/10) positions accross the rows and columns
-    }
 
     //This is the main loop where we draw and calculate position.
     function update()
     {
+        if (isTransitioning == 'False') {
+        moving =false;
         //To avoid the snake trail we need to paint the BG on every frame
         //Lets paint the canvas now
         ctx.fillStyle = "white";
@@ -91,37 +102,41 @@ $(document).ready(function(){
             else if(player_direction == "down") ny++;
         }
                 
-        if(nx == food.x && ny == food.y)
-        {
-            score++;
-            //Create new food
-            create_food();
-        }
+
+        if(player_position.x != nx || player_position.y != ny) { saveGameState(nx, ny); }
+
+        $.each(grass, function(Index,Value) {
+            paint_cell(grass[Index].x, grass[Index].y, "darkgreen");
+                if(nx == grass[Index].x && ny == grass[Index].y)
+                {
+                    var random = Math.floor((Math.random() * 100) + 1);
+                    if (random <= 20 && moving == true) {
+                        isTransitioning = "True";
+                        window.location.replace("https://dustinhendrickson.com/?view=petbattle_fight_wild&Story_Mode=True");
+                    }
+                }
+        });
 
         player_position.x = nx;
         player_position.y = ny;
-        // paint the main char
+
         draw_player(nx, ny);
-        
-        //Lets paint the food
-        paint_cell(food.x, food.y, "green");
 
-        //Lets paint the score
-        write_ui(score);
+        write_ui();
     }
-
-    function write_ui(score) 
+}
+    function write_ui() 
     {
         // Set UI Text Font settings.
         ctx.font = "15px Verdana";
 
         // Display the Controls in the bottom right.
-        var controls_text = "Controls: " + "Movement = Arrow Keys";
+        var controls_text = "Controls: " + "Movement = WASD Keys";
         ctx.fillStyle = 'black';
         ctx.fillText(controls_text, w-ctx.measureText(controls_text).width-5, h-5);
         
         // Display the score in the bottom left.
-        var score_text = "Score: " + score;
+        var score_text = "Score: ";
         ctx.fillStyle = 'green';
         ctx.fillText(score_text, 5, h-5);
     }
@@ -161,19 +176,19 @@ $(document).ready(function(){
         var key = e.which;
         // We will add another clause to prevent reverse gear
         // Left Arrow
-        if(key == "37") { 
+        if(key == "65") { 
             keyisdown.a = true;
         }
 
-        if(key == "38") { 
+        if(key == "87") { 
             keyisdown.w = true;
         } 
 
-        if(key == "39") { 
+        if(key == "68") { 
             keyisdown.d = true;
         } 
 
-        if(key == "40") { 
+        if(key == "83") { 
             keyisdown.s = true;
         }
          
@@ -182,19 +197,19 @@ $(document).ready(function(){
     // If the user stops key presses we stop movement.
     $(document).keyup(function(e){
         var key = e.which;
-        if(key == "37") {
+        if(key == "65") {
             keyisdown.a = false;
         } 
 
-         if(key == "38") {
+         if(key == "87") {
             keyisdown.w = false;
         } 
 
-         if(key == "39") {
+         if(key == "68") {
             keyisdown.d = false;
         } 
 
-         if(key == "40" ){
+         if(key == "83" ){
             keyisdown.s = false;
         }
         if(keyisdown.w == false && keyisdown.a == false && keyisdown.s == false && keyisdown.d == false)
