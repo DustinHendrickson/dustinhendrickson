@@ -8,6 +8,10 @@ items:
       image: 'Candy.png'
       description: 'Restores 20 AP. <br>This may grant AP higher than your max temporarily.'
       cost: 25
+    - name: 'Pet Trap'
+      image: 'PetTrap.png'
+      description: 'Used to catch pets, every attempt requires a Pet Trap.'
+      cost: 5
     - name: 'Offense Training Book'
       image: 'OffenseTraining.png'
       description: 'Gives pet + 1 offense.'

@@ -36,7 +36,7 @@ switch ($_POST['Action'])
             header('Location: ?view=petbattle_dailyquests');
             break;
         case 'Story Mode':
-            header('Location: ?view=html5petbattles');
+            header('Location: ?view=petbattle_storymode');
             break;
         case 'Give New Pet':
             $Pet->Give_Random_Pet();

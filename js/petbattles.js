@@ -127,6 +127,7 @@ function update()
         }
     }
 
+    // Look ahead 1 cell and set direction.
     if (moving == true) {
         if(player_direction == "right") nx++;
         else if(player_direction == "left") nx--;
@@ -135,6 +136,7 @@ function update()
     }
 
 
+    // Here we check if we're transitioning from one map to another.
     if (nx < 0 || nx > 15 || ny < 0 || ny > 9) {
         world_direction = "";
         if (nx < 0 && world_position.x - 1 >= 0) { player_position.x = 15; world_direction = "Left"; }

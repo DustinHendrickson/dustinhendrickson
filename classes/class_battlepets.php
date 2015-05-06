@@ -1118,10 +1118,12 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     if ($Type=='PVE'){
         if ($_SESSION[$Type.'_AI_Pet_Current_Health'] <= 0) {
             $User_Won = true;
+            $Return_Array['AIAction'] = "ENEMY died a horrible death.";
             $this->PVE_Win_Battle();
         }
 
         if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0 && $User_Won == false) {
+            $Return_Array['UserAction'] = "YOU died a horrible death.";
             $this->PVE_Lose_Battle();
         }
     }
@@ -1129,10 +1131,12 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     if ($Type=='PVP'){
         if ($_SESSION[$Type.'_AI_Pet_Current_Health'] <= 0) {
             $User_Won = true;
+            $Return_Array['AIAction'] = "ENEMY died a horrible death.";
             $this->PVP_Win_Battle();
         }
 
         if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0 && $User_Won == false) {
+            $Return_Array['UserAction'] = "YOU died a horrible death.";
             $this->PVP_Lose_Battle();
         }
     }
@@ -1140,10 +1144,12 @@ public function Attack($Skill_Name, $Type, $Defender_UserID=0, $Defender_PetID=0
     if ($Type=='BOSS'){
         if ($_SESSION[$Type.'_AI_Pet_Current_Health'] <= 0) {
             $User_Won = true;
+            $Return_Array['AIAction'] = "ENEMY died a horrible death.";
             $this->BOSS_Win_Battle();
         }
 
         if ($_SESSION[$Type.'_User_Pet_Current_Health'] <= 0 && $User_Won == false) {
+            $Return_Array['UserAction'] = "YOU died a horrible death.";
             $this->BOSS_Lose_Battle();
         }
     }
@@ -1419,20 +1425,24 @@ public function PVE_Catch_Pet()
     $Chance = (100 * $Chance_Range_Percent);
     $Random = rand(1, $Chance);
 
-    if ($Random <= 8) {
-        // YOU CAUGHT IT!
-        $this->Give_Caught_Pet();
-        Toasts::addNewToast("You just caught [{$_SESSION['PVE_AI_Pet_Name']}] <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
-        $this->Add_Pets_Caught();
-        $this->Update_Daily_Quest(1,1);
-        $this->Update_Daily_Quest(2,1);
-        $this->Clear_Battle_Room('PVE');
-    } else {
-        // YOU MISSED! WTF!?
-        Toasts::addNewToast("Pet [{$_SESSION['PVE_AI_Pet_Name']}] got away! <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
-        $this->Clear_Battle_Room('PVE');
+    if ($this->Get_Item_Count("Pet Trap") > 0) {
+        if ($Random <= 8) {
+            // YOU CAUGHT IT!
+            $this->Give_Caught_Pet();
+            Toasts::addNewToast("You just caught [{$_SESSION['PVE_AI_Pet_Name']}] <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
+            $this->Add_Pets_Caught();
+            $this->Update_Daily_Quest(1,1);
+            $this->Update_Daily_Quest(2,1);
+            $this->Clear_Battle_Room('PVE');
+        } else {
+            // YOU MISSED! WTF!?
+            Toasts::addNewToast("Pet [{$_SESSION['PVE_AI_Pet_Name']}] got away! <br>(" . number_format(100-$Chance,2,'.','') . "%) Chance", 'petbattle');
+            $this->Clear_Battle_Room('PVE');
+        }
+
+        $this->Remove_Item($this->Get_Item_ID("Pet Trap"));
+        $this->Redirect_To_Story_Screen();
     }
-    $this->Redirect_To_Story_Screen();
 }
 
 // Subtract from the current users AP.
@@ -1797,8 +1807,8 @@ public function Update_Daily_Quest($QuestID, $QuestObjective)
 public function Redirect_To_Story_Screen() 
 {
     if ($_SESSION['Story_Mode']=="True") { 
-        unset($_SESSION['Story_Mode']); 
-        header("Location: https://dustinhendrickson.com/?view=html5petbattles"); 
+        //unset($_SESSION['Story_Mode']); 
+        header("Refresh: 5; URL=https://dustinhendrickson.com/?view=petbattle_storymode"); 
     }
 }
 

@@ -100,7 +100,7 @@ CREATE TABLE `daily_quests` (
   `NeededObjective` int(11) NOT NULL DEFAULT '0',
   `Points` int(100) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,7 +171,7 @@ CREATE TABLE `pets` (
   `Pet_Active` tinyint(1) NOT NULL DEFAULT '0',
   `Pet_Tier` int(11) NOT NULL,
   PRIMARY KEY (`Pet_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1224 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1241 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,4 +231,4 @@ CREATE TABLE `users_settings` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-05-05  7:59:55
+-- Dump completed on 2015-05-06  7:38:08

@@ -54,11 +54,27 @@ $View = Functions::Get_View();
     }
 
 if (!isset($_SESSION['PVE_User_Pet_ID'])) {
+    if ($_SESSION['Story_Mode'] != "True") {
     echo "<div class='ContentHeader'>Fight Wild Pet <a href='?view=petbattle_home'><img align='right' height='35' width='100' src='img/back.png'></a></div><br><hr><br>";
     echo '<form action="?view='. $View . '" method="post">';
-    echo '<center><button title="This will start a new battle." type="submit" name="Action" value="StartBattle" style="height:100px; width:20%">Start Battle</button></center>';
+        echo '<center><button title="This will start a new battle." type="submit" name="Action" value="StartBattle" style="height:100px; width:20%">Start Battle</button></center>';
     echo '</form>';
     echo '</div>';
+    } else {
+        //DISPLAY PET BATTLE FINAL STATS
+        if ($Battle_Results) {
+        echo "<b>Round Results</b>";
+        echo "<div class='BlackBox'>";
+            echo "<div class='LogGreen'>";
+                echo $Battle_Results['UserAction'];
+            echo "</div>";
+            echo "<br>";
+            echo "<div class='LogRed'>";
+                echo $Battle_Results['AIAction'];
+            echo "</div>";
+        echo "</div>";
+}
+    }
 
 } else {
 
@@ -218,18 +234,18 @@ if ($Battle_Results) {
     <tr>
         <td>
             <center>
-                <button  <?php if ($_SESSION['PVE_User_Pet_Skill_1_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'];} else { echo 'title="This will trigger your 1st skill."'; }?> type="submit" name="Action" value="Skill 1" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_1'] . " <br> " . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Effect']; ?></button>
-                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 3) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 3."'; } else { if ($_SESSION['PVE_User_Pet_Skill_2_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'];} else { echo 'title="This will trigger your 2nd skill."'; }}?> type="submit" name="Action" value="Skill 2" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_2'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Effect'];; ?></button>
-                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 10) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 10"'; } else { if ($_SESSION['PVE_User_Pet_Skill_3_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'];} else {  echo 'title="This will trigger your 3rd skill."'; }}?> type="submit" name="Action" value="Skill 3" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_3'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Effect'];; ?></button>
+                <button  <?php if ($_SESSION['PVE_User_Pet_Skill_1_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'];} else { echo 'title="This will trigger your 1st skill."'; }?> type="submit" name="Action" value="Skill 1" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_1'] . " <hr> " . $_SESSION['PVE_User_Pet_Skill_1_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_1_Effect']; ?></button>
+                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 3) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 3."'; } else { if ($_SESSION['PVE_User_Pet_Skill_2_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'];} else { echo 'title="This will trigger your 2nd skill."'; }}?> type="submit" name="Action" value="Skill 2" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_2'] . "<hr>" . $_SESSION['PVE_User_Pet_Skill_2_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_2_Effect'];; ?></button>
+                <button  <?php if ($_SESSION['PVE_User_Pet_Level'] < 10) { echo "disabled "; echo 'title="This is disabled until your pet gets to level 10"'; } else { if ($_SESSION['PVE_User_Pet_Skill_3_Cooldown'] > 0) { echo "disabled "; echo 'title="This is still on cooldown - "' . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'];} else {  echo 'title="This will trigger your 3rd skill."'; }}?> type="submit" name="Action" value="Skill 3" style="height:100px; width:20%"><?php echo $_SESSION['PVE_User_Pet_Skill_3'] . "<hr>" . $_SESSION['PVE_User_Pet_Skill_3_Cooldown'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Type'] . "<br>" . $_SESSION['PVE_User_Pet_Skill_3_Effect'];; ?></button>
             </center>
         </td>
     </tr>
     <tr>
         <td>
             <center>
-                <input title="Raises your defense by 50% for the next round." type="submit" name="Action" value="Defend"  style="height:100px; width:20%" />
-                <input title="Trys to catch the pet, higher chance the lower the pets life. If you don't catch it the battle ends." type="submit" name="Action" value="Catch"  style="height:100px; width:20%" />
-                <input title="Leaves the battle, no exp is gained and you lose 1 AP." type="submit" name="Action" value="Retreat"  style="height:100px; width:20%" />
+                <button title="Raises your defense by 50% for the next round." type="submit" name="Action" value="Defend"  style="height:100px; width:20%" />Defend</button>
+                <button <?php if ($UserPet->Get_Item_Count("Pet Trap") <= 0) { echo "disabled title='You need to purchase Pet Traps from the store before you can catch a pet.'"; } else { echo "title='Trys to catch the pet, higher chance the lower the pets life. If you dont catch it the battle ends. Requires Pet Traps from the store.'"; } ?>  type="submit" name="Action" value="Catch"  style="height:100px; width:15%" /><?php echo "Catch <hr> Traps left: " . $UserPet->Get_Item_Count("Pet Trap"); ?></button>
+                <button <?php if ($_SESSION['Story_Mode'] == "True") { echo "disabled"; } ?> title="Leaves the battle, no exp is gained and you lose 1 AP." type="submit" name="Action" value="Retreat"  style="height:100px; width:20%" />Retreat</button>
             </center>
         </td>
     </tr>
