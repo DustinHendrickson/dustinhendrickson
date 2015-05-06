@@ -35,6 +35,9 @@ switch ($_POST['Action'])
         case 'Daily Quests':
             header('Location: ?view=petbattle_dailyquests');
             break;
+        case 'Story Mode':
+            header('Location: ?view=html5petbattles');
+            break;
         case 'Give New Pet':
             $Pet->Give_Random_Pet();
             break;
@@ -134,7 +137,8 @@ switch ($_POST['Action'])
     <tr>
         <td>
             <center>
-                <input type="submit" name="Action" value="Daily Quests"  style="height:100px; width:91%" />
+                <input type="submit" name="Action" value="Daily Quests"  style="height:100px; width:45.2%" />
+                <input type="submit" name="Action" value="Story Mode"  style="height:100px; width:45.2%" />
             </center>
         </td>
     </tr>
