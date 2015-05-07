@@ -4,6 +4,7 @@ $(document).ready(function(){
     var ctx = canvas.getContext("2d");
     var w = $("#canvas").width();
     var h = $("#canvas").height();
+
     
     //Lets save the cell width in a variable for easy control
     var cw = 50;
@@ -16,7 +17,7 @@ $(document).ready(function(){
     var keyisdown = {a:false, s:false, d:false, w:false};
     var currentmap = "";
     var isTransitioning = 'False';
-    var gameSpeed = 100;
+    var gameSpeed = 120;
     //GRID IS 16x10
     //X 0- 15
     //Y 0 - 9
@@ -91,7 +92,11 @@ function update()
     read_json(currentmap);
     //To avoid the snake trail we need to paint the BG on every frame
     //Lets paint the canvas now
-    ctx.fillStyle = "white";
+    img = new Image();
+    img.src = '../petbattles/images/GrassBackground';
+    var ptrn = ctx.createPattern(img, 'repeat'); // Create a pattern with this image, and set it to "repeat".
+
+    ctx.fillStyle = ptrn;
     ctx.fillRect(0, 0, w, h);
     ctx.strokeStyle = "black";
     ctx.strokeRect(0, 0, w, h);
@@ -164,7 +169,7 @@ function update()
        
     //Function to check if player is in the GRASS
     $.each(grass, function(Index,Value) {
-        paint_cell(grass[Index].x, grass[Index].y, "darkgreen");
+        paint_tall_grass(grass[Index].x, grass[Index].y, "darkgreen");
             if(player_position.x == grass[Index].x && player_position.y == grass[Index].y)
             {
                 var random = Math.floor((Math.random() * 100) + 1);
@@ -177,7 +182,7 @@ function update()
     });
 
     $.each(restricted_block, function(Index,Value) {
-        paint_cell(restricted_block[Index].x, restricted_block[Index].y, "black");
+        paint_rock(restricted_block[Index].x, restricted_block[Index].y, "black");
     });
 
     }
@@ -227,6 +232,20 @@ function paint_cell(x, y, color)
     ctx.fillRect(x*cw, y*cw, cw, cw);
     ctx.strokeStyle = "white";
     ctx.strokeRect(x*cw, y*cw, cw, cw);
+}
+
+function paint_tall_grass(x, y)
+{
+    var img = new Image();
+    img.src = "../petbattles/images/TallGrass";
+    ctx.drawImage(img,x*cw,y*cw, cw, cw);
+}
+
+function paint_rock(x, y)
+{
+    var img = new Image();
+    img.src = "../petbattles/images/Rock";
+    ctx.drawImage(img,x*cw,y*cw, cw, cw);
 }
 
 function check_collision(x, y, array)
