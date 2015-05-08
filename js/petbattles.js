@@ -156,7 +156,7 @@ function update()
         if (nx > MAXX && world_position.x + 1 <= WORLDMAXX) { player_position.x = MINX; world_direction = "Right"; }
         if (ny < MINY && world_position.y + 1 <= WORLDMAXY) { player_position.y = MAXY; world_direction = "Up"; }
         if (ny > MAXY && world_position.y - 1 >= WORLDMINY) { player_position.y = MINY; world_direction = "Down"; }
-        if (world_direction == "Up" && world_position.y + 1 <= WORLDMAXY && typeof map_mapping[world_position.x][world_position.y + 1] != "undefined") { currentmap = map_mapping[world_position.x][world_position.y + 1]; world_position.y = world_position.y + 1;}
+        if (world_direction == "Up" && world_position.y + 1 <= WORLDMAXY) { currentmap = map_mapping[world_position.x][world_position.y + 1]; world_position.y = world_position.y + 1;}
         if (world_direction == "Down" && world_position.y - 1 >= WORLDMINY) { currentmap = map_mapping[world_position.x][world_position.y - 1]; world_position.y = world_position.y - 1; }
         if (world_direction == "Left" && world_position.x - 1 >= WORLDMINX) { currentmap = map_mapping[world_position.x - 1][world_position.y]; world_position.x = world_position.x - 1; }
         if (world_direction == "Right" && world_position.x + 1 <= WORLDMAXX) { currentmap = map_mapping[world_position.x + 1][world_position.y]; world_position.x = world_position.x + 1; }
