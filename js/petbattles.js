@@ -7,7 +7,7 @@ $(document).ready(function(){
 
     
     //Lets save the cell width in a variable for easy control
-    var cw = 50;
+    var cw = 32;
     var player_direction;
     var food;
     var grass = new Array();
@@ -18,9 +18,17 @@ $(document).ready(function(){
     var currentmap = "";
     var isTransitioning = 'False';
     var gameSpeed = 120;
-    //GRID IS 16x10
-    //X 0- 15
-    //Y 0 - 9
+    var MAXX = (w / cw) - 1;
+    var MINX = 0;
+    var MAXY = (h / cw) -1;
+    var MINY = 0;
+    var WORLDMAXX = 15;
+    var WORLDMAXY = 9;
+    var WORLDMINX = 0;
+    var WORLDMINY = 0;
+    //GRID IS 25x15
+    //X 0- 24
+    //Y 0 - 14
     
     var player_position = {x:0, y:0};
     var world_position = {x:0, y:0};
@@ -142,16 +150,16 @@ function update()
 
 
     // Here we check if we're transitioning from one map to another.
-    if (nx < 0 || nx > 15 || ny < 0 || ny > 9) {
+    if (nx < MINX || nx > MAXX || ny < MINY || ny > MAXY) {
         world_direction = "";
-        if (nx < 0 && world_position.x - 1 >= 0) { player_position.x = 15; world_direction = "Left"; }
-        if (nx > 15 && world_position.x + 1 <= 15) { player_position.x = 0; world_direction = "Right"; }
-        if (ny < 0 && world_position.y + 1 <= 9) { player_position.y = 9; world_direction = "Up"; }
-        if (ny > 9 && world_position.y - 1 >= 0) { player_position.y = 0; world_direction = "Down"; }
-        if (world_direction == "Up" && world_position.y + 1 <= 9) { currentmap = map_mapping[world_position.x][world_position.y + 1]; world_position.y = world_position.y + 1;}
-        if (world_direction == "Down" && world_position.y - 1 >= 0) { currentmap = map_mapping[world_position.x][world_position.y - 1]; world_position.y = world_position.y - 1; }
-        if (world_direction == "Left" && world_position.x - 1 >= 0) { currentmap = map_mapping[world_position.x - 1][world_position.y]; world_position.x = world_position.x - 1; }
-        if (world_direction == "Right" && world_position.x + 1 <= 15) { currentmap = map_mapping[world_position.x + 1][world_position.y]; world_position.x = world_position.x + 1; }
+        if (nx < MINX && world_position.x - 1 >= WORLDMINX) { player_position.x = MAXX; world_direction = "Left"; }
+        if (nx > MAXX && world_position.x + 1 <= WORLDMAXX) { player_position.x = MINX; world_direction = "Right"; }
+        if (ny < MINY && world_position.y + 1 <= WORLDMAXY) { player_position.y = MAXY; world_direction = "Up"; }
+        if (ny > MAXY && world_position.y - 1 >= WORLDMINY) { player_position.y = MINY; world_direction = "Down"; }
+        if (world_direction == "Up" && world_position.y + 1 <= WORLDMAXY && typeof map_mapping[world_position.x][world_position.y + 1] != "undefined") { currentmap = map_mapping[world_position.x][world_position.y + 1]; world_position.y = world_position.y + 1;}
+        if (world_direction == "Down" && world_position.y - 1 >= WORLDMINY) { currentmap = map_mapping[world_position.x][world_position.y - 1]; world_position.y = world_position.y - 1; }
+        if (world_direction == "Left" && world_position.x - 1 >= WORLDMINX) { currentmap = map_mapping[world_position.x - 1][world_position.y]; world_position.x = world_position.x - 1; }
+        if (world_direction == "Right" && world_position.x + 1 <= WORLDMAXX) { currentmap = map_mapping[world_position.x + 1][world_position.y]; world_position.x = world_position.x + 1; }
         saveGameState(player_position.x, player_position.y, currentmap, world_position.x, world_position.y);
     } else {
         //Check if the next cell is blocked.
@@ -205,7 +213,7 @@ function write_ui(x,y,wx,wy,world_direction)
     
     // Display the score in the bottom left.
     var score_text = x + "," + y + " - " + currentmap;
-    ctx.fillStyle = 'green';
+    ctx.fillStyle = 'black';
     ctx.fillText(score_text, 5, h-5);
 
     // Display the score in the bottom left.
