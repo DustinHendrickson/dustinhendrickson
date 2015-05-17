@@ -1,1 +1,71 @@
-{"Grass":[{"GrassX":4,"GrassY":5},{"GrassX":14,"GrassY":0},{"GrassX":2,"GrassY":13},{"GrassX":0,"GrassY":10},{"GrassX":4,"GrassY":6},{"GrassX":0,"GrassY":1},{"GrassX":13,"GrassY":12},{"GrassX":24,"GrassY":14},{"GrassX":20,"GrassY":10},{"GrassX":13,"GrassY":3},{"GrassX":23,"GrassY":2},{"GrassX":1,"GrassY":1},{"GrassX":24,"GrassY":4},{"GrassX":10,"GrassY":4},{"GrassX":15,"GrassY":14},{"GrassX":10,"GrassY":12},{"GrassX":7,"GrassY":14},{"GrassX":22,"GrassY":6},{"GrassX":22,"GrassY":13},{"GrassX":2,"GrassY":1},{"GrassX":8,"GrassY":1},{"GrassX":4,"GrassY":13},{"GrassX":23,"GrassY":2},{"GrassX":21,"GrassY":11},{"GrassX":20,"GrassY":5},{"GrassX":0,"GrassY":11},{"GrassX":13,"GrassY":0},{"GrassX":21,"GrassY":7},{"GrassX":9,"GrassY":4},{"GrassX":20,"GrassY":0},{"GrassX":6,"GrassY":3},{"GrassX":20,"GrassY":8},{"GrassX":5,"GrassY":10},{"GrassX":24,"GrassY":2},{"GrassX":15,"GrassY":1},{"GrassX":5,"GrassY":14},{"GrassX":4,"GrassY":6},{"GrassX":20,"GrassY":1},{"GrassX":14,"GrassY":10},{"GrassX":22,"GrassY":6},{"GrassX":1,"GrassY":13},{"GrassX":4,"GrassY":8},{"GrassX":24,"GrassY":0},{"GrassX":2,"GrassY":5},{"GrassX":8,"GrassY":13},{"GrassX":9,"GrassY":8},{"GrassX":3,"GrassY":2},{"GrassX":3,"GrassY":5},{"GrassX":22,"GrassY":2},{"GrassX":13,"GrassY":8},{"GrassX":5,"GrassY":11},{"GrassX":12,"GrassY":6},{"GrassX":4,"GrassY":4},{"GrassX":13,"GrassY":11},{"GrassX":0,"GrassY":6},{"GrassX":5,"GrassY":0},{"GrassX":8,"GrassY":5},{"GrassX":11,"GrassY":4},{"GrassX":8,"GrassY":5},{"GrassX":22,"GrassY":6},{"GrassX":18,"GrassY":11},{"GrassX":18,"GrassY":14}],"Restricted":[{"BlockX":16,"BlockY":4},{"BlockX":10,"BlockY":11},{"BlockX":16,"BlockY":11},{"BlockX":16,"BlockY":0},{"BlockX":22,"BlockY":1},{"BlockX":20,"BlockY":13},{"BlockX":11,"BlockY":14},{"BlockX":17,"BlockY":8},{"BlockX":10,"BlockY":3},{"BlockX":16,"BlockY":11},{"BlockX":4,"BlockY":11},{"BlockX":6,"BlockY":5},{"BlockX":8,"BlockY":4}]}
+{ "height":15,
+ "layers":[
+        {
+         "data":[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 0, 0, 1, 1, 2, 1, 1, 0, 0, 2, 0, 1, 1, 1, 0, 2, 2, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 2, 0, 0, 1, 0, 2, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 2, 0, 0, 1, 2, 2, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 2, 2, 0, 1, 1, 0, 2, 0, 0, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 0, 1, 2, 1, 1, 1, 0, 2, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 3, 1, 0, 0, 2, 1, 1, 0, 0, 0, 2, 2, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 2, 2, 1, 0, 1, 0, 2, 2, 1, 2, 2, 1, 2, 2, 0, 0, 0, 1, 1, 0, 2, 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 2, 2, 2, 2, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 2, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 0, 0, 0, 1, 1, 2, 0, 0, 0, 1, 2, 0, 1, 2, 0, 1, 1, 2, 2, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 2, 2, 1, 1, 0, 0, 2, 0, 1, 2, 1, 1, 1, 2, 1, 1, 1, 0, 0, 0, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 2, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+         "height":15,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":25,
+         "x":0,
+         "y":0
+        }],
+ "nextobjectid":1,
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "renderorder":"left-down",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "margin":0,
+         "name":"Tiles",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tileproperties":
+            {
+             "0":
+                {
+                 "Pathing":"Blocked",
+                 "Type":"Rock"
+                },
+             "1":
+                {
+                 "Pathing":"Open",
+                 "Type":"TallGrass"
+                },
+             "2":
+                {
+                 "Pathing":"Blocked",
+                 "Type":"PetHospital"
+                }
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "image":"Rock.png"
+                },
+             "1":
+                {
+                 "image":"TallGrass.png"
+                },
+             "2":
+                {
+                 "image":"PetHospital.png"
+                }
+            },
+         "tilewidth":32
+        }],
+ "tilewidth":32,
+ "version":1,
+ "width":25
+}
