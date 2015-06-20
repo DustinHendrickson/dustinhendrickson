@@ -9,6 +9,9 @@ $View = Functions::Get_View();
         $_SESSION['Story_Mode'] = "True";
         $UserPet->Create_Battle_Room('PVE');
     }
+    if ($_GET['Trainer'] == "True") {
+        $_SESSION['Trainer'] = "True";
+    }
 
     switch ($_POST['Action'])
     {
@@ -244,7 +247,7 @@ if ($Battle_Results) {
         <td>
             <center>
                 <button title="Raises your defense by 50% for the next round." type="submit" name="Action" value="Defend"  style="height:100px; width:20%" />Defend</button>
-                <button <?php if ($UserPet->Get_Item_Count("Pet Trap") <= 0) { echo "disabled title='You need to purchase Pet Traps from the store before you can catch a pet.'"; } else { echo "title='Trys to catch the pet, higher chance the lower the pets life. If you dont catch it the battle ends. Requires Pet Traps from the store.'"; } ?>  type="submit" name="Action" value="Catch"  style="height:100px; width:15%" /><?php echo "Catch <hr> Traps left: " . $UserPet->Get_Item_Count("Pet Trap"); ?></button>
+                <button <?php if ($UserPet->Get_Item_Count("Pet Trap") <= 0 || $_SESSION['Trainer'] == "True") { echo "disabled title='You need to purchase Pet Traps from the store before you can catch a pet. You also cannot catch pets owned by Enemy Trainers.'"; } else { echo "title='Trys to catch the pet, higher chance the lower the pets life. If you dont catch it the battle ends. Requires Pet Traps from the store.'"; } ?>  type="submit" name="Action" value="Catch"  style="height:100px; width:15%" /><?php echo "Catch <hr> Traps left: " . $UserPet->Get_Item_Count("Pet Trap"); ?></button>
                 <button <?php if ($_SESSION['Story_Mode'] == "True") { echo "disabled"; } ?> title="Leaves the battle, no exp is gained and you lose 1 AP." type="submit" name="Action" value="Retreat"  style="height:100px; width:20%" />Retreat</button>
             </center>
         </td>

@@ -4,21 +4,25 @@ $(document).ready(function(){
     var ctx = canvas.getContext("2d");
     var w = $("#canvas").width();
     var h = $("#canvas").height();
+    var canvasbg = $("#canvasbg")[0];
+    var ctxbg = canvasbg.getContext("2d");
+    var canvasui = $("#canvasui")[0];
+    var ctxui = canvasui.getContext("2d");
+    var canvasconsole = $("#canvasconsole")[0];
+    var ctxconsole = canvasconsole.getContext("2d");
 
-    
+
     //Lets save the cell width in a variable for easy control
     var cw = 32;
     var player_direction;
-    var food;
+    var moving = false;
     var grass = new Array();
     var restricted_block = new Array();
     var Cell_Attributes = new Array();
-    var score;
-    var moving = false;
-    var keyisdown = {a:false, s:false, d:false, w:false, space:false};
+    var KeyQue = new Array();
     var currentmap = "";
     var isTransitioning = 'False';
-    var gameSpeed = 90;
+    var gameSpeed = 60;
     var MAXX = (w / cw) - 1; //25
     var MINX = 0;
     var MAXY = (h / cw) -1; //15
@@ -28,6 +32,9 @@ $(document).ready(function(){
     var WORLDMINX = 0;
     var WORLDMINY = 0;
     var ParsedJson = [];
+    var UpdateMap = true;
+    var ConsoleIsShowing = false;
+    var ConsoleMessages = new Array();
     //GRID IS 25x15
     //X 0- 24
     //Y 0 - 14
@@ -39,101 +46,15 @@ $(document).ready(function(){
     setup_world_position();
     init();
 
-
-function read_json(MapName)
-{
-        var Path = "petbattles/maps/";
-        var MapPath = Path.concat(MapName);
-
-        $.getJSON(MapPath, function(OpenJson) {
-            $.each(OpenJson["Cell"], function(Index,Value) {
-                Cell_Attributes[Value.X + "," + Value.Y + "Type"] = Value.Type;
-                Cell_Attributes[Value.X + "," + Value.Y + "Pathing"] = Value.Pathing;
-                //alert("Index: " + Index + " X: " + Value.X + " Y: " + Value.Y + " Type: " + Cell_Attributes[Value.X + "," + Value.Y + "Type"] + " Pathing: " + Cell_Attributes[Value.X + "," + Value.Y + "Pathing"]);
-            });
-
-        });
-}
-
-
-function test_read_json(MapName)
-{
-        var Path = "https://dustinhendrickson.com/petbattles/maps/";
-        var MapPath = Path.concat(MapName);
-        ParsedJson = [];
-
-        $.ajax({
-          type: 'GET',
-          url: MapPath,
-          dataType: 'json',
-          success: function(data) { 
-            ParsedJson = data; 
-            //alert(ParsedJson.layers[0].data[0]);
-
-
-            Cell_Attributes = [];
-            var CURRENT_X = 0;
-            var CURRENT_Y = 0;
-            var CURRENT_CELL = 0;
-            var MAX_CELL_TYPES = 2;
-            var DEBUG = "";
-
-            while (CURRENT_Y <= MAXY) {
-
-                while (CURRENT_X <= MAXX) {
-
-                var CELL_PROP_ID = (ParsedJson.layers[0].data[CURRENT_CELL] - 1);
-
-                if (CELL_PROP_ID >= 0) {
-                    var CELL_TYPE = ParsedJson.tilesets[0].tileproperties[CELL_PROP_ID].Type;
-                    var CELL_PATHING = ParsedJson.tilesets[0].tileproperties[CELL_PROP_ID].Pathing;
-                    var CELL_IMAGE = ParsedJson.tilesets[0].tiles[CELL_PROP_ID].image;
-
-                    //CURRENT_X = CURRENT_CELL % ParsedJson.layers[0].width;
-                    //CURRENT_Y = Math.floor((CURRENT_CELL - CURRENT_X) / ParsedJson.layers[0].height);
-
-                    DEBUG = DEBUG + " | X: " + CURRENT_X + " Y: " + CURRENT_Y + " ID: " + CELL_PROP_ID + "\n";
-
-                    Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Type"] = CELL_TYPE;
-                    Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Pathing"] = CELL_PATHING;
-                    Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Image"] = CELL_IMAGE;
-                }
-
-                    CURRENT_X++;
-                    CURRENT_CELL++;
-                }
-
-                CURRENT_Y++;
-                CURRENT_X = 0;
-            }
-
-          },
-          async: false
-        });
-}
-
-function saveGameState(nx, ny, map, wx, wy)
-{
-    localStorage["PlayerX"] = nx;
-    localStorage["PlayerY"] = ny;
-    localStorage["WorldX"] = wx;
-    localStorage["WorldY"] = wy;
-    localStorage["CurrentMap"] = map;
-}
-
-function resumeGame()
-{
-    player_position.x = parseInt(localStorage["PlayerX"]);
-    player_position.y = parseInt(localStorage["PlayerY"]);
-    world_position.x = parseInt(localStorage["WorldX"]);
-    world_position.y = parseInt(localStorage["WorldY"]);
-    currentmap = localStorage["CurrentMap"];
-}
-
 function init()
 {
 
+    // Setup the console canvas
+    setup_console();
+    $("#canvasconsole").slideUp(0);
+
     resumeGame();
+    write_console();
 
     if (typeof player_position.x == "undefined" || player_position.x == null || isNaN(player_position.x) ) { player_position.x = 1; }
     if (typeof player_position.y == "undefined" || player_position.y == null || isNaN(player_position.y) ) { player_position.y = 1; }
@@ -141,7 +62,8 @@ function init()
     if (typeof world_position.x == "undefined" || world_position.x == null || isNaN(world_position.x) ) { world_position.x = 0; }
     if (typeof world_position.y == "undefined" || world_position.y == null || isNaN(world_position.y) ) { world_position.y = 0; }
 
-    test_read_json(currentmap);
+    read_json(currentmap);
+
 
     //Lets move the snake now using a timer which will trigger the paint function
     //every 60ms
@@ -151,47 +73,117 @@ function init()
 }
 
 
+function read_json(MapName)
+{
+    var Path = "https://dustinhendrickson.com/petbattles/maps/";
+    var MapPath = Path.concat(MapName);
+    ParsedJson = [];
+
+    $.ajax({
+      type: 'GET',
+      url: MapPath,
+      dataType: 'json',
+      success: function(data) { 
+        ParsedJson = data; 
+        //alert(ParsedJson.layers[0].data[0]);
+
+
+        Cell_Attributes = [];
+        var CURRENT_X = 0;
+        var CURRENT_Y = 0;
+        var CURRENT_CELL = 0;
+        var MAX_CELL_TYPES = 2;
+        var DEBUG = "";
+
+        while (CURRENT_Y <= MAXY) {
+
+            while (CURRENT_X <= MAXX) {
+
+            var CELL_PROP_ID = (ParsedJson.layers[0].data[CURRENT_CELL] - 1);
+
+            if (CELL_PROP_ID >= 0) {
+                var CELL_TYPE = ParsedJson.tilesets[0].tileproperties[CELL_PROP_ID].Type;
+                var CELL_PATHING = ParsedJson.tilesets[0].tileproperties[CELL_PROP_ID].Pathing;
+                var CELL_IMAGE = ParsedJson.tilesets[0].tiles[CELL_PROP_ID].image;
+
+                //CURRENT_X = CURRENT_CELL % ParsedJson.layers[0].width;
+                //CURRENT_Y = Math.floor((CURRENT_CELL - CURRENT_X) / ParsedJson.layers[0].height);
+
+                DEBUG = DEBUG + " | X: " + CURRENT_X + " Y: " + CURRENT_Y + " ID: " + CELL_PROP_ID + "\n";
+
+                Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Type"] = CELL_TYPE;
+                Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Pathing"] = CELL_PATHING;
+                Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Image"] = CELL_IMAGE;
+            }
+
+                CURRENT_X++;
+                CURRENT_CELL++;
+            }
+
+            CURRENT_Y++;
+            CURRENT_X = 0;
+        }
+
+      },
+      async: false
+    });
+}
+
+function saveGameState(nx, ny, map, wx, wy)
+{
+    localStorage["PlayerX"] = nx;
+    localStorage["PlayerY"] = ny;
+    localStorage["WorldX"] = wx;
+    localStorage["WorldY"] = wy;
+    localStorage["CurrentMap"] = map;
+    localStorage.setItem("ConsoleMessages", JSON.stringify(ConsoleMessages));
+}
+
+function resumeGame()
+{
+    player_position.x = parseInt(localStorage["PlayerX"]);
+    player_position.y = parseInt(localStorage["PlayerY"]);
+    world_position.x = parseInt(localStorage["WorldX"]);
+    world_position.y = parseInt(localStorage["WorldY"]);
+    currentmap = localStorage["CurrentMap"];
+    ConsoleMessages = JSON.parse(localStorage["ConsoleMessages"]);
+
+}
+
+
+
 //This is the main loop where we draw and calculate position.
 function update()
 {
+
     if (isTransitioning == 'False') {
     moving =false;
-    //To avoid the snake trail we need to paint the BG on every frame
-    //Lets paint the canvas now
-    img = new Image();
-    img.src = '../petbattles/images/GrassBackground';
-    var ptrn = ctx.createPattern(img, 'repeat'); // Create a pattern with this image, and set it to "repeat".
 
-    ctx.fillStyle = ptrn;
-    ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = "black";
-    ctx.strokeRect(0, 0, w, h);
-    
-    //The movement code for the snake to come here.
-    //The logic is simple
-    //Pop out the tail cell and place it infront of the head cell
+    // These will contain the new position of the player for checking purposes based on the direction of the player.
     var nx = player_position.x;
     var ny = player_position.y;
 
     var world_direction = "";
     var path_is_blocked = false;
     var next_cell = {x:0, y:0};
-    //These were the position of the head cell.
-    //We will increment it to get the new head position
-    //Lets add proper direction based movement now
-    if (keyisdown.a == true) {
+    var key_pressed = KeyQue.pop();
+    KeyQue = new Array();
+
+
+    // Sets the players direction and if they are moving this frame or not.
+    if (key_pressed == "a") {
         player_direction="left";
         moving=true;
     } else {
-        if(keyisdown.s == true) {
+        if(key_pressed == "s") {
             player_direction="down";
             moving=true;
         } else {
-            if(keyisdown.d == true) {
+            if(key_pressed == "d") {
                 player_direction="right";
                 moving=true;
             } else {
-                if(keyisdown.w == true) {
+                if(key_pressed == "w") {
                     player_direction="up";
                     moving=true;
                 }
@@ -225,7 +217,8 @@ function update()
         if (world_direction == "Right" && world_position.x + 1 <= WORLDMAXX) { currentmap = map_mapping[world_position.x + 1][world_position.y]; world_position.x = world_position.x + 1; }
 
         saveGameState(player_position.x, player_position.y, currentmap, world_position.x, world_position.y);
-        test_read_json(currentmap);
+        read_json(currentmap);
+        UpdateMap = true;
     } else {
         //Check if the next cell is blocked.
         if (Cell_Attributes[nx + "," + ny + "Pathing"] == "Blocked") {
@@ -237,34 +230,94 @@ function update()
     if (path_is_blocked == false && world_direction == "" && nx >= MINX && nx <= MAXX && ny >= MINY && ny <= MAXY) {
         player_position.x = nx;
         player_position.y = ny;
-        if(player_position.x != nx || player_position.y != ny) { saveGameState(nx, ny, currentmap, world_position.x, world_position.y); }
+        saveGameState(nx, ny, currentmap, world_position.x, world_position.y);
     }
 
-        //Function to check if player is in the GRASS
-        if(Cell_Attributes[player_position.x + "," + player_position.y + "Type"] == "TallGrass")
-        {
-            var random = Math.floor((Math.random() * 100) + 1);
-            if (random <= 5 && moving == true) {
-                isTransitioning = "True";
-                saveGameState(player_position.x, player_position.y, currentmap, world_position.x, world_position.y);
-                window.location.replace("https://dustinhendrickson.com/?view=petbattle_fight_wild&Story_Mode=True");
-            }
+
+    //Function to check if player is in the GRASS
+    if(Cell_Attributes[player_position.x + "," + player_position.y + "Type"] == "TallGrass")
+    {
+        var random = Math.floor((Math.random() * 100) + 1);
+        if (random <= 10 && moving == true) {
+            initiate_petbattle();
         }
+    }
 
-
-    draw_map();
-    draw_player(player_position.x, player_position.y, player_direction);
-    write_ui(nx,ny,world_position.x,world_position.y, world_direction);
-
+    moving = false;
 
     //Get the current Cell infront of the character so we can interact with stuff.
     next_cell = get_cell_infront_of_player();
 
-    if (keyisdown.space == true && Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] == "PetHospital") {
-        keyisdown.space = false;
-        alert("You are looking at a " + Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"]);
+    if (key_pressed == "e") {
+
+        player_pressed_activate(next_cell)
     }
 
+
+    // Finally we run the function to draw the map if needed and to draw the top layers that includes the player and the UI.
+    if (UpdateMap == true) {
+        draw_map();
+        UpdateMap = false;
+    }
+
+    draw_player(player_position.x, player_position.y, player_direction);
+    write_ui(nx,ny,world_position.x,world_position.y, world_direction);
+
+
+    if (key_pressed == "tab") {
+        if(ConsoleIsShowing == true) {
+            ConsoleIsShowing = false;
+        } else {
+            ConsoleIsShowing = true;
+        }
+    }
+
+    if(ConsoleIsShowing == true) {
+        $("#canvasconsole").slideDown(300);
+        hide_ui();
+    } else {
+        $("#canvasconsole").slideUp(300);
+    }
+
+    }
+}
+
+function initiate_petbattle() {
+    send_message_to_console("You were attacked by a wild pet!");
+    isTransitioning = "True";
+    saveGameState(player_position.x, player_position.y, currentmap, world_position.x, world_position.y);
+    window.location.replace("https://dustinhendrickson.com/?view=petbattle_fight_wild&Story_Mode=True");
+}
+
+function initiate_specific_petbattle(level,id) {
+    isTransitioning = "True";
+    saveGameState(player_position.x, player_position.y, currentmap, world_position.x, world_position.y);
+    window.location.replace("https://dustinhendrickson.com/?view=petbattle_fight_wild&Story_Mode=True&Trainer=True&L="+level+"&I="+id);
+}
+
+function player_pressed_activate(next_cell)
+{
+    if ( Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] == "PetHospital") {
+        send_message_to_console("Looked at the hospital.");
+        alert("You are looking at a " + Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"]);
+        }
+
+    if ( Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] == "EnemyTrainer") {
+        alert(Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] + ": What, you wanna fight!? ");
+        send_message_to_console("Fought an enemy trainer at " + next_cell.x + "," + next_cell.y + " on map " + currentmap);
+
+        // Here we map out each trainer as they have different pets with them.
+        if(next_cell.x == 5 && next_cell.y == 1 && currentmap == "map3.json") {
+            initiate_specific_petbattle(5,3);
+        }
+
+        if(next_cell.x == 12 && next_cell.y == 1 && currentmap == "map2.json") {
+            initiate_specific_petbattle(2,5);
+        }
+
+        if(next_cell.x == 12 && next_cell.y == 13 && currentmap == "map2.json") {
+            initiate_specific_petbattle(3,7);
+        }
     }
 }
 
@@ -287,16 +340,6 @@ function get_cell_infront_of_player() {
     return return_position;
 }
 
-function write_debug(message) {
-       // Set UI Text Font settings.
-    ctx.font = "15px Verdana";
-
-    // Display the Controls in the bottom right.
-    var controls_text = "Debug: " + message;
-    ctx.fillStyle = 'black';
-    ctx.fillText(controls_text, w-ctx.measureText(controls_text).width-5, 15);
-    
-}
 
 function draw_map()
 {
@@ -305,11 +348,21 @@ function draw_map()
     var CURRENT_X = 0;
     var CURRENT_Y = 0;
 
+    //Setup the BG
+    img = new Image();
+    img.src = '../petbattles/images/GrassBackground';
+    var ptrn = ctx.createPattern(img, 'repeat'); // Create a pattern with this image, and set it to "repeat".
+    ctxbg.fillStyle = ptrn;
+    ctxbg.fillRect(0, 0, w, h);
+    ctxbg.strokeStyle = "black";
+    ctxbg.strokeRect(0, 0, w, h);
+
+    // Write out each map tile.
      while (CURRENT_X <= MAX_X) {
 
         while (CURRENT_Y <= MAX_Y) {
             if (typeof Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Image"] != "undefined") {
-                paint_image(CURRENT_X, CURRENT_Y, Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Image"]);
+                draw_background_tile(CURRENT_X, CURRENT_Y, Cell_Attributes[CURRENT_X + "," + CURRENT_Y + "Image"]);
             }
             CURRENT_Y++;
         }
@@ -321,27 +374,82 @@ function draw_map()
 
 function write_ui(x,y,wx,wy,world_direction) 
 {
+    ctxui.clearRect(0,0,w,h);
     // Set UI Text Font settings.
-    ctx.font = "15px Verdana";
+    ctxui.font = "15px Verdana";
+
+    // Display info in the BOTTOM RIGHT of the UI
+    var controls_text = "Controls: " + "Movement = WASD Keys; E = Activate; Tab = Console";
+    ctxui.fillStyle = 'black';
+    ctxui.fillText(controls_text, w-ctxui.measureText(controls_text).width-5, h-5);
+    
+    // Display info in the BOTTOM LEFT of the UI
+    var map_position_text = "Map Position: " + x + "," + y + " - " + currentmap;
+    ctxui.fillStyle = 'black';
+    ctxui.fillText(map_position_text, 5, h-5);
+
+    // Display info in the TOP LEFT of the UI
+    var world_position_text = "World Position: " + wx + "," + wy;
+    ctxui.fillStyle = 'orange';
+    ctxui.fillText(world_position_text, 5, h-25);
+}
+
+function write_debug(message) {
+       // Set UI Text Font settings.
+    ctxui.font = "15px Verdana";
 
     // Display the Controls in the bottom right.
-    var controls_text = "Controls: " + "Movement = WASD Keys";
-    ctx.fillStyle = 'black';
-    ctx.fillText(controls_text, w-ctx.measureText(controls_text).width-5, h-5);
+    var controls_text = "Debug: " + message;
+    ctxui.fillStyle = 'black';
+    ctxui.fillText(controls_text, w-ctxui.measureText(controls_text).width-5, h-25);
     
-    // Display the score in the bottom left.
-    var score_text = x + "," + y + " - " + currentmap;
-    ctx.fillStyle = 'black';
-    ctx.fillText(score_text, 5, h-5);
+}
 
-    // Display the score in the bottom left.
-    var score_text = wx + "," + wy + " - " + world_direction;
-    ctx.fillStyle = 'orange';
-    ctx.fillText(score_text, 5, 15);
+function send_message_to_console(message) {
+    ConsoleMessages.unshift(message);
+    write_console();
+
+}
+
+function write_console() {
+    setup_console();
+    ctxconsole.font = "15px Verdana";
+    ctxconsole.fillStyle = 'black';
+
+    var i = 0;
+
+    while(i < 20) {
+        if (ConsoleMessages[i] != null) {
+            ctxconsole.fillText(ConsoleMessages[i], 5, (i*20)+65);
+        } else {
+            break;
+        }
+        i++;
+    }
+
+}
+
+
+function setup_console()
+{
+    ctxconsole.clearRect(0,0,w,h);
+    ctxconsole.fillStyle = "rgba(192, 192, 192, 0.85)";
+    ctxconsole.fillRect(0, 0, w, h);
+    ctxconsole.strokeStyle = "black";
+    ctxconsole.strokeRect(0, 0, w, h);
+    ctxconsole.font = "30px Arial Bold";
+    ctxconsole.fillStyle = 'black';
+    ctxconsole.fillText("CONSOLE", 5, 30);
+    ctxconsole.fillText("_____________________________________________________", 5, 40);
+}
+
+function hide_ui() {
+    ctxui.clearRect(0,0,w,h);
 }
 
 function draw_player(x,y,player_direction)
 {
+    ctx.clearRect(0,0,w,h);
     var img = new Image();
     img.src = "../petbattles/images/trainer-down";
     if (player_direction == "right") { img.src = "../petbattles/images/trainer-right"; }
@@ -351,93 +459,82 @@ function draw_player(x,y,player_direction)
     ctx.drawImage(img,x*cw,y*cw, cw, cw);
 }
 
-//Lets first create a generic function to paint cells
-function paint_cell(x, y, color)
-{
-    ctx.fillStyle = color;
-    ctx.fillRect(x*cw, y*cw, cw, cw);
-    ctx.strokeStyle = "white";
-    ctx.strokeRect(x*cw, y*cw, cw, cw);
-}
 
-function paint_image(x, y, image)
+
+function draw_background_tile(x, y, image)
 {
     var img = new Image();
-    img.src = "../petbattles/images/storymode/" + image;
-    ctx.drawImage(img,x*cw,y*cw, cw, cw);
+    img.src = "../petbattles/images/tiles/" + image;
+    ctxbg.drawImage(img,x*cw,y*cw, cw, cw);
 }
 
 
 // KEY INPUT DETECTION
 //==================================================================================================================
 //Lets add the keyboard controls now
-$(document).keydown(function(e)
+$(document).keydown(function(event)
 {
-    var key = e.which;
-    // We will add another clause to prevent reverse gear
-    // Left Arrow
-    if(key == "65") { 
-        keyisdown.a = true;
+    var key = event.which;
+    if(ConsoleIsShowing==false){
+
+        if(key == "65") { 
+            KeyQue.push("a");
+        }
+
+        if(key == "87") { 
+            KeyQue.push("w");
+        } 
+
+        if(key == "68") { 
+            KeyQue.push("d");
+        } 
+
+        if(key == "83") { 
+            KeyQue.push("s");
+        }
+
+        if(key == "69") { 
+            KeyQue.push("e");
+        }
+
     }
 
-    if(key == "87") { 
-        keyisdown.w = true;
-    } 
-
-    if(key == "68") { 
-        keyisdown.d = true;
-    } 
-
-    if(key == "83") { 
-        keyisdown.s = true;
+    if(key == "9") { 
+        KeyQue.push("tab");
     }
 
-    if(key == "32") { 
-        keyisdown.space = true;
-    }
 
-    })
-
-// If the user stops key presses we stop movement.
-$(document).keyup(function(e){
-    var key = e.which;
-    if(key == "65") {
-        keyisdown.a = false;
-    } 
-
-    if(key == "87") {
-        keyisdown.w = false;
-    } 
-
-    if(key == "68") {
-        keyisdown.d = false;
-    } 
-
-    if(key == "83" ){
-        keyisdown.s = false;
-    }
-
-    if(key == "32" ){
-        keyisdown.space = false;
-    }
-
-    if(keyisdown.w == false && keyisdown.a == false && keyisdown.s == false && keyisdown.d == false)
-    {
-        moving = false;
-    }
 })
 
-// This functions registers any Touch Inputs and changes the snakes direction accordingly.
+
+// This functions registers any Swipe Inputs and changes the direction accordingly.
  $(function() 
  {
   $("#canvas").swipe( {
     swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
         if (direction == "up" || direction == "down" || direction == "left" || direction == "right") {
             moving = true;
-            if(direction == "left" && player_direction != "right") player_direction = "left";
-            else if(direction == "up" && player_direction != "down") player_direction = "up";
-            else if(direction == "right" && player_direction != "left") player_direction = "right";
-            else if(direction == "down" && player_direction != "up") player_direction = "down";
+
+            if(direction == "left") { 
+                player_direction = "left";
+                KeyQue.push("a");
+            } else { 
+                if(direction == "up") { 
+                    player_direction = "up";
+                    KeyQue.push("w");
+                 } else { 
+                    if(direction == "right") { 
+                        player_direction = "right";
+                        KeyQue.push("d");
+                    } else { 
+                        if(direction == "down") { 
+                            player_direction = "down";
+                            KeyQue.push("s");
+                        } 
+                    } 
+                } 
+            }
+
         }
     },
     threshold:0,
@@ -445,11 +542,16 @@ $(document).keyup(function(e){
   });
 });
 
+// Detect when the screen is clicked for mobile users.
+canvas.onmousedown = function(e){
+    KeyQue.push("e");
+}
+
 // This bit controls the Default Browser Key Detection and disables the default usage (So arrow keys don't scroll the screen.)
 window.addEventListener("keydown", function(e)
 {
     // space and arrow keys
-    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+    if([32, 37, 38, 39, 40, 69].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
 }, false);

@@ -298,10 +298,14 @@ public function Evolve_Pet($NewTier, $Pet_ID)
 
 public function Create_Wild_Pet($Tier=1)
 {
+    $StoryModePetID = $_GET["I"];
     // Setup YAML stuff.
     $RandomPet = Spyc::YAMLLoad('/var/www/petbattles/data/base_pet_list.yml');
     $MaxPets = count($RandomPet['pets'][$Tier]) - 1;
     $Random = rand(0,$MaxPets);
+
+    // Override the Random Pet.
+    if(isset($StoryModePetID)) { $Random = $StoryModePetID; }
 
     // Here I will load up a random pet from a YAML config file and then add it to the DB.
     $Pet_Name = $RandomPet['pets'][$Tier][$Random]['name'];
@@ -437,6 +441,8 @@ public function Create_Battle_Room($Type,$Defender_UserID=0,$Defender_PetID=0)
         $AI_Pet = new BattlePet(0, $AI_Pet_ID);
 
         $Level_Of_AI = rand($this->Pet_Level-1,$this->Pet_Level+1);
+        $StoryModePetLevel = $_GET["L"];
+        if (isset($StoryModePetLevel)) { $Level_Of_AI = $StoryModePetLevel;}
 
         while ($I < $Level_Of_AI) {
             $AI_Pet->LevelUp_Pet($AI_Pet_ID);
@@ -1807,7 +1813,7 @@ public function Update_Daily_Quest($QuestID, $QuestObjective)
 public function Redirect_To_Story_Screen() 
 {
     if ($_SESSION['Story_Mode']=="True") { 
-        //unset($_SESSION['Story_Mode']); 
+        unset($_SESSION['Trainer']);
         header("Refresh: 5; URL=https://dustinhendrickson.com/?view=petbattle_storymode"); 
     }
 }

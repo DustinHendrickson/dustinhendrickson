@@ -3,7 +3,7 @@
 class Connection
 {
     public $PDO_Connection;
-    public $Config;
+    private $Config;
 
     function __construct()
     {
