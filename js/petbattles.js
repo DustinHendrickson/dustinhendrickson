@@ -262,8 +262,13 @@ function update()
 
     draw_player(player_position.x, player_position.y, player_direction);
     write_ui(nx,ny,world_position.x,world_position.y, world_direction);
+    check_for_console_press(key_pressed);
 
+    }
+}
 
+function check_for_console_press(key_pressed)
+{
     if (key_pressed == "tab") {
         if(ConsoleIsShowing == true) {
             ConsoleIsShowing = false;
@@ -277,8 +282,6 @@ function update()
         hide_ui();
     } else {
         $("#canvasconsole").slideUp(300);
-    }
-
     }
 }
 
@@ -303,19 +306,23 @@ function player_pressed_activate(next_cell)
         }
 
     if ( Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] == "EnemyTrainer") {
-        alert(Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] + ": What, you wanna fight!? ");
-        send_message_to_console("Fought an enemy trainer at " + next_cell.x + "," + next_cell.y + " on map " + currentmap);
 
         // Here we map out each trainer as they have different pets with them.
         if(next_cell.x == 5 && next_cell.y == 1 && currentmap == "map3.json") {
+            alert(Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] + ": You wot mate?! ");
+            send_message_to_console("Fought an enemy trainer at " + next_cell.x + "," + next_cell.y + " on map " + currentmap);
             initiate_specific_petbattle(5,3);
         }
 
         if(next_cell.x == 12 && next_cell.y == 1 && currentmap == "map2.json") {
+            alert(Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] + ": So you like your teeth on the floor? ");
+            send_message_to_console("Fought an enemy trainer at " + next_cell.x + "," + next_cell.y + " on map " + currentmap);
             initiate_specific_petbattle(2,5);
         }
 
         if(next_cell.x == 12 && next_cell.y == 13 && currentmap == "map2.json") {
+            alert(Cell_Attributes[next_cell.x + "," + next_cell.y + "Type"] + ": Well, let's do this! ");
+            send_message_to_console("Fought an enemy trainer at " + next_cell.x + "," + next_cell.y + " on map " + currentmap);
             initiate_specific_petbattle(3,7);
         }
     }
