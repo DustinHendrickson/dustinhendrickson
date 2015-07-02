@@ -7,6 +7,7 @@
     <img src="petbattles/images/tiles/Trainer1Up.png" width="1" height="1" alt="preload" />
     <img src="petbattles/images/tiles/Trainer1Left.png" width="1" height="1" alt="preload" />
     <img src="petbattles/images/tiles/Trainer1Right.png" width="1" height="1" alt="preload" />
+    <img src="petbattles/images/GrassBackground.png" width="1" height="1" alt="preload" />
 </div>
 <div class='ContentHeader'>Story Mode <a href='?view=petbattle_home'><img align='right' height='35' width='100' src='img/back.png'></a></div><br><hr><br>
 <center>

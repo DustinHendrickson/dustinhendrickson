@@ -139,9 +139,9 @@ switch ($_POST['Action'])
             <center>
                 <input type="submit" name="Action" value="Daily Quests"  style="height:100px; width:45.2%" />
                 <?php if ($ActivePet) { ?>
-                <input type="submit" name="Action" value="Story Mode"  style="height:100px; width:45.2%" />
+                    <input type="submit" name="Action" value="Story Mode"  style="height:100px; width:45.2%" />
                 <?php } else { ?>
-                <input disabled type="submit" name="Action" value="Story Mode"  style="height:100px; width:45.2%" />
+                    <input disabled type="submit" name="" value="Story Mode"  style="height:100px; width:45.2%" />
                 <?php } ?>
             </center>
         </td>
