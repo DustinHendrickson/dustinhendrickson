@@ -12,7 +12,7 @@ switch ($_POST['Mode'])
             // Here we buildup an array of items we want to change for the user, if nothing is set we don't send that item.
             if ($_POST['First_Name']!='' && $_POST['First_Name']!=$User->First_Name){ $User_Config['First_Name'] = Functions::Make_Safe($_POST['First_Name']); }
             if ($_POST['Last_Name']!='' && $_POST['Last_Name']!=$User->Last_Name){ $User_Config['Last_Name'] = Functions::Make_Safe($_POST['Last_Name']); }
-            if ($_POST['Password']!=''){ $Password = md5(Functions::Make_Safe($_POST['Password'])); $User_Config['Password'] = $Password; }
+            if ($_POST['Password']!=''){ $Password = password_hash(Functions::Make_Safe($_POST['Password']), PASSWORD_DEFAULT); $User_Config['Password'] = $Password; }
             if ($_POST['FightBot_Name']!='' && $_POST['FightBot_Name']!=$User->FightBot_Name){ $User_Config['FightBot_Name'] = Functions::Make_Safe($_POST['FightBot_Name']); }
 
             // Make sure we actually changed something before submit.

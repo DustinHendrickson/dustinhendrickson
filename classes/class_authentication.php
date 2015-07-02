@@ -14,17 +14,16 @@ function Login($User,$Pass)
 {
     $Username = Functions::Make_Safe($User);
     $Password = Functions::Make_Safe($Pass);
-    $Password = md5($Password);
 
     // Check if parameters are blank
     if($Username!='' && $Password!='') {
 
             // Query to get the credentials of the user logging in.
-            $Login_Array = array(':Username'=>$Username, ':Password'=>$Password);
-            $Login_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE Username=:Username AND Password=:Password", $Login_Array);
+            $Login_Array = array(':Username'=>$Username);
+            $Login_Result = $this->Connection->Custom_Query("SELECT * FROM users WHERE Username=:Username", $Login_Array);
 
             // Check and see if there were any matches in the result.
-            if (!empty($Login_Result)) {
+            if (!empty($Login_Result) && password_verify($Password, $Login_Result['Password'])) {
 
                     //Check to see if the account is locked.
                     if($Login_Result['Account_Locked'] == 0){
@@ -65,7 +64,7 @@ function Register($User,$Pass,$Mail,$Permissions='4')
     $Username = Functions::Make_Safe($User);
     $Password = Functions::Make_Safe($Pass);
     $EMail = Functions::Make_Safe($Mail);
-    $MD5Password = md5($Password);
+    $MD5Password = password_hash($Password, PASSWORD_DEFAULT);
 
     // Check if parameters are blank
     if(isset($Username) && isset($Password) && isset($EMail)) {
