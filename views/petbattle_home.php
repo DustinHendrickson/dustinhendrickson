@@ -108,7 +108,7 @@ switch ($_POST['Action'])
         echo "</div>";
     } else {
         echo "<div class='BlackBox'>";
-        echo "Looks like you don't have a pet set as your active pet yet, look below to set your active pet.<br> You will be unable to fight until you do so.";
+        echo "Looks like you don't have a pet set as your active pet yet, look below to set your active pet.<br> You will be unable to fight or play story mode until you do so.";
         echo "</div>";
     }
 ?>

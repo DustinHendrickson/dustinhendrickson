@@ -25,7 +25,7 @@ $(document).ready(function(){
     var gameSpeed = 60;
     var MAXX = (w / cw) - 1; //25
     var MINX = 0;
-    var MAXY = (h / cw) -1; //15
+    var MAXY = (h / cw) - 1; //15
     var MINY = 0;
     var WORLDMAXX = 15;
     var WORLDMAXY = 9;
@@ -35,8 +35,9 @@ $(document).ready(function(){
     var UpdateMap = true;
     var ConsoleIsShowing = false;
     var ConsoleMessages = new Array();
+    //var EventStatus = new Array();
     //GRID IS 25x15
-    //X 0- 24
+    //X 0 - 24
     //Y 0 - 14
     
     var player_position = {x:0, y:0};
@@ -137,6 +138,7 @@ function saveGameState(nx, ny, map, wx, wy)
     localStorage["WorldY"] = wy;
     localStorage["CurrentMap"] = map;
     localStorage.setItem("ConsoleMessages", JSON.stringify(ConsoleMessages));
+    //localStorage.setItem("EventStatus", JSON.stringify(EventStatus));
 }
 
 function resumeGame()
@@ -147,6 +149,7 @@ function resumeGame()
     world_position.y = parseInt(localStorage["WorldY"]);
     currentmap = localStorage["CurrentMap"];
     ConsoleMessages = JSON.parse(localStorage["ConsoleMessages"]);
+    //EventStatus = JSON.parse(localStorage["EventStatus"]);
 
 }
 
@@ -415,7 +418,10 @@ function write_debug(message) {
 function send_message_to_console(message) {
     ConsoleMessages.unshift(message);
     write_console();
+}
 
+function send_event_status_update(event, map, worldx, worldy) {
+    EventStatus.unshift(event + "," + map + "," + worldx + "," + worldy)
 }
 
 function write_console() {

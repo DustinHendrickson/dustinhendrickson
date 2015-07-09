@@ -15,6 +15,7 @@
 <canvas id="canvas" style="position:absolute; z-index: 2; left:9%; top:12%;" width="800px" height="480px"></canvas>
 <canvas id="canvasui" style="position:absolute; z-index: 3; left:9%; top:16%;" width="800px" height="480px"></canvas>
 <canvas id="canvasconsole" style="position:absolute; z-index: 4; left:9%; top:12%;" width="800px" height="480px"></canvas>
+
 </center>
 <!-- Jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>

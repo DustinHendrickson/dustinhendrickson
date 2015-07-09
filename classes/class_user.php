@@ -148,7 +148,6 @@ class User {
 
                 $SQL .= ")";
 
-                Write_Log('debug', "SQL: " . $SQL);
                 $Results = $this->Connection->Custom_Execute($SQL, $Config_Array);
             }
 
@@ -180,7 +179,6 @@ class User {
                 $SQL .= " WHERE UserID=:UserID";
                 $Config_Array[":UserID"] = $this->ID;
 
-                Write_Log('debug', "SQL: " . $SQL);
                 $Results = $this->Connection->Custom_Execute($SQL, $Config_Array);
             }
         }
@@ -298,7 +296,7 @@ class User {
             if ($Results) {
                 $this->Set_User_Info();
                 Toasts::addNewToast('User was edited successfully.','success');
-                Write_Log('users', "Success - Edited userid [" . $this->ID . "] " . $Modified . " Modified by userid [" . $_SESSION['ID'] . "]" );
+                Write_Log('users', "Success - Edited userid [" . $this->ID . "] " . " Modified by userid [" . $_SESSION['ID'] . "]" );
             } else {
                 Toasts::addNewToast('There was an issue editing a user, please try again.','error');
                 Write_Log('users', "Error - Could not edited user [" . $this->ID . "]" . " Called by userid [" . $_SESSION['ID'] . "]"  );
