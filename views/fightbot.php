@@ -47,5 +47,4 @@ View Another Players Info <i>(Select their name)</i><br>
 </select>
 </form>
 <hr>
-Selected: <?php echo $_SESSION['SearchList']; ?>
 <iframe src="https://dustinhendrickson.com:7777" width="100%" height="50%"></iframe>
