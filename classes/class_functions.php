@@ -180,7 +180,7 @@ class Functions {
             echo '$(document).ready(function() {';
             echo '$.ajaxSetup({ cache: false });';
             echo 'setInterval(function() {';
-            echo '$("#FightBotStats").load("js/views/fightbot.php", {UserSessionID:'. $_SESSION["ID"] .'});';
+            echo '$("#FightBotStats").load("js/views/fightbot.php", {UserSessionID:'. $_SESSION["ID"] . '});';
             echo 'if (status == "error") {';
             echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
             echo '}';
