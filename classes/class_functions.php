@@ -184,7 +184,7 @@ class Functions {
             echo 'if (status == "error") {';
             echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
             echo '}';
-            echo '}, 3000);';
+            echo '}, 1000);';
             echo '});';
             echo '</script>';
         }

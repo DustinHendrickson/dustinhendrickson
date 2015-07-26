@@ -34,12 +34,21 @@ if ($User->FightBot_Name != ''){
     // Actual output of data
 ?>
 <table >
+
 <td width='30%'>
 Name: <b><?php echo $UserToDisplay ?></b></br>
 Level: <b><?php echo $Level ?></b></br>
 EXP: <b><?php echo $Exp ?></b> / <b> <?php echo ($Level * 100) ?></b></br>
-Weapon: <b><?php echo $Weapon ?></b> 1-<?php echo $WeaponDamage - $WeaponElement ?><br>
-Armor: <b><?php echo $Armor ?></b> 0-<?php echo $ArmorAmount - $ArmorElement ?>
+</td>
+
+<td width='30%'>
+Weapon: <b><?php echo $Weapon ?></b> 1-<?php echo $WeaponDamage; ?><br>
+Element: <b><?php echo $WeaponElement ?></b><br>
+</td>
+
+<td width='30%'>
+Armor: <b><?php echo $Armor ?></b> 0-<?php echo $ArmorAmount; ?><br>
+Element: <b><?php echo $ArmorElement ?></b><br>
 </td>
 
 </table>

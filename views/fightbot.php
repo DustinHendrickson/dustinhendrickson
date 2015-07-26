@@ -26,7 +26,8 @@ $.ajax({
 <i>Commands</i></br>
 Create a new character: <b>/msg Fight|Bot @fight create</b></br>
 See enemy stats: <b>/msg Fight|Bot @fight info playername</b></br>
-Need help? <b>/msg Fight|Bot @fight help</b>
+Need help? <b>/msg Fight|Bot @fight help</b><br>
+Want to try your luck at a quest without waiting? <b>/msg Fight|Bot @fight quest</b> this costs 15 exp.
 <hr>
 <div id='FightBotStats'><img src='../img/ajax-loader.gif'> <b>Loading Stats...</b></div>
 <hr>
