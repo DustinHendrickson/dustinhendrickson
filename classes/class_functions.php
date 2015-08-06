@@ -175,19 +175,19 @@ class Functions {
     // If the variable $SpecificDivToRefresh is set the included file and div need to be named the same.
     public static function RefreshDivs($SpecificDivToRefresh="")
     {
-        if (self::Get_View() == 'fightbot') {
-            echo '<script type="text/javascript">';
-            echo '$(document).ready(function() {';
-            echo '$.ajaxSetup({ cache: false });';
-            echo 'setInterval(function() {';
-            echo '$("#FightBotStats").load("js/views/fightbot.php", {UserSessionID:'. $_SESSION["ID"] . '});';
-            echo 'if (status == "error") {';
-            echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
-            echo '}';
-            echo '}, 1000);';
-            echo '});';
-            echo '</script>';
-        }
+        // if (self::Get_View() == 'fightbot') {
+        //     echo '<script type="text/javascript">';
+        //     echo '$(document).ready(function() {';
+        //     echo '$.ajaxSetup({ cache: false });';
+        //     echo 'setInterval(function() {';
+        //     echo '$("#FightBotStats").load("js/views/fightbot.php", {UserSessionID:'. $_SESSION["ID"] . '});';
+        //     echo 'if (status == "error") {';
+        //     echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
+        //     echo '}';
+        //     echo '}, 1000);';
+        //     echo '});';
+        //     echo '</script>';
+        // }
 
         if (self::Get_View() == 'logs') {
             echo '<script type="text/javascript">';
