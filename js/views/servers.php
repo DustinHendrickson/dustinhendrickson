@@ -44,7 +44,7 @@ Functions::displayServerStatus($ServerStatus);
 ?>
 <br>
 
-<b>FTP</b> | <a target='_blank' href='ftp://dustinhendrickson.com'>ftp://dustinhendrickson.com</a> | User: ftp Pass: cool
+<b>FTP</b> | <a target='_blank' href='ftp://dustinhendrickson.com'>ftp://dustinhendrickson.com</a>
 <?php
 $ServerStatus=Functions::getServerStatus("ftp");
 Functions::displayServerStatus($ServerStatus);

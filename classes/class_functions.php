@@ -217,6 +217,44 @@ class Functions {
             echo '</script>';
         }
 
+        if (self::Get_View() == 'fight') {
+            echo '<script type="text/javascript">';
+            echo '$(document).ready(function() {';
+            echo '$.ajaxSetup({ cache: false });';
+            echo 'setInterval(function() {';
+            echo '$("#FightDisplay").load("views/fight_display_battles.php");';
+            echo 'if (status == "error") {';
+            echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
+            echo '}';
+            echo '}, 1000);';
+            echo '});';
+            echo '</script>';
+
+            echo '<script type="text/javascript">';
+            echo '$(document).ready(function() {';
+            echo '$.ajaxSetup({ cache: false });';
+            echo 'setInterval(function() {';
+            echo '$("#FightInventoryDisplay").load("views/fight_inventory.php");';
+            echo 'if (status == "error") {';
+            echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
+            echo '}';
+            echo '}, 1000);';
+            echo '});';
+            echo '</script>';
+
+            echo '<script type="text/javascript">';
+            echo '$(document).ready(function() {';
+            echo '$.ajaxSetup({ cache: false });';
+            echo 'setInterval(function() {';
+            echo '$("#FightShopDisplay").load("views/fight_shop.php");';
+            echo 'if (status == "error") {';
+            echo 'console.log(msg + xhr.status + " " + xhr.statusText);';
+            echo '}';
+            echo '}, 1000);';
+            echo '});';
+            echo '</script>';
+        }
+
         if ($SpecificDivToRefresh != "") {
             echo '<script type="text/javascript">';
             echo '$(document).ready(function() {';

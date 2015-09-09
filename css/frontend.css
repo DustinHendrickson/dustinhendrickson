@@ -542,3 +542,27 @@ hr {
     right: 0;
     position: absolute;
 }
+
+.FightDisplay {
+    color: black;
+    background-image: url("../img/SubtleGrey_Light.png");
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid black;
+    height: 300px;
+    width: 98%;
+    display: block;
+    float: left;
+    overflow: auto;
+    overflow-x:hidden;
+}
+
+.PlayerInformation {
+    color: black;
+    padding: 2px;
+    margin: 2px;
+    border: 1px solid black;
+    height: 150px;
+    width: 98%;
+    display: block;
+}
